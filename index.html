@@ -87,14 +87,7 @@
             width: 250px;
         }
 
-        .recommendations {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            width: 250px;
-        }
-
-        select, button {
+        select {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -118,7 +111,7 @@
                 align-items: center;
             }
 
-            .customization-options, .recommendations {
+            .customization-options {
                 width: 90%;
             }
         }
@@ -147,8 +140,8 @@
         <h2>Mini Sticks</h2>
         <div class="stick-container">
             <a href="bauer.html" class="stick-card">Bauer</a>
-            <a href="#" class="stick-card">CCM</a>
-            <a href="#" class="stick-card">Warrior</a>
+            <a href="ccm.html" class="stick-card">CCM</a>
+            <a href="warrior.html" class="stick-card">Warrior</a>
         </div>
     </section>
 
@@ -176,15 +169,6 @@
                     <option value="Purple">Purple</option>
                     <option value="Orange">Orange</option>
                 </select>
-
-                <button onclick="showRecommendations()">Get Recommendations</button>
-            </div>
-
-            <div class="recommendations">
-                <h3>Recommendations:</h3>
-                <ul id="recommendation-list">
-                    <li>Select options to see recommendations</li>
-                </ul>
             </div>
         </div>
     </section>
@@ -209,30 +193,6 @@
     </footer>
 
     <script>
-        function showRecommendations() {
-            const brand = document.getElementById('brand').value;
-            const color = document.getElementById('color').value;
-
-            const list = document.getElementById('recommendation-list');
-            list.innerHTML = '';
-
-            if (!brand && !color) {
-                list.innerHTML = '<li>Please select at least one option</li>';
-                return;
-            }
-
-            const recommendations = [];
-
-            if (brand) recommendations.push(`Try the ${brand} stick!`);
-            if (color) recommendations.push(`Available in ${color} color`);
-
-            recommendations.forEach(rec => {
-                const li = document.createElement('li');
-                li.textContent = rec;
-                list.appendChild(li);
-            });
-        }
-
         function submitForm(event) {
             event.preventDefault();
             alert("Thanks for reaching out! We'll get back to you soon.");

@@ -1,107 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESW</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESW</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
-    <h1>ESW</h1>
-    <nav>
-        <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#sticks">Mini Sticks</a></li>
-            <li><a href="#customize">Customize</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
+<h1>ESW</h1>
+<nav>
+<ul>
+<li><a href="#home">Home</a></li>
+<li><a href="#sticks">Mini Sticks</a></li>
+<li><a href="#customize">Customize</a></li>
+<li><a href="#about">About</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+</nav>
 </header>
 
 <section id="home">
-    <h2>Welcome to ESW!</h2>
-    <p>Explore our collection of high-quality mini hockey sticks from the top brands.</p>
+<h2>Welcome to ESW!</h2>
+<p>Explore our collection of high-quality mini hockey sticks from the top brands.</p>
 </section>
 
 <section id="sticks">
-    <h2>Mini Stick Brands</h2>
-    <div class="stick-container">
-        <a href="bauer.html" class="stick-card">Bauer</a>
-        <a href="ccm.html" class="stick-card">CCM</a>
-        <a href="warrior.html" class="stick-card">Warrior</a>
-    </div>
+<h2>Mini Stick Brands</h2>
+<div class="stick-container">
+<a href="bauer.html" class="stick-card">Bauer</a>
+<a href="ccm.html" class="stick-card">CCM</a>
+<a href="warrior.html" class="stick-card">Warrior</a>
+</div>
 </section>
 
 <section id="customize">
-    <h2>Customize Your Stick</h2>
-    <div class="customization-container">
+<h2>Customize Your Stick</h2>
+<div class="customization-container">
 
-        <label for="brand">Select Brand:</label>
-        <select id="brand" onchange="goToBrand()">
-            <option value="">-- Choose Brand --</option>
-            <option value="bauer.html">Bauer</option>
-            <option value="ccm.html">CCM</option>
-            <option value="warrior.html">Warrior</option>
-        </select>
+<label for="brand">Select Brand:</label>
+<select id="brand" onchange="goToBrand()">
+<option value="">-- Choose Brand --</option>
+<option value="bauer.html">Bauer</option>
+<option value="ccm.html">CCM</option>
+<option value="warrior.html">Warrior</option>
+</select>
 
-        <label for="color">Select Color:</label>
-        <select id="color">
-            <option value="">-- Choose Color --</option>
-            <option value="Red">Red</option>
-            <option value="Blue">Blue</option>
-            <option value="Black">Black</option>
-            <option value="Green">Green</option>
-            <option value="Yellow">Yellow</option>
-            <option value="White">White</option>
-            <option value="Purple">Purple</option>
-            <option value="Orange">Orange</option>
-        </select>
+<label for="color">Select Color:</label>
+<select id="color">
+<option value="">-- Choose Color --</option>
+<option value="Red">Red</option>
+<option value="Blue">Blue</option>
+<option value="Black">Black</option>
+<option value="Green">Green</option>
+<option value="Yellow">Yellow</option>
+<option value="White">White</option>
+<option value="Purple">Purple</option>
+<option value="Orange">Orange</option>
+</select>
 
-    </div>
+</div>
 </section>
 
 <section id="balls">
-    <h2>Knee Hockey Balls</h2>
-    <div class="customization-container">
-        <div class="customization-options">
-            <table>
-                <tr>
-                    <th>Ball Type</th>
-                    <th>Price</th>
-                </tr>
-                <tr>
-                    <td>Regular Ball</td>
-                    <td>$5</td>
-                </tr>
-                <tr>
-                    <td>Airless Ball</td>
-                    <td>$7</td>
-                </tr>
-            </table>
-        </div>
-    </div>
+<h2>Knee Hockey Balls</h2>
+<div class="customization-container">
+<div class="customization-options">
+<table>
+<tr>
+<th>Ball Type</th>
+<th>Price</th>
+<th>Quantity</th>
+</tr>
+<tr>
+<td>Regular Ball</td>
+<td>$5</td>
+<td><input type="number" min="0" id="regularQty" value="0"></td>
+</tr>
+<tr>
+<td>Airless Ball</td>
+<td>$7</td>
+<td><input type="number" min="0" id="airlessQty" value="0"></td>
+</tr>
+</table>
+<button onclick="addBallsToCart()">Add to Cart</button>
+<p id="cartTotal"></p>
+</div>
+</div>
 </section>
 
 <section id="about">
-    <h2>About ESW</h2>
-    <p>ESW provides premium mini hockey sticks and customization options for players and collectors.</p>
+<h2>About ESW</h2>
+<p>ESW provides premium mini hockey sticks and customization options for players and collectors.</p>
 </section>
 
 <section id="contact">
-    <h2>Contact Us</h2>
-    <form onsubmit="submitForm(event)">
-        <input type="text" placeholder="Your Name" required>
-        <input type="email" placeholder="Email" required>
-        <textarea placeholder="Your Message" required></textarea>
-        <button type="submit">Send Message</button>
-    </form>
+<h2>Contact Us</h2>
+<form onsubmit="submitForm(event)">
+<input type="text" placeholder="Your Name" required>
+<input type="email" placeholder="Email" required>
+<textarea placeholder="Your Message" required></textarea>
+<button type="submit">Send Message</button>
+</form>
 </section>
 
 <footer>
-    <p>&copy; 2025 ESW. All rights reserved by Steven Vazny, Eli Hannifin and William Kolarič.</p>
+<p>&copy; 2025 ESW. All rights reserved by Steven Vazny, Eli Hannifin and William Kolarič.</p>
 </footer>
 
 <script>
@@ -115,6 +120,20 @@ function goToBrand() {
 function submitForm(event) {
     event.preventDefault();
     alert("Your message has been sent!");
+}
+
+function addBallsToCart() {
+    const regularQty = parseInt(document.getElementById("regularQty").value) || 0;
+    const airlessQty = parseInt(document.getElementById("airlessQty").value) || 0;
+    const total = (regularQty * 5) + (airlessQty * 7);
+
+    if (total === 0) {
+        alert("Please select at least one ball.");
+        return;
+    }
+
+    document.getElementById("cartTotal").innerText = 
+        `Added to cart! Total: $${total}`;
 }
 </script>
 

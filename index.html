@@ -1,174 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ESW Hockey Shop</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f5f5f5;
-      color: #222;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ESW Hockey Shop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f0f0;
+        }
 
-    header {
-      background: #0d2538;
-      color: white;
-      padding: 25px;
-      text-align: center;
-    }
+        header {
+            background: #002b5c;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
 
-    header h1 {
-      margin: 0;
-      font-size: 2.5rem;
-      letter-spacing: 1px;
-    }
+        .container {
+            width: 90%;
+            margin: auto;
+            padding-top: 20px;
+        }
 
-    header p {
-      margin-top: 8px;
-      font-size: 1.1rem;
-      color: #aad4f5;
-    }
+        h2 {
+            color: #002b5c;
+        }
 
-    .container {
-      max-width: 1100px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
+        .product {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
 
-    h2 {
-      text-align: center;
-      margin-bottom: 30px;
-      color: #0d2538;
-    }
+        .product img {
+            width: 180px;
+            margin-bottom: 10px;
+        }
 
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 25px;
-    }
+        label {
+            font-weight: bold;
+        }
 
-    .product {
-      background: white;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: transform 0.2s ease;
-    }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 15px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
 
-    .product:hover {
-      transform: translateY(-5px);
-    }
+        button {
+            background: #002b5c;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
 
-    .product img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-    }
+        button:hover {
+            background: #004a9f;
+        }
 
-    .product-info {
-      padding: 15px;
-    }
-
-    .product-info h3 {
-      margin: 0 0 10px;
-      font-size: 1.2rem;
-      color: #0d2538;
-    }
-
-    .product-info p {
-      color: #555;
-      margin-bottom: 10px;
-    }
-
-    .price {
-      font-weight: bold;
-      font-size: 1.1rem;
-      color: #0d2538;
-    }
-
-    .btn {
-      display: inline-block;
-      background: #0d2538;
-      color: white;
-      text-decoration: none;
-      padding: 10px 15px;
-      border-radius: 5px;
-      transition: background 0.3s;
-    }
-
-    .btn:hover {
-      background: #173e5e;
-    }
-
-    footer {
-      background: #0d2538;
-      color: white;
-      text-align: center;
-      padding: 15px;
-      margin-top: 40px;
-    }
-
-    footer a {
-      color: #4cc9f0;
-      text-decoration: none;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
-  </style>
+        footer {
+            background: #002b5c;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 40px;
+        }
+    </style>
 </head>
+
 <body>
 
-  <header>
+<header>
     <h1>ESW Hockey Shop</h1>
-    <p>Premium Custom Ministicks for Every Player 🏒</p>
-  </header>
+    <p>Custom Ministicks • Great Prices • Fast Shipping</p>
+</header>
 
-  <div class="container">
+<div class="container">
+
     <h2>Our Ministicks</h2>
-    <div class="product-grid">
 
-      <div class="product">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9f/Hockey_stick_blade.jpg" alt="Classic Ministick">
-        <div class="product-info">
-          <h3>Classic Ministick</h3>
-          <p>Perfect for knee hockey or wall display.</p>
-          <p class="price">$14.99 USD</p>
-          <a href="#" class="btn">Buy Now</a>
-        </div>
-      </div>
-
-      <div class="product">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/2/22/Hockey_stick.jpg" alt="Pro Ministick">
-        <div class="product-info">
-          <h3>Pro Ministick</h3>
-          <p>Lightweight design with pro-style graphics and grip.</p>
-          <p class="price">$19.99 USD</p>
-          <a href="#" class="btn">Buy Now</a>
-        </div>
-      </div>
-
-      <div class="product">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d6/Hockey_stick_wood.jpg" alt="Custom Ministick">
-        <div class="product-info">
-          <h3>Custom Ministick</h3>
-          <p>Personalize your stick with your name, number, and team colors.</p>
-          <p class="price">$24.99 USD</p>
-          <a href="#" class="btn">Buy Now</a>
-        </div>
-      </div>
-
+    <div class="product">
+        <h3>CCM Ministick</h3>
+        <img src="YOUR_CCM_IMAGE_URL" alt="CCM Ministick" />
+        <p>Price: <strong>$12.00</strong></p>
     </div>
-  </div>
 
-  <footer>
-    <p>© 2025 ESW Hockey Shop | All Rights Reserved</p>
-    <p><a href="mailto:yourname@email.com">Contact Us</a></p>
-  </footer>
+    <div class="product">
+        <h3>Bauer Ministick</h3>
+        <img src="YOUR_BAUER_IMAGE_URL" alt="Bauer Ministick" />
+        <p>Price: <strong>$14.00</strong></p>
+    </div>
+
+    <hr>
+
+    <h2>Place an Order</h2>
+
+    <form action="https://formsubmit.co/YOUR_EMAIL_HERE" method="POST">
+
+        <input type="hidden" name="_captcha" value="false">
+
+        <label>Your Name</label>
+        <input type="text" name="name" required>
+
+        <label>Your Email</label>
+        <input type="email" name="email" required>
+
+        <label>Choose Your Ministick</label>
+        <select name="stick_type" required>
+            <option value="CCM Ministick - $12">CCM Ministick — $12</option>
+            <option value="Bauer Ministick - $14">Bauer Ministick — $14</option>
+        </select>
+
+        <label>Extra Details (Name, colors, etc.)</label>
+        <textarea name="details" rows="4"></textarea>
+
+        <button type="submit">Submit Order</button>
+    </form>
+
+</div>
+
+<footer>
+    © 2025 ESW Hockey Shop — All rights reserved.
+</footer>
 
 </body>
 </html>

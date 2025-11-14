@@ -68,30 +68,40 @@
             transform: scale(1.05);
         }
 
-        form {
+        /* Customization section */
+        .customization-container {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
+            justify-content: center;
+            gap: 50px;
+            flex-wrap: wrap;
+            margin-top: 30px;
         }
 
-        input, textarea {
-            width: 300px;
+        .customization-options {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 250px;
+        }
+
+        .recommendations {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 250px;
+        }
+
+        select, button {
+            width: 100%;
             padding: 10px;
-        }
-
-        button {
-            padding: 10px 20px;
-            cursor: pointer;
-            background: #222;
-            color: #fff;
-            border: none;
+            margin: 10px 0;
         }
 
         footer {
             background: #222;
             color: #fff;
             padding: 15px 0;
+            margin-top: 40px;
         }
 
         @media(max-width: 700px) {
@@ -100,7 +110,12 @@
                 font-size: 16px;
             }
 
-            input, textarea {
+            .customization-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .customization-options, .recommendations {
                 width: 90%;
             }
         }
@@ -113,6 +128,7 @@
             <ul>
                 <li><a href="#home">Home</a></li>
                 <li><a href="#sticks">Mini Sticks</a></li>
+                <li><a href="#customize">Customize</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
@@ -130,6 +146,46 @@
             <div class="stick-card">Bauer</div>
             <div class="stick-card">CCM</div>
             <div class="stick-card">Warrior</div>
+        </div>
+    </section>
+
+    <section id="customize">
+        <h2>Customize Your Stick</h2>
+        <div class="customization-container">
+            <div class="customization-options">
+                <label for="brand">Select Brand:</label>
+                <select id="brand">
+                    <option value="">--Choose--</option>
+                    <option value="Bauer">Bauer</option>
+                    <option value="CCM">CCM</option>
+                    <option value="Warrior">Warrior</option>
+                </select>
+
+                <label for="length">Select Length:</label>
+                <select id="length">
+                    <option value="">--Choose--</option>
+                    <option value="Short">Short</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Long">Long</option>
+                </select>
+
+                <label for="color">Select Color:</label>
+                <select id="color">
+                    <option value="">--Choose--</option>
+                    <option value="Red">Red</option>
+                    <option value="Blue">Blue</option>
+                    <option value="Black">Black</option>
+                </select>
+
+                <button onclick="showRecommendations()">Get Recommendations</button>
+            </div>
+
+            <div class="recommendations">
+                <h3>Recommendations:</h3>
+                <ul id="recommendation-list">
+                    <li>Select options to see recommendations</li>
+                </ul>
+            </div>
         </div>
     </section>
 
@@ -153,6 +209,32 @@
     </footer>
 
     <script>
+        function showRecommendations() {
+            const brand = document.getElementById('brand').value;
+            const length = document.getElementById('length').value;
+            const color = document.getElementById('color').value;
+
+            const list = document.getElementById('recommendation-list');
+            list.innerHTML = '';
+
+            if (!brand && !length && !color) {
+                list.innerHTML = '<li>Please select at least one option</li>';
+                return;
+            }
+
+            const recommendations = [];
+
+            if (brand) recommendations.push(`Try the ${brand} stick!`);
+            if (length) recommendations.push(`Consider a ${length} length stick`);
+            if (color) recommendations.push(`Available in ${color} color`);
+
+            recommendations.forEach(rec => {
+                const li = document.createElement('li');
+                li.textContent = rec;
+                list.appendChild(li);
+            });
+        }
+
         function submitForm(event) {
             event.preventDefault();
             alert("Thanks for reaching out! We'll get back to you soon.");

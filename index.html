@@ -3,22 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESW Hockey Shop</title>
+    <title>Mini Stick</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            line-height: 1.6;
-            background-color: #f4f4f4;
+            background-color: #f0f0f0;
             color: #333;
+            text-align: center;
         }
 
         header {
-            background: #111;
+            background: #222;
             color: #fff;
             padding: 20px 0;
-            text-align: center;
         }
 
         header h1 {
@@ -28,6 +27,7 @@
         nav ul {
             list-style: none;
             padding: 0;
+            margin: 10px 0 0 0;
         }
 
         nav ul li {
@@ -41,27 +41,32 @@
         }
 
         section {
-            padding: 50px 20px;
-            text-align: center;
+            padding: 40px 20px;
         }
 
-        .product-grid {
+        .stick-container {
+            margin: 30px 0;
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
             gap: 20px;
         }
 
-        .product-card {
+        .stick-card {
             background: #fff;
+            padding: 15px;
+            width: 150px;
             border: 1px solid #ddd;
-            padding: 20px;
-            width: 200px;
+            border-radius: 8px;
             transition: transform 0.3s;
         }
 
-        .product-card:hover {
+        .stick-card:hover {
             transform: scale(1.05);
+        }
+
+        .stick-card img {
+            width: 100px;
         }
 
         form {
@@ -79,22 +84,20 @@
         button {
             padding: 10px 20px;
             cursor: pointer;
-            background: #111;
+            background: #222;
             color: #fff;
             border: none;
         }
 
         footer {
-            background: #111;
+            background: #222;
             color: #fff;
-            text-align: center;
-            padding: 20px 0;
+            padding: 15px 0;
         }
 
         @media(max-width: 700px) {
-            .product-grid {
-                flex-direction: column;
-                align-items: center;
+            .stick-card {
+                width: 120px;
             }
 
             input, textarea {
@@ -105,11 +108,11 @@
 </head>
 <body>
     <header>
-        <h1>ESW Hockey Shop</h1>
+        <h1>Mini Stick</h1>
         <nav>
             <ul>
                 <li><a href="#home">Home</a></li>
-                <li><a href="#products">Products</a></li>
+                <li><a href="#sticks">Mini Sticks</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
@@ -117,40 +120,34 @@
     </header>
 
     <section id="home">
-        <h2>Welcome to ESW Hockey Shop!</h2>
-        <p>Your one-stop shop for all hockey gear and accessories.</p>
-        <button onclick="showPromo()">Check Today’s Promo</button>
+        <h2>Welcome to Mini Stick!</h2>
+        <p>Check out our selection of mini sticks from top brands!</p>
     </section>
 
-    <section id="products">
-        <h2>Our Products</h2>
-        <div class="product-grid">
-            <div class="product-card">
-                <img src="https://images.unsplash.com/photo-1607645505068-b4f15d7de1f7?auto=format&fit=crop&w=150&q=80" alt="Hockey Stick">
-                <h3>Hockey Stick</h3>
-                <p>$120</p>
+    <section id="sticks">
+        <h2>Mini Sticks</h2>
+        <div class="stick-container">
+            <div class="stick-card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/0f/Bauer_Hockey_Stick.jpg" alt="Bauer Stick">
+                <h3>Bauer</h3>
+                <p>$25</p>
             </div>
-            <div class="product-card">
-                <img src="https://images.unsplash.com/photo-1615210146234-5f8dc850e43d?auto=format&fit=crop&w=150&q=80" alt="Hockey Helmet">
-                <h3>Hockey Helmet</h3>
-                <p>$80</p>
+            <div class="stick-card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/CCM_Hockey_Stick.jpg" alt="CCM Stick">
+                <h3>CCM</h3>
+                <p>$28</p>
             </div>
-            <div class="product-card">
-                <img src="https://images.unsplash.com/photo-1589890919202-0c5e6ce1f5f8?auto=format&fit=crop&w=150&q=80" alt="Hockey Gloves">
-                <h3>Hockey Gloves</h3>
-                <p>$60</p>
-            </div>
-            <div class="product-card">
-                <img src="https://images.unsplash.com/photo-1596496054444-1a056f1e1274?auto=format&fit=crop&w=150&q=80" alt="Hockey Pads">
-                <h3>Hockey Pads</h3>
-                <p>$150</p>
+            <div class="stick-card">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/8/8b/Warrior_Hockey_Stick.jpg" alt="Warrior Stick">
+                <h3>Warrior</h3>
+                <p>$30</p>
             </div>
         </div>
     </section>
 
     <section id="about">
-        <h2>About Us</h2>
-        <p>ESW Hockey Shop has been providing top-quality hockey equipment for over 10 years. We care about the game and the players.</p>
+        <h2>About Mini Stick</h2>
+        <p>This mini site features fun miniature hockey sticks from top brands. Perfect for collectors or display!</p>
     </section>
 
     <section id="contact">
@@ -164,17 +161,13 @@
     </section>
 
     <footer>
-        <p>&copy; 2025 ESW Hockey Shop</p>
+        <p>&copy; 2025 Mini Stick</p>
     </footer>
 
     <script>
-        function showPromo() {
-            alert("🔥 Today’s Promo: Get 10% off all hockey sticks! 🔥");
-        }
-
         function submitForm(event) {
             event.preventDefault();
-            alert("Thank you for contacting us! We will get back to you soon.");
+            alert("Thanks for reaching out! We'll get back to you soon.");
         }
     </script>
 </body>

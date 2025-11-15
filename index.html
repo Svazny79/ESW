@@ -39,13 +39,22 @@
 <section class="customization">
     <h2>Mini Stick Customization</h2>
 
+    <!-- Brand dropdown (no prices) -->
     <label for="brand">Choose Brand:</label>
-    <select id="brand">
-        <option value="bauer">Bauer ($21)</option>
-        <option value="ccm">CCM ($24)</option>
-        <option value="warrior">Warrior ($19)</option>
+    <select id="brand" onchange="updateTypes()">
+        <option value="">-- Choose Brand --</option>
+        <option value="bauer">Bauer</option>
+        <option value="ccm">CCM</option>
+        <option value="warrior">Warrior</option>
     </select>
 
+    <!-- Type dropdown (dynamic) -->
+    <label for="type">Choose Type:</label>
+    <select id="type">
+        <option value="">-- Choose Type --</option>
+    </select>
+
+    <!-- Color dropdown -->
     <label for="color">Choose Color:</label>
     <select id="color">
         <option value="Red">Red</option>
@@ -58,9 +67,9 @@
         <option value="Yellow">Yellow</option>
     </select>
 
+    <!-- Quantity -->
     <label for="stickQty">Quantity:</label>
     <input type="number" id="stickQty" placeholder="Qty" min="1">
-
 </section>
 
 <!-- KNEE HOCKEY BALLS -->
@@ -98,12 +107,37 @@ const stickPrices = {
     "warrior": 19
 };
 
+// Stick types by brand
+const stickTypes = {
+    "bauer": ["1X Pro", "2X Elite", "3X Lite"],
+    "ccm": ["Alpha", "Beta", "Gamma"],
+    "warrior": ["Titan", "Vapor", "Edge"]
+};
+
+// Update type dropdown based on selected brand
+function updateTypes() {
+    const brand = document.getElementById("brand").value;
+    const typeSelect = document.getElementById("type");
+    
+    // Clear existing options
+    typeSelect.innerHTML = '<option value="">-- Choose Type --</option>';
+    
+    if (brand && stickTypes[brand]) {
+        stickTypes[brand].forEach(type => {
+            const option = document.createElement("option");
+            option.value = type;
+            option.text = type;
+            typeSelect.add(option);
+        });
+    }
+}
+
 // Calculate total for sticks and balls
 function calculateTotal() {
     const brand = document.getElementById("brand").value;
     const qty = parseInt(document.getElementById("stickQty").value) || 0;
 
-    let stickTotal = stickPrices[brand] * qty;
+    const stickTotal = brand && stickPrices[brand] ? stickPrices[brand] * qty : 0;
 
     const regularBallQty = parseInt(document.getElementById("regularBallQty").value) || 0;
     const airlessBallQty = parseInt(document.getElementById("airlessBallQty").value) || 0;

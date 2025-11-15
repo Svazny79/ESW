@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESW Mini Sticks</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESW Mini Sticks</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -18,8 +18,7 @@
     </nav>
 </header>
 
-
-<!-- MAIN MINI STICK BRANDS -->
+<!-- MINI STICK BRANDS (Plain Styling) -->
 <section class="brands">
     <h2>Mini Stick Brands</h2>
 
@@ -36,12 +35,10 @@
     </div>
 </section>
 
-
 <!-- CUSTOMIZATION -->
 <section class="customization">
     <h2>Mini Stick Customization</h2>
 
-    <!-- Brand (NO REDIRECT) -->
     <label for="brand">Choose Brand:</label>
     <select id="brand">
         <option value="bauer">Bauer ($21)</option>
@@ -49,7 +46,6 @@
         <option value="warrior">Warrior ($19)</option>
     </select>
 
-    <!-- COLOR OPTIONS -->
     <label for="color">Choose Color:</label>
     <select id="color">
         <option value="Red">Red</option>
@@ -62,12 +58,10 @@
         <option value="Yellow">Yellow</option>
     </select>
 
-    <!-- QUANTITY -->
     <label for="stickQty">Quantity:</label>
     <input type="number" id="stickQty" placeholder="Qty" min="1">
 
 </section>
-
 
 <!-- KNEE HOCKEY BALLS -->
 <section class="balls">
@@ -84,13 +78,11 @@
     </div>
 </section>
 
-
 <!-- PRICE CALCULATOR -->
 <section class="checkout">
     <button onclick="calculateTotal()">Calculate Total</button>
     <h3 id="totalDisplay">Total: $0</h3>
 </section>
-
 
 <!-- FOOTER -->
 <footer>
@@ -98,27 +90,28 @@
     <p>All rights reserved by Steven Vazny, Eli Hannifin and William Kolarič</p>
 </footer>
 
-
-<!-- SCRIPT -->
 <script>
+// Stick prices
+const stickPrices = {
+    "bauer": 21,
+    "ccm": 24,
+    "warrior": 19
+};
+
+// Calculate total for sticks and balls
 function calculateTotal() {
-    let brand = document.getElementById("brand").value;
-    let qty = parseInt(document.getElementById("stickQty").value) || 0;
+    const brand = document.getElementById("brand").value;
+    const qty = parseInt(document.getElementById("stickQty").value) || 0;
 
-    let stickPrice = 0;
-    if (brand === "bauer") stickPrice = 21;
-    if (brand === "ccm") stickPrice = 24;
-    if (brand === "warrior") stickPrice = 19;
+    let stickTotal = stickPrices[brand] * qty;
 
-    let regularBallQty = parseInt(document.getElementById("regularBallQty").value) || 0;
-    let airlessBallQty = parseInt(document.getElementById("airlessBallQty").value) || 0;
+    const regularBallQty = parseInt(document.getElementById("regularBallQty").value) || 0;
+    const airlessBallQty = parseInt(document.getElementById("airlessBallQty").value) || 0;
+    const ballTotal = (regularBallQty * 3) + (airlessBallQty * 5);
 
-    let ballTotal = (regularBallQty * 3) + (airlessBallQty * 5);
-    let stickTotal = qty * stickPrice;
+    const total = stickTotal + ballTotal;
 
-    let total = stickTotal + ballTotal;
-
-    document.getElementById("totalDisplay").innerText = "Total: $" + total;
+    document.getElementById("totalDisplay").innerText = `Total: $${total}`;
 }
 </script>
 

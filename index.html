@@ -18,7 +18,7 @@
     </nav>
 </header>
 
-<!-- MINI STICK BRANDS (Plain Styling) -->
+<!-- MINI STICK BRANDS -->
 <section class="brands">
     <h2>Mini Stick Brands</h2>
 
@@ -48,7 +48,7 @@
         <option value="warrior">Warrior</option>
     </select>
 
-    <!-- Type dropdown (dynamic) -->
+    <!-- Type dropdown (dynamic with prices) -->
     <label for="type">Choose Type:</label>
     <select id="type">
         <option value="">-- Choose Type --</option>
@@ -100,28 +100,38 @@
 </footer>
 
 <script>
-// Stick prices
-const stickPrices = {
-    "bauer": 21,
-    "ccm": 24,
-    "warrior": 19
+// Stick prices by type
+const stickTypePrices = {
+    "bauer": {
+        "Flylite ($22)": 22,
+        "Proto 2 ($23)": 23,
+        "Pulse ($25)": 25
+    },
+    "ccm": {
+        "Trigger 10 ($25)": 25,
+        "Ghost ($24)": 24,
+        "Vizion ($24)": 24
+    },
+    "warrior": {
+        "Alpha ($21)": 21,
+        "Convert ($22)": 22,
+        "LX3 Pro ($22)": 22
+    }
 };
 
 // Stick types by brand
 const stickTypes = {
-    "bauer": ["1X Pro", "2X Elite", "3X Lite"],
-    "ccm": ["Alpha", "Beta", "Gamma"],
-    "warrior": ["Titan", "Vapor", "Edge"]
+    "bauer": ["Flylite ($22)", "Proto 2 ($23)", "Pulse ($25)"],
+    "ccm": ["Trigger 10 ($25)", "Ghost ($24)", "Vizion ($24)"],
+    "warrior": ["Alpha ($21)", "Convert ($22)", "LX3 Pro ($22)"]
 };
 
 // Update type dropdown based on selected brand
 function updateTypes() {
     const brand = document.getElementById("brand").value;
     const typeSelect = document.getElementById("type");
-    
-    // Clear existing options
     typeSelect.innerHTML = '<option value="">-- Choose Type --</option>';
-    
+
     if (brand && stickTypes[brand]) {
         stickTypes[brand].forEach(type => {
             const option = document.createElement("option");
@@ -132,12 +142,16 @@ function updateTypes() {
     }
 }
 
-// Calculate total for sticks and balls
+// Calculate total for selected stick + balls
 function calculateTotal() {
     const brand = document.getElementById("brand").value;
+    const type = document.getElementById("type").value;
     const qty = parseInt(document.getElementById("stickQty").value) || 0;
 
-    const stickTotal = brand && stickPrices[brand] ? stickPrices[brand] * qty : 0;
+    let stickTotal = 0;
+    if (brand && type) {
+        stickTotal = stickTypePrices[brand][type] * qty;
+    }
 
     const regularBallQty = parseInt(document.getElementById("regularBallQty").value) || 0;
     const airlessBallQty = parseInt(document.getElementById("airlessBallQty").value) || 0;

@@ -1,155 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ESW</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESW</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <header>
     <h1>ESW</h1>
-    <h2>Hockey Shop</h2>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="bauer.html">Bauer</a>
-        <a href="ccm.html">CCM</a>
-        <a href="warrior.html">Warrior</a>
-    </nav>
+    <p class="subtitle">Hockey Shop</p>
 </header>
 
-<!-- CUSTOMIZATION -->
-<section class="customization">
-    <h2>Mini Stick Customization</h2>
+<main>
 
-    <!-- Brand dropdown (no prices) -->
-    <label for="brand">Choose Brand:</label>
-    <select id="brand" onchange="updateTypes()">
-        <option value="">-- Choose Brand --</option>
-        <option value="bauer">Bauer</option>
-        <option value="ccm">CCM</option>
-        <option value="warrior">Warrior</option>
-    </select>
+    <!-- Stick Customization Section -->
+    <section class="customization">
+        <h2>Stick Customization</h2>
 
-    <!-- Type dropdown (dynamic with prices) -->
-    <label for="type">Choose Type:</label>
-    <select id="type">
-        <option value="">-- Choose Type --</option>
-    </select>
+        <!-- Brand -->
+        <label for="brand">Choose Brand:</label>
+        <select id="brand" onchange="updateTypes()">
+            <option value="">--Select Brand--</option>
+            <option value="Bauer">Bauer</option>
+            <option value="CCM">CCM</option>
+            <option value="Warrior">Warrior</option>
+        </select>
 
-    <!-- Color dropdown including "Regular" -->
-    <label for="color">Choose Color:</label>
-    <select id="color">
-        <option value="Regular">Regular</option>
-        <option value="Red">Red</option>
-        <option value="Blue">Blue</option>
-        <option value="Black">Black</option>
-        <option value="White">White</option>
-        <option value="Green">Green</option>
-        <option value="Purple">Purple</option>
-        <option value="Orange">Orange</option>
-        <option value="Yellow">Yellow</option>
-    </select>
+        <!-- Type (Changes based on brand selection) -->
+        <label for="type">Choose Type:</label>
+        <select id="type">
+            <option value="">--Select Type--</option>
+        </select>
 
-    <!-- Quantity -->
-    <label for="stickQty">Quantity:</label>
-    <input type="number" id="stickQty" placeholder="Qty" min="1">
-</section>
+        <!-- Color -->
+        <label for="color">Choose Color:</label>
+        <select id="color">
+            <option value="Regular">Regular</option>
+            <option value="Red">Red</option>
+            <option value="Blue">Blue</option>
+            <option value="Black">Black</option>
+            <option value="White">White</option>
+            <option value="Green">Green</option>
+            <option value="Purple">Purple</option>
+            <option value="Orange">Orange</option>
+            <option value="Yellow">Yellow</option>
+        </select>
 
-<!-- KNEE HOCKEY BALLS -->
-<section class="balls">
-    <h2>Knee Hockey Balls</h2>
+        <!-- Quantity -->
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" value="1" min="1">
 
-    <div class="ball-option">
-        <img src="https://via.placeholder.com/120?text=Regular+Ball" 
-             alt="Regular Knee Hockey Ball" class="ball-img">
-        <label>Regular Ball — <strong>$3</strong></label>
-        <input type="number" id="regularBallQty" placeholder="Qty" min="0">
-    </div>
+        <!-- Total Price Display -->
+        <p id="total-display">Total: $0</p>
 
-    <div class="ball-option">
-        <img src="https://via.placeholder.com/120?text=Airless+Ball" 
-             alt="Airless Knee Hockey Ball" class="ball-img">
-        <label>Airless Ball — <strong>$5</strong></label>
-        <input type="number" id="airlessBallQty" placeholder="Qty" min="0">
-    </div>
-</section>
+        <button onclick="calculateTotal()">Calculate Total</button>
+    </section>
 
-<!-- PRICE CALCULATOR -->
-<section class="checkout">
-    <button onclick="calculateTotal()">Calculate Total</button>
-    <h3 id="totalDisplay">Total: $0</h3>
-</section>
 
-<!-- FOOTER -->
+    <!-- Knee Hockey Balls Section -->
+    <section class="balls">
+        <h2>Knee Hockey Balls</h2>
+
+        <label for="ballType">Choose Ball Type:</label>
+        <select id="ballType">
+            <option value="">--Select Ball Type--</option>
+            <option value="3">Regular - $3</option>
+            <option value="5">Airless - $5</option>
+        </select>
+
+        <label for="ballQuantity">Quantity:</label>
+        <input type="number" id="ballQuantity" value="1" min="1">
+
+        <p id="ball-total-display">Ball Total: $0</p>
+
+        <button onclick="calculateBallTotal()">Calculate Ball Total</button>
+    </section>
+
+</main>
+
 <footer>
     <p>© 2025 ESW</p>
     <p>All rights reserved by Steven Vazny, Eli Hannifin and William Kolarič</p>
 </footer>
 
 <script>
-// Stick prices by type
-const stickTypePrices = {
-    "bauer": {
-        "Flylite ($22)": 22,
-        "Proto 2 ($23)": 23,
-        "Pulse ($25)": 25
-    },
-    "ccm": {
-        "Trigger 10 ($25)": 25,
-        "Ghost ($24)": 24,
-        "Vizion ($24)": 24
-    },
-    "warrior": {
-        "Alpha ($21)": 21,
-        "Convert ($22)": 22,
-        "LX3 Pro ($22)": 22
-    }
-};
+    function updateTypes() {
+        const brand = document.getElementById("brand").value;
+        const typeSelect = document.getElementById("type");
 
-// Stick types by brand
-const stickTypes = {
-    "bauer": ["Flylite ($22)", "Proto 2 ($23)", "Pulse ($25)"],
-    "ccm": ["Trigger 10 ($25)", "Ghost ($24)", "Vizion ($24)"],
-    "warrior": ["Alpha ($21)", "Convert ($22)", "LX3 Pro ($22)"]
-};
+        typeSelect.innerHTML = "";
 
-// Update type dropdown based on selected brand
-function updateTypes() {
-    const brand = document.getElementById("brand").value;
-    const typeSelect = document.getElementById("type");
-    typeSelect.innerHTML = '<option value="">-- Choose Type --</option>';
+        let types = [];
 
-    if (brand && stickTypes[brand]) {
-        stickTypes[brand].forEach(type => {
+        if (brand === "Bauer") {
+            types = [
+                { name: "Flylite", price: 22 },
+                { name: "Proto 2", price: 23 },
+                { name: "Pulse", price: 25 }
+            ];
+        } else if (brand === "CCM") {
+            types = [
+                { name: "Trigger 10", price: 25 },
+                { name: "Ghost", price: 24 },
+                { name: "Vizion", price: 24 }
+            ];
+        } else if (brand === "Warrior") {
+            types = [
+                { name: "Alpha", price: 21 },
+                { name: "Convert", price: 22 },
+                { name: "LX3 Pro", price: 22 }
+            ];
+        }
+
+        types.forEach(t => {
             const option = document.createElement("option");
-            option.value = type;
-            option.text = type;
-            typeSelect.add(option);
+            option.value = t.price;
+            option.textContent = `${t.name} ($${t.price})`;
+            typeSelect.appendChild(option);
         });
     }
-}
 
-// Calculate total for selected stick + balls
-function calculateTotal() {
-    const brand = document.getElementById("brand").value;
-    const type = document.getElementById("type").value;
-    const qty = parseInt(document.getElementById("stickQty").value) || 0;
+    function calculateTotal() {
+        const typePrice = Number(document.getElementById("type").value);
+        const quantity = Number(document.getElementById("quantity").value);
 
-    let stickTotal = 0;
-    if (brand && type) {
-        stickTotal = stickTypePrices[brand][type] * qty;
+        if (!typePrice) {
+            document.getElementById("total-display").textContent = "Total: $0";
+            return;
+        }
+
+        const total = typePrice * quantity;
+        document.getElementById("total-display").textContent = `Total: $${total}`;
     }
 
-    const regularBallQty = parseInt(document.getElementById("regularBallQty").value) || 0;
-    const airlessBallQty = parseInt(document.getElementById("airlessBallQty").value) || 0;
-    const ballTotal = (regularBallQty * 3) + (airlessBallQty * 5);
+    function calculateBallTotal() {
+        const ballPrice = Number(document.getElementById("ballType").value);
+        const quantity = Number(document.getElementById("ballQuantity").value);
 
-    const total = stickTotal + ballTotal;
+        if (!ballPrice) {
+            document.getElementById("ball-total-display").textContent = "Ball Total: $0";
+            return;
+        }
 
-    document.getElementById("totalDisplay").innerText = `Total: $${total}`;
-}
+        const total = ballPrice * quantity;
+        document.getElementById("ball-total-display").textContent = `Ball Total: $${total}`;
+    }
 </script>
 
 </body>

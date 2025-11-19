@@ -5,6 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ESW</title>
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        header {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .header-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .about-button {
+            padding: 12px 25px;
+            font-size: 18px;
+            background-color: #005aff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .about-button:hover {
+            background-color: #003fbf;
+        }
+    </style>
 </head>
 
 <body>
@@ -13,19 +42,24 @@
     <h1>ESW</h1>
     <p class="subtitle">Hockey Shop</p>
 
-    <!-- Real Button -->
-    <button class="about-button" onclick="window.location.href='about.html'">
-        About Us
-    </button>
+    <div class="header-buttons">
+        <!-- About Us Button -->
+        <button class="about-button" onclick="window.location.href='about.html'">
+            About Us
+        </button>
+
+        <!-- Testimonials Button -->
+        <button class="about-button" onclick="window.location.href='testimonials.html'">
+            Testimonials
+        </button>
+    </div>
 </header>
 
 <main>
-
     <!-- Stick Customization Section -->
     <section class="customization">
         <h2>Stick Customization</h2>
 
-        <!-- Brand -->
         <label for="brand">Choose Brand:</label>
         <select id="brand" onchange="updateTypes()">
             <option value="">--Select Brand--</option>
@@ -34,13 +68,11 @@
             <option value="Warrior">Warrior</option>
         </select>
 
-        <!-- Type (based on brand) -->
         <label for="type">Choose Type:</label>
         <select id="type">
             <option value="">--Select Type--</option>
         </select>
 
-        <!-- Color -->
         <label for="color">Choose Color:</label>
         <select id="color">
             <option value="Regular">Regular</option>
@@ -54,16 +86,12 @@
             <option value="Yellow">Yellow</option>
         </select>
 
-        <!-- Quantity -->
         <label for="quantity">Quantity:</label>
         <input type="number" id="quantity" value="1" min="1">
 
-        <!-- Stick Total -->
         <p id="total-display">Total: $0</p>
-
         <button onclick="calculateTotal()">Calculate Total</button>
     </section>
-
 
     <!-- Knee Hockey Balls Section -->
     <section class="balls">
@@ -80,10 +108,8 @@
         <input type="number" id="ballQuantity" value="1" min="1">
 
         <p id="ball-total-display">Ball Total: $0</p>
-
         <button onclick="calculateBallTotal()">Calculate Ball Total</button>
     </section>
-
 </main>
 
 <footer>
@@ -131,26 +157,14 @@
     function calculateTotal() {
         const typePrice = Number(document.getElementById("type").value);
         const quantity = Number(document.getElementById("quantity").value);
-
-        if (!typePrice) {
-            document.getElementById("total-display").textContent = "Total: $0";
-            return;
-        }
-
-        const total = typePrice * quantity;
+        const total = typePrice ? typePrice * quantity : 0;
         document.getElementById("total-display").textContent = `Total: $${total}`;
     }
 
     function calculateBallTotal() {
         const ballPrice = Number(document.getElementById("ballType").value);
         const quantity = Number(document.getElementById("ballQuantity").value);
-
-        if (!ballPrice) {
-            document.getElementById("ball-total-display").textContent = "Ball Total: $0";
-            return;
-        }
-
-        const total = ballPrice * quantity;
+        const total = ballPrice ? ballPrice * quantity : 0;
         document.getElementById("ball-total-display").textContent = `Ball Total: $${total}`;
     }
 </script>

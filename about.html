@@ -5,18 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About ESW</title>
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .about-button {
+            padding: 12px 25px;
+            font-size: 18px;
+            background-color: #005aff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .about-button:hover {
+            background-color: #003fbf;
+        }
+
+        .about-container {
+            max-width: 700px;
+            margin: 40px auto;
+            text-align: center;
+            font-size: 22px;
+            line-height: 1.8;
+            border: 2px solid #005aff; /* Border added */
+            padding: 25px;             /* Padding inside border */
+            border-radius: 10px;       /* Rounded corners */
+            background-color: #f9f9f9; /* Optional: subtle background */
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
 </head>
 <body>
 
 <header>
     <h1>About ESW</h1>
-    <a href="index.html" class="about-button">← Back to Home</a>
+
+    <!-- Real Back Button -->
+    <button class="about-button" onclick="window.location.href='index.html'">
+        Back to Home
+    </button>
 </header>
 
 <main class="about-container">
     <p>
-        ESW is a Hockey Shop where you are able to buy custom Mini Sticks or any Knee Hockey Balls of your choice. 
-        ESW was created for a school project. There are always updates being added and if you really would like, 
+        ESW is a Hockey Shop where you are able to buy custom Mini Sticks or any Knee Hockey Balls of your choice.
+        ESW was created for a school project. There are always updates being added, and if you really would like,
         we could even send you a custom Mini Stick or a custom Knee Hockey Ball.
     </p>
 </main>

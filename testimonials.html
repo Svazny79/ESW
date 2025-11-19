@@ -7,13 +7,25 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        .logo {
+            display: block;
+            margin: 0 auto;
+            max-width: 250px;
+            height: auto;
+            margin-bottom: 15px;
         }
 
-        header {
+        .testimonial-container {
+            max-width: 700px;
+            margin: 40px auto;
             text-align: center;
-            margin-top: 30px;
+            font-size: 24px;
+            line-height: 1.8;
+            border: 2px solid #005aff;
+            padding: 25px;
+            border-radius: 10px;
+            background: #f9f9f9;
+            margin-bottom: 30px;
         }
 
         .about-button {
@@ -24,56 +36,33 @@
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            margin-top: 15px;
-        }
-
-        .about-button:hover {
-            background-color: #003fbf;
-        }
-
-        .testimonial-container {
-            max-width: 700px;
-            margin: 40px auto;
-            text-align: center;
-            font-size: 22px;
-            line-height: 1.8;
-            border: 2px solid #005aff;
-            padding: 25px;
-            border-radius: 10px;
-            background-color: #f9f9f9;
-            margin-bottom: 30px;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 50px;
+            display: block;
+            margin: 10px auto;
         }
     </style>
 </head>
+
 <body>
 
 <header>
+    <img src="logo.png" alt="ESW Logo" class="logo">
     <h1>Testimonials</h1>
-    <button class="about-button" onclick="window.location.href='index.html'">
-        Back to Home
-    </button>
+    <button class="about-button" onclick="window.location.href='index.html'">Back to Home</button>
 </header>
 
-<main>
-    <div class="testimonial-container">
-        <p>"ESW made it so easy to get my custom mini stick exactly how I wanted it. Love the quality!"</p>
-        <p>- Alex R.</p>
-    </div>
+<div class="testimonial-container">
+    “ESW made it super easy to get my custom mini stick exactly how I wanted. Amazing quality!”
+    <br><br>- Alex R.
+</div>
 
-    <div class="testimonial-container">
-        <p>"I ordered a knee hockey ball and received it quickly. The service and customization options are amazing!"</p>
-        <p>- Jordan M.</p>
-    </div>
-</main>
+<div class="testimonial-container">
+    “Fast delivery and awesome customization options. Definitely buying again!”
+    <br><br>- Jordan M.
+</div>
 
 <footer>
     <p>© 2025 ESW</p>
-    <p>All rights reserved by Steven Vazny, Eli Hannifin and William Kolarič</p>
+    <p>All rights reserved by Steven Vazny, Eli Hannifin and William Thorley</p>
 </footer>
 
 </body>

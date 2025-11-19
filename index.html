@@ -12,12 +12,9 @@
             margin-top: 30px;
         }
 
-        .logo {
-            display: block;
-            margin: 0 auto;
-            max-width: 250px;
-            height: auto;
-            margin-bottom: 15px;
+        .subtitle {
+            font-size: 20px;
+            margin-top: -10px;
         }
 
         .header-buttons {
@@ -47,8 +44,6 @@
 <body>
 
 <header>
-    <img src="logo.png" alt="ESW Logo" class="logo">
-
     <h1>ESW</h1>
     <p class="subtitle">Hockey Shop</p>
 
@@ -122,6 +117,7 @@
     function updateTypes() {
         const brand = document.getElementById("brand").value;
         const typeSelect = document.getElementById("type");
+
         typeSelect.innerHTML = "";
 
         let types = [];
@@ -157,7 +153,6 @@
     function calculateTotal() {
         const typePrice = Number(document.getElementById("type").value);
         const quantity = Number(document.getElementById("quantity").value);
-
         const total = typePrice ? typePrice * quantity : 0;
         document.getElementById("total-display").textContent = `Total: $${total}`;
     }
@@ -165,7 +160,6 @@
     function calculateBallTotal() {
         const ballPrice = Number(document.getElementById("ballType").value);
         const quantity = Number(document.getElementById("ballQuantity").value);
-
         const total = ballPrice ? ballPrice * quantity : 0;
         document.getElementById("ball-total-display").textContent = `Ball Total: $${total}`;
     }

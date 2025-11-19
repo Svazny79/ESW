@@ -7,13 +7,24 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        .logo {
+            display: block;
+            margin: 0 auto;
+            max-width: 250px;
+            height: auto;
+            margin-bottom: 15px;
         }
 
-        header {
+        .about-text {
+            max-width: 700px;
+            margin: 40px auto;
             text-align: center;
-            margin-top: 30px;
+            font-size: 24px;
+            line-height: 1.8;
+            border: 2px solid #005aff;
+            padding: 25px;
+            border-radius: 10px;
+            background: #f9f9f9;
         }
 
         .about-button {
@@ -24,53 +35,29 @@
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            margin-top: 15px;
-        }
-
-        .about-button:hover {
-            background-color: #003fbf;
-        }
-
-        .about-container {
-            max-width: 700px;
-            margin: 40px auto;
-            text-align: center;
-            font-size: 22px;
-            line-height: 1.8;
-            border: 2px solid #005aff; /* Border added */
-            padding: 25px;             /* Padding inside border */
-            border-radius: 10px;       /* Rounded corners */
-            background-color: #f9f9f9; /* Optional: subtle background */
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 50px;
+            display: block;
+            margin: 10px auto;
         }
     </style>
 </head>
+
 <body>
 
 <header>
-    <h1>About ESW</h1>
-
-    <!-- Real Back Button -->
-    <button class="about-button" onclick="window.location.href='index.html'">
-        Back to Home
-    </button>
+    <img src="logo.png" alt="ESW Logo" class="logo">
+    <h1>About Us</h1>
+    <button class="about-button" onclick="window.location.href='index.html'">Back to Home</button>
 </header>
 
-<main class="about-container">
-    <p>
-        ESW is a Hockey Shop where you are able to buy custom Mini Sticks or any Knee Hockey Balls of your choice.
-        ESW was created for a school project. There are always updates being added, and if you really would like,
-        we could even send you a custom Mini Stick or a custom Knee Hockey Ball.
-    </p>
-</main>
+<div class="about-text">
+    ESW is a Hockey Shop where you can buy custom mini sticks or any knee hockey balls of your choice.  
+    ESW was created for a school project.  
+    There are always updates being added, and if you would like, we could even send you a custom mini stick or a custom knee hockey ball.
+</div>
 
 <footer>
     <p>© 2025 ESW</p>
-    <p>All rights reserved by Steven Vazny, Eli Hannifin and William Kolarič</p>
+    <p>All rights reserved by Steven Vazny, Eli Hannifin and William Thorley</p>
 </footer>
 
 </body>

@@ -12,6 +12,14 @@
             margin-top: 30px;
         }
 
+        .logo {
+            display: block;
+            margin: 0 auto;
+            max-width: 250px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
         .header-buttons {
             display: flex;
             justify-content: center;
@@ -39,24 +47,18 @@
 <body>
 
 <header>
+    <img src="logo.png" alt="ESW Logo" class="logo">
+
     <h1>ESW</h1>
     <p class="subtitle">Hockey Shop</p>
 
     <div class="header-buttons">
-        <!-- About Us Button -->
-        <button class="about-button" onclick="window.location.href='about.html'">
-            About Us
-        </button>
-
-        <!-- Testimonials Button -->
-        <button class="about-button" onclick="window.location.href='testimonials.html'">
-            Testimonials
-        </button>
+        <button class="about-button" onclick="window.location.href='about.html'">About Us</button>
+        <button class="about-button" onclick="window.location.href='testimonials.html'">Testimonials</button>
     </div>
 </header>
 
 <main>
-    <!-- Stick Customization Section -->
     <section class="customization">
         <h2>Stick Customization</h2>
 
@@ -93,7 +95,6 @@
         <button onclick="calculateTotal()">Calculate Total</button>
     </section>
 
-    <!-- Knee Hockey Balls Section -->
     <section class="balls">
         <h2>Knee Hockey Balls</h2>
 
@@ -114,14 +115,13 @@
 
 <footer>
     <p>© 2025 ESW</p>
-    <p>All rights reserved by Steven Vazny, Eli Hannifin and William Kolarič</p>
+    <p>All rights reserved by Steven Vazny, Eli Hannifin and William Thorley</p>
 </footer>
 
 <script>
     function updateTypes() {
         const brand = document.getElementById("brand").value;
         const typeSelect = document.getElementById("type");
-
         typeSelect.innerHTML = "";
 
         let types = [];
@@ -157,6 +157,7 @@
     function calculateTotal() {
         const typePrice = Number(document.getElementById("type").value);
         const quantity = Number(document.getElementById("quantity").value);
+
         const total = typePrice ? typePrice * quantity : 0;
         document.getElementById("total-display").textContent = `Total: $${total}`;
     }
@@ -164,6 +165,7 @@
     function calculateBallTotal() {
         const ballPrice = Number(document.getElementById("ballType").value);
         const quantity = Number(document.getElementById("ballQuantity").value);
+
         const total = ballPrice ? ballPrice * quantity : 0;
         document.getElementById("ball-total-display").textContent = `Ball Total: $${total}`;
     }

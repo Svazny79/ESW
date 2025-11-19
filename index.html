@@ -13,8 +13,10 @@
     <h1>ESW</h1>
     <p class="subtitle">Hockey Shop</p>
 
-    <!-- About Us Button -->
-    <a href="about.html" class="about-button">About Us</a>
+    <!-- Real Button -->
+    <button class="about-button" onclick="window.location.href='about.html'">
+        About Us
+    </button>
 </header>
 
 <main>
@@ -32,7 +34,7 @@
             <option value="Warrior">Warrior</option>
         </select>
 
-        <!-- Type -->
+        <!-- Type (based on brand) -->
         <label for="type">Choose Type:</label>
         <select id="type">
             <option value="">--Select Type--</option>
@@ -56,11 +58,12 @@
         <label for="quantity">Quantity:</label>
         <input type="number" id="quantity" value="1" min="1">
 
-        <!-- Total Price Display -->
+        <!-- Stick Total -->
         <p id="total-display">Total: $0</p>
 
         <button onclick="calculateTotal()">Calculate Total</button>
     </section>
+
 
     <!-- Knee Hockey Balls Section -->
     <section class="balls">

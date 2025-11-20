@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - ESW</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .form-container {
+            width: 70%;
+            margin: 40px auto;
+            padding: 25px;
+            border: 2px solid #005aff;
+            border-radius: 10px;
+            background-color: #f2f6ff;
+            font-size: 20px;
+        }
+
+        input, textarea {
+            width: 90%;
+            padding: 12px;
+            margin-top: 10px;
+            font-size: 18px;
+            border-radius: 6px;
+            border: 1px solid #999;
+        }
+
+        .send-btn {
+            background-color: #005aff;
+            color: white;
+            padding: 14px 35px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+
+        .send-btn:hover {
+            background-color: #003fbf;
+        }
+
+        .back-button {
+            padding: 12px 25px;
+            font-size: 18px;
+            background-color: #005aff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Contact Us</h1>
+
+<button class="back-button" onclick="window.location.href='index.html'">Back to Home</button>
+
+<div class="form-container">
+    <form action="mailto:31stvazn@dextersouthfield.org" method="POST" enctype="text/plain">
+
+        <label>Your Name:</label><br>
+        <input type="text" name="Name" required><br><br>
+
+        <label>Custom Stick Request:</label><br>
+        <textarea name="Mini Stick Request" rows="4" placeholder="Describe what you want"></textarea><br><br>
+
+        <label>Knee Hockey Ball Request:</label><br>
+        <textarea name="Ball Request" rows="4" placeholder="What type of ball do you want?"></textarea><br>
+
+        <button class="send-btn" type="submit">Send</button>
+    </form>
+</div>
+
+<footer>
+    <p>© 2025 ESW</p>
+    <p>All rights reserved by Steven Vazny, Eli Hannifin and William Thorley</p>
+</footer>
+
+</body>
+</html>

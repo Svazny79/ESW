@@ -19,7 +19,7 @@
             margin-top: 15px;
         }
 
-        .about-button {
+        .nav-button {
             padding: 12px 25px;
             font-size: 18px;
             background-color: #005aff;
@@ -30,7 +30,7 @@
             transition: 0.2s;
         }
 
-        .about-button:hover {
+        .nav-button:hover {
             background-color: #003fbf;
         }
     </style>
@@ -42,8 +42,9 @@
     <h1>ESW</h1>
 
     <div class="header-buttons">
-        <button class="about-button" onclick="window.location.href='about.html'">About Us</button>
-        <button class="about-button" onclick="window.location.href='testimonials.html'">Testimonials</button>
+        <button class="nav-button" onclick="window.location.href='about.html'">About Us</button>
+        <button class="nav-button" onclick="window.location.href='testimonials.html'">Testimonials</button>
+        <button class="nav-button" onclick="window.location.href='contact.html'">Contact Us</button>
     </div>
 </header>
 
@@ -108,55 +109,55 @@
 </footer>
 
 <script>
-    function updateTypes() {
-        const brand = document.getElementById("brand").value;
-        const typeSelect = document.getElementById("type");
+function updateTypes() {
+    const brand = document.getElementById("brand").value;
+    const typeSelect = document.getElementById("type");
 
-        typeSelect.innerHTML = "";
+    typeSelect.innerHTML = "";
 
-        let types = [];
+    let types = [];
 
-        if (brand === "Bauer") {
-            types = [
-                { name: "Flylite", price: 22 },
-                { name: "Proto 2", price: 23 },
-                { name: "Pulse", price: 25 }
-            ];
-        } else if (brand === "CCM") {
-            types = [
-                { name: "Trigger 10", price: 25 },
-                { name: "Ghost", price: 24 },
-                { name: "Vizion", price: 24 }
-            ];
-        } else if (brand === "Warrior") {
-            types = [
-                { name: "Alpha", price: 21 },
-                { name: "Convert", price: 22 },
-                { name: "LX3 Pro", price: 22 }
-            ];
-        }
-
-        types.forEach(t => {
-            const option = document.createElement("option");
-            option.value = t.price;
-            option.textContent = `${t.name} ($${t.price})`;
-            typeSelect.appendChild(option);
-        });
+    if (brand === "Bauer") {
+        types = [
+            { name: "Flylite", price: 22 },
+            { name: "Proto 2", price: 23 },
+            { name: "Pulse", price: 25 }
+        ];
+    } else if (brand === "CCM") {
+        types = [
+            { name: "Trigger 10", price: 25 },
+            { name: "Ghost", price: 24 },
+            { name: "Vizion", price: 24 }
+        ];
+    } else if (brand === "Warrior") {
+        types = [
+            { name: "Alpha", price: 21 },
+            { name: "Convert", price: 22 },
+            { name: "LX3 Pro", price: 22 }
+        ];
     }
 
-    function calculateTotal() {
-        const typePrice = Number(document.getElementById("type").value);
-        const quantity = Number(document.getElementById("quantity").value);
-        const total = typePrice ? typePrice * quantity : 0;
-        document.getElementById("total-display").textContent = `Total: $${total}`;
-    }
+    types.forEach(t => {
+        const option = document.createElement("option");
+        option.value = t.price;
+        option.textContent = `${t.name} ($${t.price})`;
+        typeSelect.appendChild(option);
+    });
+}
 
-    function calculateBallTotal() {
-        const ballPrice = Number(document.getElementById("ballType").value);
-        const quantity = Number(document.getElementById("ballQuantity").value);
-        const total = ballPrice ? ballPrice * quantity : 0;
-        document.getElementById("ball-total-display").textContent = `Ball Total: $${total}`;
-    }
+function calculateTotal() {
+    const typePrice = Number(document.getElementById("type").value);
+    const quantity = Number(document.getElementById("quantity").value);
+    const total = typePrice ? typePrice * quantity : 0;
+    document.getElementById("total-display").textContent = `Total: $${total}`;
+}
+
+function calculateBallTotal() {
+    const ballPrice = Number(document.getElementById("ballType").value);
+    const quantity = Number(document.getElementById("ballQuantity").value);
+    const total = ballPrice ? ballPrice * quantity : 0;
+    document.getElementById("ball-total-display").textContent = `Ball Total: $${total}`;
+}
 </script>
 
 </body>

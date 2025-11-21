@@ -1,282 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>ESW</title>
-<style>
-  /* Basic page styles */
-  body { font-family: Arial, Helvetica, sans-serif; margin:0; padding:0; background:#f6f7fb; color:#222; }
-  header { text-align:center; padding:26px 16px 8px; background: #fff; border-bottom: 1px solid #e0e0e0; }
-  header h1 { margin: 0; font-size: 32px; letter-spacing: 1px; }
-  .header-buttons { margin-top: 14px; display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
-  .site-button { padding:10px 18px; font-size:15px; background:#005aff; color:#fff; border:none; border-radius:6px; cursor:pointer; }
-  .site-button:hover { background:#0041d9; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESW</title>
+    <link rel="stylesheet" href="style.css">
 
-  main { max-width: 1100px; margin: 26px auto; padding: 0 16px; }
+    <style>
+        header {
+            text-align: center;
+            margin-top: 30px;
+        }
 
-  /* Two-column customization + preview */
-  .custom-row {
-    display: grid;
-    grid-template-columns: 1fr 380px;
-    gap: 22px;
-    align-items:start;
-  }
+        .header-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
 
-  /* Make customization compact and left aligned */
-  .custom-box {
-    background:#fff; border:1px solid #e6e8ee; border-radius:10px; padding:16px;
-    box-shadow: 0 2px 6px rgba(16,24,40,0.04);
-  }
-  .custom-box h2 { margin-top:0; font-size:20px; }
+        .nav-button {
+            padding: 12px 25px;
+            font-size: 18px;
+            background-color: #005aff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
 
-  label { display:block; font-weight:600; margin-top:10px; font-size:14px; color:#333; }
-  select, input[type="number"], input[type="text"] {
-    width:100%; padding:8px 10px; margin-top:6px; border-radius:6px; border:1px solid #d7dbe6;
-    font-size:14px; box-sizing:border-box;
-  }
-
-  .small-input { width:120px; display:inline-block; }
-
-  .preview-box {
-    background:#fff; border:1px solid #e6e8ee; border-radius:10px; padding:18px; text-align:center;
-    box-shadow: 0 2px 6px rgba(16,24,40,0.04);
-  }
-  .preview-title { font-weight:700; margin:0 0 12px; }
-  .stick-visual {
-    width:100%; height:220px; border-radius:8px; display:flex; align-items:center; justify-content:center;
-    color:#fff; font-weight:700; font-size:18px; text-align:center; padding:10px; box-sizing:border-box;
-    margin-bottom:12px;
-  }
-  .preview-image { max-width:100%; max-height:90px; display:block; margin:0 auto; opacity:0.95; border-radius:6px; }
-
-  /* Balls section */
-  .balls-box { margin-top:18px; background:#fff; border:1px solid #e6e8ee; border-radius:10px; padding:14px; }
-
-  /* Checkout / Total */
-  .checkout { margin-top:14px; display:flex; align-items:center; gap:12px; }
-  .checkout button { padding:10px 14px; border-radius:8px; border:0; background:#0b66ff; color:#fff; cursor:pointer; }
-  .total-display { font-weight:700; font-size:18px; }
-
-  footer { text-align:center; margin:40px 0 60px; color:#444; font-size:14px; }
-  footer p { margin:6px 0; }
-
-  /* Responsive */
-  @media(max-width:900px){
-    .custom-row { grid-template-columns: 1fr; }
-    .preview-box { order: 2; }
-  }
-</style>
+        .nav-button:hover {
+            background-color: #003fbf;
+        }
+    </style>
 </head>
+
 <body>
 
 <header>
-  <h1>ESW</h1>
-  <div class="header-buttons">
-    <button class="site-button" onclick="location.href='about.html'">About Us</button>
-    <button class="site-button" onclick="location.href='testimonials.html'">Testimonials</button>
-    <button class="site-button" onclick="location.href='contact.html'">Contact Us</button>
-  </div>
+    <h1>ESW</h1>
+
+    <div class="header-buttons">
+        <button class="nav-button" onclick="window.location.href='about.html'">About Us</button>
+        <button class="nav-button" onclick="window.location.href='testimonials.html'">Testimonials</button>
+        <button class="nav-button" onclick="window.location.href='contact.html'">Contact Us</button>
+    </div>
 </header>
 
 <main>
-  <!-- compact customization section (left) and preview (right) -->
-  <div class="custom-row">
+    <section class="customization">
+        <h2>Stick Customization</h2>
 
-    <div class="custom-box" id="custom-left">
-      <h2>Mini Stick Customization</h2>
+        <label for="brand">Choose Brand:</label>
+        <select id="brand" onchange="updateTypes()">
+            <option value="">--Select Brand--</option>
+            <option value="Bauer">Bauer</option>
+            <option value="CCM">CCM</option>
+            <option value="Warrior">Warrior</option>
+        </select>
 
-      <label for="brandSelect">Brand</label>
-      <select id="brandSelect" onchange="onBrandChange()">
-        <option value="">-- Choose Brand --</option>
-        <option value="bauer">Bauer</option>
-        <option value="ccm">CCM</option>
-        <option value="warrior">Warrior</option>
-      </select>
+        <label for="type">Choose Type:</label>
+        <select id="type">
+            <option value="">--Select Type--</option>
+        </select>
 
-      <label for="typeSelect">Type</label>
-      <select id="typeSelect" onchange="updatePreview()">
-        <option value="">-- Choose Type --</option>
-      </select>
+        <label for="color">Choose Color:</label>
+        <select id="color">
+            <option value="Regular">Regular</option>
+            <option value="Red">Red</option>
+            <option value="Blue">Blue</option>
+            <option value="Black">Black</option>
+            <option value="White">White</option>
+            <option value="Green">Green</option>
+            <option value="Purple">Purple</option>
+            <option value="Orange">Orange</option>
+            <option value="Yellow">Yellow</option>
+        </select>
 
-      <label for="colorSelect">Color</label>
-      <select id="colorSelect" onchange="updatePreview()">
-        <option value="Regular">Regular</option>
-        <option value="Red">Red</option>
-        <option value="Blue">Blue</option>
-        <option value="Black">Black</option>
-        <option value="White">White</option>
-        <option value="Green">Green</option>
-        <option value="Purple">Purple</option>
-        <option value="Orange">Orange</option>
-        <option value="Yellow">Yellow</option>
-      </select>
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" value="1" min="1">
 
-      <label for="stickQty">Quantity</label>
-      <input id="stickQty" type="number" min="1" value="1" />
-
-      <div style="margin-top:12px;">
-        <button onclick="addStickToCart()" style="padding:9px 12px; border-radius:8px; border:0; background:#007bff; color:#fff; cursor:pointer;">
-          Add Stick
-        </button>
-        <span id="stickMessage" style="margin-left:12px; font-weight:600;"></span>
-      </div>
-
-      <div class="balls-box" style="margin-top:14px;">
-        <h3 style="margin:0 0 10px 0;">Knee Hockey Balls</h3>
-
-        <label for="regularBallQty">Regular ($3)</label>
-        <input id="regularBallQty" type="number" min="0" value="0" />
-
-        <label for="airlessBallQty" style="margin-top:8px;">Airless ($5)</label>
-        <input id="airlessBallQty" type="number" min="0" value="0" />
-
-        <div style="margin-top:10px;">
-          <button onclick="addBallsToCart()" style="padding:8px 12px; border-radius:8px; border:0; background:#0b66ff; color:#fff; cursor:pointer;">
-            Add Balls
-          </button>
-          <span id="ballsMessage" style="margin-left:12px; font-weight:600;"></span>
-        </div>
-      </div>
-
-      <div class="checkout">
+        <p id="total-display">Total: $0</p>
         <button onclick="calculateTotal()">Calculate Total</button>
-        <div class="total-display" id="totalDisplay">Total: $0</div>
-      </div>
-    </div>
+    </section>
 
-    <!-- PREVIEW on the right -->
-    <aside class="preview-box" id="previewRight">
-      <div class="preview-title">Preview</div>
-      <!-- Visual preview (color background with brand/type text) -->
-      <div id="stickVisual" class="stick-visual" style="background:#cfcfd1;">
-        Pick a brand / type / color to preview
-      </div>
-      <!-- uploaded image (path supplied earlier); kept as an extra visual reference -->
-      <img id="uploadedPreview" src="/mnt/data/78e8cc71-5129-4ada-8176-10f45e442b68.png" alt="preview" class="preview-image" style="display:block; opacity:0.92;">
-    </aside>
+    <section class="balls">
+        <h2>Knee Hockey Balls</h2>
 
-  </div>
+        <label for="ballType">Choose Ball Type:</label>
+        <select id="ballType">
+            <option value="">--Select Ball Type--</option>
+            <option value="3">Regular - $3</option>
+            <option value="5">Airless - $5</option>
+        </select>
+
+        <label for="ballQuantity">Quantity:</label>
+        <input type="number" id="ballQuantity" value="1" min="1">
+
+        <p id="ball-total-display">Ball Total: $0</p>
+        <button onclick="calculateBallTotal()">Calculate Ball Total</button>
+    </section>
 </main>
 
 <footer>
-  <p>© 2025 ESW</p>
-  <p>All rights reserved by Steven Vazny, Eli Hannifin and William Thorley</p>
+    <p>© 2025 ESW</p>
+    <p>All rights reserved by Steven Vazny, Eli Hannifin and William Thorley</p>
 </footer>
 
 <script>
-/* Type lists with prices (used for selection and calculation) */
-const typesByBrand = {
-  "bauer": [
-    { name: "Flylite ($22)", price: 22 },
-    { name: "Proto 2 ($23)", price: 23 },
-    { name: "Pulse ($25)", price: 25 }
-  ],
-  "ccm": [
-    { name: "Trigger 10 ($25)", price: 25 },
-    { name: "Ghost ($24)", price: 24 },
-    { name: "Vizion ($24)", price: 24 }
-  ],
-  "warrior": [
-    { name: "Alpha ($21)", price: 21 },
-    { name: "Convert ($22)", price: 22 },
-    { name: "LX3 Pro ($22)", price: 22 }
-  ]
-};
+function updateTypes() {
+    const brand = document.getElementById("brand").value;
+    const typeSelect = document.getElementById("type");
 
-/* Color map for the preview box */
-const colorMap = {
-  "Regular": "#9aa0a6",
-  "Red": "#d64545",
-  "Blue": "#2b6cff",
-  "Black": "#1f1f23",
-  "White": "#f6f6f6",
-  "Green": "#2fa44f",
-  "Purple": "#6f42c1",
-  "Orange": "#f29b2e",
-  "Yellow": "#f6c23e"
-};
+    typeSelect.innerHTML = "";
 
-/* populate type list when brand changes */
-function onBrandChange() {
-  const brand = document.getElementById('brandSelect').value;
-  const typeSel = document.getElementById('typeSelect');
-  typeSel.innerHTML = '<option value="">-- Choose Type --</option>';
-  if (!brand) { updatePreview(); return; }
-  typesByBrand[brand].forEach(t => {
-    const opt = document.createElement('option');
-    opt.value = t.price + '||' + t.name; // encode price and label
-    opt.textContent = t.name;
-    typeSel.appendChild(opt);
-  });
-  updatePreview();
+    let types = [];
+
+    if (brand === "Bauer") {
+        types = [
+            { name: "Flylite", price: 22 },
+            { name: "Proto 2", price: 23 },
+            { name: "Pulse", price: 25 }
+        ];
+    } else if (brand === "CCM") {
+        types = [
+            { name: "Trigger 10", price: 25 },
+            { name: "Ghost", price: 24 },
+            { name: "Vizion", price: 24 }
+        ];
+    } else if (brand === "Warrior") {
+        types = [
+            { name: "Alpha", price: 21 },
+            { name: "Convert", price: 22 },
+            { name: "LX3 Pro", price: 22 }
+        ];
+    }
+
+    types.forEach(t => {
+        const option = document.createElement("option");
+        option.value = t.price;
+        option.textContent = `${t.name} ($${t.price})`;
+        typeSelect.appendChild(option);
+    });
 }
 
-/* update preview visual */
-function updatePreview() {
-  const brand = document.getElementById('brandSelect').value;
-  const typeV = document.getElementById('typeSelect').value;
-  const color = document.getElementById('colorSelect').value;
-  const vis = document.getElementById('stickVisual');
-  let label = '';
-
-  if (brand) label += brand.toUpperCase();
-  if (typeV) {
-    const parts = typeV.split('||');
-    label += (label ? ' — ' : '') + parts[1];
-  }
-  if (!label) label = 'Pick a brand / type / color to preview';
-
-  vis.style.background = colorMap[color] || '#cfcfd1';
-  vis.style.color = (color === 'White' ? '#111' : '#fff');
-  vis.textContent = label;
-}
-
-/* Add stick to cart (display quick message) */
-function addStickToCart() {
-  const typeV = document.getElementById('typeSelect').value;
-  const qty = parseInt(document.getElementById('stickQty').value) || 0;
-  if (!typeV || qty < 1) {
-    document.getElementById('stickMessage').textContent = 'Select type & qty';
-    return;
-  }
-  const price = Number(typeV.split('||')[0]);
-  const label = typeV.split('||')[1];
-  const total = price * qty;
-  document.getElementById('stickMessage').textContent = `${qty} × ${label} added ($${total})`;
-  updateTotalDisplay();
-}
-
-/* Add balls to cart */
-function addBallsToCart() {
-  const r = parseInt(document.getElementById('regularBallQty').value) || 0;
-  const a = parseInt(document.getElementById('airlessBallQty').value) || 0;
-  const total = (r * 3) + (a * 5);
-  document.getElementById('ballsMessage').textContent = `Balls added ($${total})`;
-  updateTotalDisplay();
-}
-
-/* calculate and show total (stick + balls) */
 function calculateTotal() {
-  updateTotalDisplay(true);
+    const typePrice = Number(document.getElementById("type").value);
+    const quantity = Number(document.getElementById("quantity").value);
+    const total = typePrice ? typePrice * quantity : 0;
+    document.getElementById("total-display").textContent = `Total: $${total}`;
 }
 
-function updateTotalDisplay(showAlert=false) {
-  // stick total
-  const typeV = document.getElementById('typeSelect').value;
-  const qty = parseInt(document.getElementById('stickQty').value) || 0;
-  const stickTotal = typeV ? Number(typeV.split('||')[0]) * qty : 0;
-  // balls total
-  const r = parseInt(document.getElementById('regularBallQty').value) || 0;
-  const a = parseInt(document.getElementById('airlessBallQty').value) || 0;
-  const ballTotal = (r * 3) + (a * 5);
-  const total = stickTotal + ballTotal;
-  document.getElementById('totalDisplay').textContent = `Total: $${total}`;
-  if (showAlert) alert('Total: $' + total);
+function calculateBallTotal() {
+    const ballPrice = Number(document.getElementById("ballType").value);
+    const quantity = Number(document.getElementById("ballQuantity").value);
+    const total = ballPrice ? ballPrice * quantity : 0;
+    document.getElementById("ball-total-display").textContent = `Ball Total: $${total}`;
 }
-
-/* init preview */
-updatePreview();
 </script>
 
 </body>

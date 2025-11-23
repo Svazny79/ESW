@@ -23,7 +23,8 @@
             margin-top: 15px;
             display: flex;
             justify-content: center;
-            gap: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .nav-btn {
@@ -34,6 +35,7 @@
             border-radius: 6px;
             font-size: 18px;
             cursor: pointer;
+            transition: 0.3s;
         }
 
         .nav-btn:hover {
@@ -42,28 +44,25 @@
 
         main {
             display: flex;
+            flex-wrap: wrap;
             padding: 20px;
             gap: 30px;
+            justify-content: center;
         }
 
-        .customization {
+        .customization, .preview-box {
             background: white;
             padding: 20px;
             border-radius: 10px;
-            width: 40%;
-        }
-
-        .preview-box {
-            width: 60%;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
+            flex: 1 1 300px;
+            max-width: 500px;
         }
 
         .preview-box img {
-            width: 80%;
+            width: 100%;
+            max-width: 400px;
             border-radius: 10px;
+            margin-top: 10px;
         }
 
         footer {
@@ -73,13 +72,39 @@
             padding: 20px;
             margin-top: 40px;
         }
+
+        label {
+            font-weight: bold;
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 6px 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            background-color: #005aff;
+            color: white;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #003fbb;
+        }
     </style>
 </head>
 <body>
 
 <header>
     <h1>ESW</h1>
-
     <div class="header-buttons">
         <button class="nav-btn" onclick="window.location.href='about.html'">About Us</button>
         <button class="nav-btn" onclick="window.location.href='testimonials.html'">Testimonials</button>
@@ -99,14 +124,10 @@
             <option value="Warrior">Warrior</option>
         </select>
 
-        <br><br>
-
         <label>Type:</label>
         <select id="type" onchange="updatePreview();">
             <option value="">-- Select Type --</option>
         </select>
-
-        <br><br>
 
         <label>Color:</label>
         <select id="color" onchange="updatePreview();">
@@ -121,15 +142,11 @@
             <option value="purple">Purple</option>
         </select>
 
-        <br><br>
-
         <label>Quantity:</label>
         <input type="number" id="quantity" value="1" min="1">
 
         <p id="total-display">Total: $0</p>
-        <button onclick="calculateTotal()">Calculate Total</button>
-
-        <br><br>
+        <button onclick="calculateTotal()">Calculate Stick Total</button>
 
         <h2>Knee Hockey Balls</h2>
 
@@ -140,26 +157,26 @@
             <option value="5">Airless - $5</option>
         </select>
 
-        <br><br>
-
         <label>Quantity:</label>
         <input type="number" id="ballQuantity" value="1" min="1">
 
         <p id="ball-total-display">Ball Total: $0</p>
         <button onclick="calculateBallTotal()">Calculate Ball Total</button>
+
+        <br>
+        <button onclick="calculateGrandTotal()">Calculate Grand Total</button>
     </section>
 
     <section class="preview-box">
-        <h2>Preview</h2>
+        <h2>Stick Preview</h2>
         <img id="stickPreview" src="images/default.png" alt="Stick Preview">
     </section>
 </main>
 
 <footer>
     <p>© 2025 ESW</p>
-    <p>All rights reserved by Steven Vazny, Eli Hannifin and William Thorley</p>
+    <p>All rights reserved © 2025 by Steven Vazny, Eli Hanafin, and William Thorley</p>
 </footer>
-
 
 <script>
     const stickImages = {
@@ -172,13 +189,11 @@
             "Proto 2": {},
             "Pulse": {}
         },
-
         "CCM": {
             "Trigger 10": {},
             "Ghost": {},
             "Vizion": {}
         },
-
         "Warrior": {
             "Alpha": {},
             "Convert": {},
@@ -189,17 +204,12 @@
     function updateTypes() {
         const brand = document.getElementById("brand").value;
         const typeSelect = document.getElementById("type");
-        typeSelect.innerHTML = "";
+        typeSelect.innerHTML = '<option value="">-- Select Type --</option>';
 
         let types = [];
-
-        if (brand === "Bauer") {
-            types = ["Flylite", "Proto 2", "Pulse"];
-        } else if (brand === "CCM") {
-            types = ["Trigger 10", "Ghost", "Vizion"];
-        } else if (brand === "Warrior") {
-            types = ["Alpha", "Convert", "LX3 Pro"];
-        }
+        if (brand === "Bauer") types = ["Flylite", "Proto 2", "Pulse"];
+        else if (brand === "CCM") types = ["Trigger 10", "Ghost", "Vizion"];
+        else if (brand === "Warrior") types = ["Alpha", "Convert", "LX3 Pro"];
 
         types.forEach(t => {
             const option = document.createElement("option");
@@ -214,39 +224,43 @@
         const type = document.getElementById("type").value;
         const color = document.getElementById("color").value;
 
+        let imagePath = "images/default.png";
         if (stickImages[brand] && stickImages[brand][type]) {
-            const imagePath = stickImages[brand][type][color] || "images/default.png";
-            document.getElementById("stickPreview").src = imagePath;
+            imagePath = stickImages[brand][type][color] || "images/default.png";
         }
+
+        document.getElementById("stickPreview").src = imagePath;
+        document.getElementById("stickPreview").alt = `${brand} ${type} in ${color}`;
     }
 
     function calculateTotal() {
         const type = document.getElementById("type").value;
-
         const prices = {
-            "Flylite": 22,
-            "Proto 2": 23,
-            "Pulse": 25,
-            "Trigger 10": 25,
-            "Ghost": 24,
-            "Vizion": 24,
-            "Alpha": 21,
-            "Convert": 22,
-            "LX3 Pro": 22
+            "Flylite": 22, "Proto 2": 23, "Pulse": 25,
+            "Trigger 10": 25, "Ghost": 24, "Vizion": 24,
+            "Alpha": 21, "Convert": 22, "LX3 Pro": 22
         };
-
         const price = prices[type] || 0;
         const qty = Number(document.getElementById("quantity").value);
-
         document.getElementById("total-display").textContent = "Total: $" + (price * qty);
     }
 
     function calculateBallTotal() {
         const price = Number(document.getElementById("ballType").value);
         const qty = Number(document.getElementById("ballQuantity").value);
-
         document.getElementById("ball-total-display").textContent = "Ball Total: $" + (price * qty);
     }
+
+    function calculateGrandTotal() {
+        calculateTotal();
+        calculateBallTotal();
+        const stickTotal = Number(document.getElementById("total-display").textContent.replace('Total: $','')) || 0;
+        const ballTotal = Number(document.getElementById("ball-total-display").textContent.replace('Ball Total: $','')) || 0;
+        alert("Grand Total: $" + (stickTotal + ballTotal));
+    }
+
+    // Initialize preview
+    updatePreview();
 </script>
 
 </body>

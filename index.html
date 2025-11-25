@@ -3,180 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESW Hockey Shop</title>
+    <title>ESW</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
-            line-height: 1.6;
-            background-color: #f4f4f4;
-            color: #333;
+            background: #f4f4f4;
         }
 
         header {
-            background: #111;
-            color: #fff;
-            padding: 20px 0;
+            background: black;
+            color: white;
+            padding: 20px;
             text-align: center;
+            font-size: 42px;
+            letter-spacing: 3px;
         }
 
-        header h1 {
-            margin: 0;
-        }
-
-        nav ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        nav ul li {
-            display: inline;
-            margin: 0 15px;
-        }
-
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        section {
-            padding: 50px 20px;
-            text-align: center;
-        }
-
-        .product-grid {
+        .buttons {
             display: flex;
             justify-content: center;
-            flex-wrap: wrap;
             gap: 20px;
-        }
-
-        .product-card {
-            background: #fff;
-            border: 1px solid #ddd;
-            padding: 20px;
-            width: 200px;
-            transition: transform 0.3s;
-        }
-
-        .product-card:hover {
-            transform: scale(1.05);
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-
-        input, textarea {
-            width: 300px;
-            padding: 10px;
+            margin-top: 15px;
         }
 
         button {
-            padding: 10px 20px;
-            cursor: pointer;
-            background: #111;
-            color: #fff;
+            padding: 12px 22px;
+            font-size: 18px;
+            border-radius: 6px;
             border: none;
+            cursor: pointer;
+            background: #222;
+            color: white;
+            transition: 0.2s;
+        }
+        button:hover {
+            background: #444;
         }
 
-        footer {
-            background: #111;
-            color: #fff;
+        .section {
+            padding: 25px;
             text-align: center;
-            padding: 20px 0;
         }
 
-        /* Responsive */
-        @media(max-width: 700px) {
-            .product-grid {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            input, textarea {
-                width: 90%;
-            }
+        .customizer {
+            display: flex;
+            justify-content: center;
+            gap: 35px;
+            margin-top: 30px;
         }
+
+        select {
+            font-size: 18px;
+            padding: 10px;
+        }
+
+        .stick-preview {
+            width: 350px;
+            border-radius: 12px;
+            border: 3px solid black;
+            background: white;
+            padding: 10px;
+        }
+
+        #cart-box {
+            position: fixed;
+            right: 15px;
+            top: 120px;
+            width: 220px;
+            background: white;
+            border: 2px solid black;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 10px;
+        }
+
     </style>
 </head>
 <body>
-    <header>
-        <h1>ESW Hockey Shop</h1>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#products">Products</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <section id="home">
-        <h2>Welcome to ESW Hockey Shop!</h2>
-        <p>Your one-stop shop for all hockey gear and accessories.</p>
-        <button onclick="showPromo()">Check Today’s Promo</button>
-    </section>
+<header>ESW</header>
 
-    <section id="products">
-        <h2>Our Products</h2>
-        <div class="product-grid">
-            <div class="product-card">
-                <img src="https://via.placeholder.com/150" alt="Hockey Stick">
-                <h3>Hockey Stick</h3>
-                <p>$120</p>
-            </div>
-            <div class="product-card">
-                <img src="https://via.placeholder.com/150" alt="Hockey Helmet">
-                <h3>Hockey Helmet</h3>
-                <p>$80</p>
-            </div>
-            <div class="product-card">
-                <img src="https://via.placeholder.com/150" alt="Hockey Gloves">
-                <h3>Hockey Gloves</h3>
-                <p>$60</p>
-            </div>
-            <div class="product-card">
-                <img src="https://via.placeholder.com/150" alt="Hockey Pads">
-                <h3>Hockey Pads</h3>
-                <p>$150</p>
-            </div>
+<div class="buttons">
+    <button onclick="openAbout()">About Us</button>
+    <button onclick="openTestimonials()">Testimonials</button>
+    <button onclick="openContact()">Contact Us</button>
+</div>
+
+<!-- CART -->
+<div id="cart-box">
+    <b>Your Cart</b><br><br>
+    <div id="cart-items">No items yet</div>
+</div>
+
+<!-- MAIN CUSTOMIZER -->
+<div class="section">
+    <h1>Stick Customization</h1>
+
+    <div class="customizer">
+
+        <!-- LEFT SIDE CONTROLS -->
+        <div>
+            <h3>Brand</h3>
+            <select id="brandSelect">
+                <option value="ESW">ESW</option>
+            </select>
+
+            <h3>Color</h3>
+            <select id="colorSelect" onchange="updateStick()">
+                <option value="purple">Purple</option>
+                <option value="green">Green</option>
+                <option value="orange">Orange</option>
+                <option value="blue">Blue</option>
+                <option value="red">Red</option>
+                <option value="yellow">Yellow</option>
+            </select>
+
+            <br><br>
+            <button onclick="addToCart()">Add to Cart</button>
         </div>
-    </section>
 
-    <section id="about">
-        <h2>About Us</h2>
-        <p>ESW Hockey Shop has been providing top-quality hockey equipment for over 10 years. We care about the game and the players.</p>
-    </section>
+        <!-- RIGHT SIDE PREVIEW IMAGE -->
+        <img id="stickImage"
+             class="stick-preview"
+             src="/mnt/data/9019e4e9-531f-4941-9d60-c99e153d3570.png"
+             alt="Stick Preview">
 
-    <section id="contact">
-        <h2>Contact Us</h2>
-        <form onsubmit="submitForm(event)">
-            <input type="text" placeholder="Your Name" required>
-            <input type="email" placeholder="Email" required>
-            <textarea placeholder="Message" required></textarea>
-            <button type="submit">Send</button>
-        </form>
-    </section>
+    </div>
+</div>
 
-    <footer>
-        <p>&copy; 2025 ESW Hockey Shop</p>
-    </footer>
+<script>
+    function updateStick() {
+        const color = document.getElementById("colorSelect").value;
+        const img = document.getElementById("stickImage");
 
-    <script>
-        function showPromo() {
-            alert("🔥 Today’s Promo: Get 10% off all hockey sticks! 🔥");
+        if (color === "purple") {
+            img.src = "/mnt/data/9019e4e9-531f-4941-9d60-c99e153d3570.png";
+        } else {
+            img.src =
+              "https://via.placeholder.com/350x120?text=" + color + "+stick";
+        }
+    }
+
+    function addToCart() {
+        const color = document.getElementById("colorSelect").value;
+        const cart = document.getElementById("cart-items");
+
+        if (cart.innerHTML === "No items yet") {
+            cart.innerHTML = "";
         }
 
-        function submitForm(event) {
-            event.preventDefault();
-            alert("Thank you for contacting us! We will get back to you soon.");
-        }
-    </script>
+        cart.innerHTML += "- ESW Stick (" + color + ")<br>";
+    }
+
+    function openAbout() {
+        alert("ESW is a Hockey Shop where you can buy custom Mini Sticks and Knee Hockey Balls. Created for a school project.");
+    }
+
+    function openTestimonials() {
+        alert("Testimonials:\n1. 'Amazing products!'\n2. 'Best custom sticks ever!'");
+    }
+
+    function openContact() {
+        alert("Contact us at: 31stvazn@dextersouthfield.org");
+    }
+</script>
+
 </body>
 </html>

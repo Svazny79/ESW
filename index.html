@@ -1,211 +1,362 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ESW</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    /* Small inline styles so the page looks OK without modifying style.css */
-    body { font-family: Arial, sans-serif; margin: 20px; color: #222; }
-    header { text-align: center; margin-bottom: 20px; }
-    header h1 { margin: 0; font-size: 36px; }
-    .header-buttons { margin-top: 12px; display:flex; gap:12px; justify-content:center; }
-    .btn { padding:10px 18px; background:#005aff; color:#fff; border:none; border-radius:6px; cursor:pointer; font-size:16px; }
-    .btn:hover { background:#0041c2; }
-    main { display:flex; gap:30px; align-items:flex-start; justify-content:center; flex-wrap:wrap; }
-    .panel { background:#fff; padding:18px; border-radius:8px; border:1px solid #ddd; box-shadow:0 1px 3px rgba(0,0,0,0.04); max-width:460px; }
-    .panel h2 { margin-top:0; }
-    label { display:block; margin-top:10px; font-weight:600; }
-    select,input[type="number"],input[type="text"] { width:100%; padding:8px; margin-top:6px; border:1px solid #ccc; border-radius:6px; box-sizing:border-box; }
-    .balls .row { display:flex; gap:12px; align-items:center; margin-top:10px; }
-    .checkout { text-align:center; margin-top:14px; }
-    #totalDisplay { font-size:20px; margin-top:10px; font-weight:700; }
-    footer { text-align:center; margin-top:28px; color:#555; }
-    /* image preview area */
-    .preview { width:300px; height:300px; border:1px solid #e0e0e0; border-radius:8px; display:flex; align-items:center; justify-content:center; background:#fafafa; }
-    .preview img { max-width:100%; max-height:100%; object-fit:contain; }
-    @media(max-width:900px){
-      main { flex-direction:column; align-items:center; }
-      .preview { width:260px; height:260px; }
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ESW</title>
+<style>
+  :root{
+    --accent:#005aff;
+    --bg:#f5f7fb;
+    --card:#fff;
+    --muted:#666;
+  }
+  html,body{height:100%;margin:0;font-family:Arial, Helvetica, sans-serif;background:var(--bg);color:#111}
+  header{
+    padding:18px 20px 6px 20px;
+    text-align:center;
+    background:transparent;
+  }
+  header h1{margin:0;font-size:36px;letter-spacing:1px}
+  .header-buttons{display:flex;gap:12px;justify-content:center;margin-top:12px}
+  .btn{
+    padding:10px 18px;border-radius:8px;border:none;background:var(--accent);color:#fff;
+    cursor:pointer;font-size:15px;
+  }
+  .btn.secondary{background:#444}
+  main{display:flex;gap:20px;padding:20px;box-sizing:border-box}
+  /* Left area: customization */
+  .left{
+    flex:1 1 620px;
+    max-width:900px;
+  }
+  .card{
+    background:var(--card);
+    padding:18px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.06);
+    margin-bottom:18px;
+  }
+  .card h2{margin-top:0}
+  label{display:block;margin:10px 0 6px;font-weight:600}
+  select,input[type=number],input[type=text],textarea{
+    width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:14px;box-sizing:border-box;
+  }
+  .flex-row{display:flex;gap:12px;align-items:center}
+  .small{width:120px}
+  .add-btn{margin-top:12px;background:#0b8f3b}
+  /* Preview area (right of customization rows but inside left column) */
+  .custom-row{display:flex;gap:18px;align-items:flex-start}
+  .preview{
+    width:260px;min-height:220px;background:#fafafa;border:1px dashed #e0e0e0;border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  /* Cart sidebar */
+  .cart{
+    width:360px;flex:0 0 360px;position:sticky;top:20px;height:calc(100vh - 40px);overflow:auto;
+  }
+  .cart .card{position:relative;margin-bottom:12px}
+  .cart h3{margin:0 0 8px 0}
+  .cart-list{list-style:none;padding:0;margin:0}
+  .cart-item{display:flex;gap:10px;padding:10px;border-radius:8px;border:1px solid #eee;margin-bottom:8px;align-items:center}
+  .cart-item .mini{width:54px;height:54px;border-radius:6px;background:#eee;display:flex;align-items:center;justify-content:center;font-size:12px;color:#333}
+  .cart-item .meta{flex:1}
+  .cart-item .meta b{display:block}
+  .cart-item .remove{background:transparent;border:none;color:#c00;cursor:pointer;font-weight:700}
+  .totals{padding:10px;border-top:1px solid #eee;margin-top:8px}
+  .checkout-btn{width:100%;padding:12px;border-radius:8px;border:none;background:var(--accent);color:#fff;cursor:pointer;font-size:16px}
+  /* Contact box (three boxes + send) */
+  .contact-row{display:flex;gap:12px;align-items:flex-end}
+  .contact-row .col{flex:1}
+  .contact-row .send{width:140px}
+  /* responsive */
+  @media(max-width:1000px){
+    main{flex-direction:column}
+    .cart{width:100%;height:auto;position:static}
+    .preview{width:180px}
+  }
+</style>
 </head>
 <body>
 
 <header>
   <h1>ESW</h1>
-
   <div class="header-buttons">
-    <button class="btn" onclick="window.location.href='about.html'">About Us</button>
-    <button class="btn" onclick="window.location.href='testimonials.html'">Testimonials</button>
-    <button class="btn" onclick="window.location.href='contact.html'">Contact Us</button>
+    <button class="btn" onclick="location.href='about.html'">About Us</button>
+    <button class="btn" onclick="location.href='testimonials.html'">Testimonials</button>
+    <button class="btn" onclick="location.href='contact.html'">Contact Us</button>
   </div>
 </header>
 
 <main>
-  <!-- left: customization panel -->
-  <div class="panel customization">
-    <h2>Mini Stick Customization</h2>
+  <!-- LEFT: customization + contact -->
+  <section class="left">
+    <!-- Customization card -->
+    <div class="card" id="customCard">
+      <h2>Mini Stick Customization</h2>
 
-    <!-- Brand simplified to ESW -->
-    <label for="brand">Brand</label>
-    <select id="brand">
-      <option value="ESW">ESW</option>
-    </select>
+      <!-- Brand changed to ESW (single brand) -->
+      <label for="brand">Brand</label>
+      <select id="brand">
+        <option value="ESW">ESW</option>
+      </select>
 
-    <!-- Type removed (per request) -->
+      <!-- TYPE removed as requested -->
 
-    <!-- color selector (no "Regular") -->
-    <label for="color">Color</label>
-    <select id="color">
-      <option value="">-- Choose Color --</option>
-      <option value="Red">Red</option>
-      <option value="Blue">Blue</option>
-      <option value="Black">Black</option>
-      <option value="White">White</option>
-      <option value="Green">Green</option>
-      <option value="Purple">Purple</option>
-      <option value="Orange">Orange</option>
-      <option value="Yellow">Yellow</option>
-    </select>
+      <!-- Color (Regular removed) -->
+      <label for="color">Color</label>
+      <select id="color" onchange="updatePreview()">
+        <option value="">-- Choose Color --</option>
+        <option value="Red">Red</option>
+        <option value="Blue">Blue</option>
+        <option value="Black">Black</option>
+        <option value="White">White</option>
+        <option value="Green">Green</option>
+        <option value="Purple">Purple</option>
+        <option value="Orange">Orange</option>
+        <option value="Yellow">Yellow</option>
+      </select>
 
-    <!-- stick price input (since types removed we allow a price entry) -->
-    <label for="stickPrice">Stick Price ($)</label>
-    <input type="number" id="stickPrice" value="21" min="0" step="0.01">
+      <!-- Quantity and Add to cart -->
+      <div style="display:flex;gap:12px;align-items:center;margin-top:10px">
+        <div style="flex:1">
+          <label for="stickQty">Quantity</label>
+          <input type="number" id="stickQty" min="1" value="1">
+        </div>
+        <div style="width:160px">
+          <label style="visibility:hidden">add</label>
+          <button class="btn add-btn" style="width:100%" onclick="addStickToCart()">Add Stick to Cart</button>
+        </div>
+      </div>
 
-    <label for="stickQty">Quantity</label>
-    <input type="number" id="stickQty" value="1" min="1">
-
-    <div class="checkout">
-      <button class="btn" onclick="calculateTotal()">Calculate Total</button>
-      <div id="totalDisplay">Total: $0.00</div>
+      <!-- custom-row: preview on the right -->
+      <div class="custom-row" style="margin-top:16px">
+        <div style="flex:1">
+          <p style="margin:0;color:var(--muted)">Preview updates as you choose color/brand.</p>
+        </div>
+        <div class="preview" id="stickPreview" aria-hidden="true">
+          <!-- SVG preview inserted dynamically -->
+          <div id="previewSVG">No color selected</div>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <!-- right: visual preview and balls panel -->
-  <div style="display:flex; flex-direction:column; gap:18px; align-items:center;">
-
-    <!-- preview box: will show a generated/placeholder image based on selection -->
-    <div class="preview" id="previewBox" title="Preview will appear here">
-      <div id="previewText">Preview</div>
-      <!-- <img id="previewImg" src="" alt="Preview"> -->
-    </div>
-
-    <!-- Knee hockey balls panel -->
-    <div class="panel balls">
+    <!-- Knee Hockey Balls card -->
+    <div class="card">
       <h2>Knee Hockey Balls</h2>
+      <label for="ballType">Choose Ball Type</label>
+      <select id="ballType">
+        <option value="">-- Choose Ball Type --</option>
+        <option value="Regular" data-price="3">Regular — $3</option>
+        <option value="Airless" data-price="5">Airless — $5</option>
+      </select>
 
-      <div class="row">
-        <label for="regularBallQty" style="flex:1; margin:0;">Regular Ball ($3) — Qty</label>
-        <input style="width:100px;" type="number" id="regularBallQty" min="0" value="0">
-      </div>
+      <label for="ballQty">Quantity</label>
+      <input type="number" id="ballQty" min="1" value="1">
 
-      <div class="row">
-        <label for="airlessBallQty" style="flex:1; margin:0;">Airless Ball ($5) — Qty</label>
-        <input style="width:100px;" type="number" id="airlessBallQty" min="0" value="0">
-      </div>
-
-      <div class="checkout">
-        <button class="btn" onclick="calculateTotal()">Recalculate Total</button>
-        <div id="ballsTotalDisplay" style="margin-top:8px;font-weight:600;">Balls: $0.00</div>
+      <div style="margin-top:12px">
+        <button class="btn add-btn" onclick="addBallsToCart()">Add Balls to Cart</button>
       </div>
     </div>
 
-  </div>
+    <!-- Contact form (three boxes + send) -->
+    <div class="card">
+      <h2>Contact & Quick Order</h2>
+      <div class="contact-row">
+        <div class="col">
+          <label for="contactName">Your Name</label>
+          <input type="text" id="contactName" placeholder="Name">
+        </div>
+        <div class="col">
+          <label for="contactStick">Stick</label>
+          <input type="text" id="contactStick" placeholder="e.g. ESW - Orange">
+        </div>
+        <div class="col">
+          <label for="contactBall">Knee Hockey Balls</label>
+          <input type="text" id="contactBall" placeholder="e.g. 2 Airless">
+        </div>
+        <div>
+          <label style="visibility:hidden">send</label>
+          <button class="btn" id="sendContact" style="height:40px;padding:9px 14px" onclick="sendContactEmail()">Send</button>
+        </div>
+      </div>
+      <p style="margin-top:10px;color:var(--muted);font-size:13px">Clicking Send will open your email client (mailto) addressed to <b>31stvazn@dextersouthfield.org</b> with the order details.</p>
+    </div>
+  </section>
+
+  <!-- RIGHT: cart sidebar -->
+  <aside class="cart">
+    <div class="card">
+      <h3>Your Cart</h3>
+      <ul class="cart-list" id="cartList"></ul>
+      <div class="totals">
+        <div style="display:flex;justify-content:space-between"><span>Subtotal</span><span id="subtotal">$0.00</span></div>
+        <div style="display:flex;justify-content:space-between;margin-top:8px"><strong>Total</strong><strong id="totalPay">$0.00</strong></div>
+        <div style="margin-top:12px">
+          <button class="checkout-btn" onclick="checkout()">Checkout</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Cart notes</h3>
+      <p style="margin:0;color:var(--muted);font-size:13px">You can add sticks and balls. Remove items with the red X. Checkout will open a mailto with the cart summary so you can place the order (static demo).</p>
+    </div>
+  </aside>
 </main>
 
-<!-- contact quick-send area -->
-<section style="max-width:920px; margin:26px auto; display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap;">
-  <div style="flex:1; max-width:300px;">
-    <input id="contactName" type="text" placeholder="Your name" style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
-  </div>
-
-  <div style="flex:1; max-width:300px;">
-    <input id="contactStick" type="text" placeholder="Stick (e.g. ESW - Orange)" style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
-  </div>
-
-  <div style="flex:1; max-width:300px;">
-    <input id="contactBalls" type="text" placeholder="Knee Hockey Balls (e.g. 2 Regular)" style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc;">
-  </div>
-
-  <div>
-    <button class="btn" onclick="sendContactEmail()">Send</button>
-  </div>
-</section>
-
-<footer>
-  <p>© 2025 ESW</p>
-  <p>All rights reserved by Steven Vazny, Eli Hannifin and William Thorley</p>
-</footer>
-
 <script>
-  // Update preview based on brand/color/price — since types were removed,
-  // this will show a simple textual preview or attempt to load an image filename that matches selection.
-  const previewBox = document.getElementById('previewBox');
-  const previewText = document.getElementById('previewText');
+/* ---------- Preview generation (SVG stick) ---------- */
+function svgStick(color){
+  // simple stylized stick SVG: a shaft rectangle + blade polygon; color applied to shaft and blade accent
+  const shaft = color || '#cccccc';
+  const blade = shadeColor(shaft, -20);
+  return `
+  <svg width="220" height="160" viewBox="0 0 220 160" xmlns="http://www.w3.org/2000/svg" aria-labelledby="t">
+    <title>Stick preview</title>
+    <g transform="translate(10,10)">
+      <!-- shaft -->
+      <rect x="0" y="40" width="140" height="18" rx="6" fill="${shaft}" stroke="#333" stroke-opacity="0.06"/>
+      <!-- grip -->
+      <rect x="0" y="30" width="12" height="10" rx="3" fill="#222" />
+      <!-- blade -->
+      <path d="M120 42 L170 58 L150 78 L108 62 Z" fill="${blade}" stroke="#333" stroke-opacity="0.06" />
+      <!-- brand text -->
+      <text x="18" y="53" font-family="Arial" font-size="12" fill="#111" font-weight="700">ESW</text>
+    </g>
+  </svg>`;
+}
+function shadeColor(hex, percent) {
+  // convert hex to RGB and darken/lighten
+  try{
+    const h = hex.replace('#','');
+    const bigint = parseInt(h,16);
+    let r = (bigint>>16)&255;
+    let g = (bigint>>8)&255;
+    let b = bigint&255;
+    r = parseInt(r*(100+percent)/100);
+    g = parseInt(g*(100+percent)/100);
+    b = parseInt(b*(100+percent)/100);
+    r = Math.min(255,Math.max(0,r));
+    g = Math.min(255,Math.max(0,g));
+    b = Math.min(255,Math.max(0,b));
+    return '#'+( (1<<24) + (r<<16) + (g<<8) + b ).toString(16).slice(1);
+  }catch(e){return hex}
+}
+const colorMap = {
+  "Red":"#e74c3c",
+  "Blue":"#007bff",
+  "Black":"#222222",
+  "White":"#f6f6f6",
+  "Green":"#28a745",
+  "Purple":"#7f3fbf",
+  "Orange":"#ff8c00",
+  "Yellow":"#f1c40f"
+};
+function updatePreview(){
+  const color = document.getElementById('color').value;
+  const container = document.getElementById('previewSVG');
+  if(!color){ container.innerHTML = 'No color selected'; return; }
+  const hex = colorMap[color] || '#cccccc';
+  container.innerHTML = svgStick(hex);
+}
 
-  function updatePreview() {
-    const brand = document.getElementById('brand').value; // ESW
-    const color = document.getElementById('color').value; // e.g. Orange
-    const price = document.getElementById('stickPrice').value;
-    const qty = document.getElementById('stickQty').value;
+/* ---------- Cart logic ---------- */
+const cart = []; // items {id, name, qty, price, type}
 
-    // Show textual preview
-    previewText.innerText = brand + (color ? ' — ' + color : '') + '\\n$' + parseFloat(price).toFixed(2) + ' x' + qty;
-    // If you later supply images named by pattern (e.g. images/ESW_Flylite_Orange.png),
-    // you could load them here by setting an <img> src. For now we keep text preview.
-  }
+function currency(n){ return '$'+Number(n).toFixed(2); }
 
-  // calculate total for sticks + balls
-  function calculateTotal() {
-    const stickPrice = parseFloat(document.getElementById('stickPrice').value) || 0;
-    const stickQty = parseInt(document.getElementById('stickQty').value) || 0;
-    const regularQty = parseInt(document.getElementById('regularBallQty').value) || 0;
-    const airlessQty = parseInt(document.getElementById('airlessBallQty').value) || 0;
+function refreshCart(){
+  const list = document.getElementById('cartList');
+  list.innerHTML = '';
+  let subtotal = 0;
+  cart.forEach((it, idx)=>{
+    subtotal += it.price * it.qty;
+    const li = document.createElement('li');
+    li.className='cart-item';
+    li.innerHTML = `
+      <div class="mini" aria-hidden="true">${it.kind}</div>
+      <div class="meta"><b>${it.name}</b><small>${it.qty} × ${currency(it.price)}</small></div>
+      <div><button class="remove" onclick="removeItem(${idx})">✕</button></div>
+    `;
+    list.appendChild(li);
+  });
+  document.getElementById('subtotal').innerText = currency(subtotal);
+  document.getElementById('totalPay').innerText = currency(subtotal); // no taxes/shipping in demo
+}
 
-    const stickTotal = stickPrice * stickQty;
-    const ballsTotal = (regularQty * 3) + (airlessQty * 5);
-    const total = stickTotal + ballsTotal;
+function addStickToCart(){
+  const brand = document.getElementById('brand').value || 'ESW';
+  const color = document.getElementById('color').value;
+  const qty = parseInt(document.getElementById('stickQty').value) || 1;
+  if(!color){ alert('Please choose a color for the stick.'); return; }
+  // For demo: base price rules (simple)
+  const basePrice = 22; // default ESW stick base price
+  const item = {
+    id: 'stick-'+Date.now(),
+    kind:'STK',
+    name: `${brand} Mini Stick (${color})`,
+    qty: qty,
+    price: basePrice
+  };
+  cart.push(item);
+  refreshCart();
+  alert(`${qty} ${brand} mini stick(s) (${color}) added to cart.`);
+}
 
-    document.getElementById('totalDisplay').innerText = 'Total: $' + total.toFixed(2);
-    document.getElementById('ballsTotalDisplay').innerText = 'Balls: $' + ballsTotal.toFixed(2);
+function addBallsToCart(){
+  const sel = document.getElementById('ballType');
+  const type = sel.value;
+  const opt = sel.options[sel.selectedIndex];
+  const price = type ? Number(opt.dataset.price) : 0;
+  const qty = parseInt(document.getElementById('ballQty').value) || 1;
+  if(!type){ alert('Please choose a ball type.'); return; }
+  const item = {
+    id: 'ball-'+Date.now(),
+    kind:'BALL',
+    name: `${type} Ball`,
+    qty: qty,
+    price: price
+  };
+  cart.push(item);
+  refreshCart();
+  alert(`${qty} ${type} ball(s) added to cart.`);
+}
 
-    updatePreview();
-  }
+function removeItem(index){
+  if(index>=0 && index < cart.length) cart.splice(index,1);
+  refreshCart();
+}
 
-  // contact send via mailto (opens user's mail client) to the address you provided earlier
-  function sendContactEmail() {
-    const name = document.getElementById('contactName').value.trim();
-    const stick = document.getElementById('contactStick').value.trim();
-    const balls = document.getElementById('contactBalls').value.trim();
+function checkout(){
+  if(cart.length===0){ alert('Your cart is empty.'); return; }
+  // Build email body
+  let body = 'Order from ESW%0D%0A%0D%0A';
+  let total = 0;
+  cart.forEach((it, i)=>{
+    body += `${i+1}. ${it.name} — Qty: ${it.qty} — Unit: ${currency(it.price)}%0D%0A`;
+    total += it.qty * it.price;
+  });
+  body += `%0D%0ATotal: ${currency(total)}%0D%0A%0D%0APlease respond with confirmation.`;
+  const mail = '31stvazn@dextersouthfield.org';
+  const subject = encodeURIComponent('ESW Order');
+  window.location.href = `mailto:${mail}?subject=${subject}&body=${body}`;
+}
 
-    if (!name && !stick && !balls) {
-      alert('Please fill at least one field to send.');
-      return;
-    }
+/* ---------- Contact (mailto) ---------- */
+function sendContactEmail(){
+  const name = encodeURIComponent(document.getElementById('contactName').value || '');
+  const stick = encodeURIComponent(document.getElementById('contactStick').value || '');
+  const balls = encodeURIComponent(document.getElementById('contactBall').value || '');
+  const mail = '31stvazn@dextersouthfield.org';
+  const subject = encodeURIComponent('ESW Quick Contact / Order');
+  const body = encodeURIComponent(`Name: ${decodeURIComponent(name)}%0AStick: ${decodeURIComponent(stick)}%0ABalls: ${decodeURIComponent(balls)}%0A%0A(Please follow up)`);
+  window.location.href = `mailto:${mail}?subject=${subject}&body=${body}`;
+}
 
-    const to = '31stvazn@dextersouthfield.org';
-    const subject = encodeURIComponent('ESW Inquiry from ' + (name || 'a visitor'));
-    const body = encodeURIComponent(
-      'Name: ' + (name || '') + '\\n' +
-      'Stick: ' + (stick || '') + '\\n' +
-      'Knee Hockey Balls: ' + (balls || '') + '\\n\\n' +
-      'Sent from ESW website.'
-    );
-
-    // open user's mail client
-    window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
-  }
-
-  // Attach listeners so preview updates when relevant inputs change
-  document.getElementById('brand').addEventListener('change', updatePreview);
-  document.getElementById('color').addEventListener('change', updatePreview);
-  document.getElementById('stickPrice').addEventListener('input', updatePreview);
-  document.getElementById('stickQty').addEventListener('input', updatePreview);
-
-  // initialize preview
+/* Init */
+document.addEventListener('DOMContentLoaded',()=>{
   updatePreview();
+  refreshCart();
+});
 </script>
 
 </body>

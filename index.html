@@ -1,142 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ESW</title>
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESW</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f4f4f4;
+        }
 
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    display: flex;
-}
+        header {
+            background: black;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 42px;
+            letter-spacing: 3px;
+        }
 
-/* Left Side – Customization */
-.customizer {
-    width: 60%;
-    padding: 30px;
-}
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
 
-.customizer h1 {
-    margin: 0;
-    font-size: 40px;
-}
+        button {
+            padding: 12px 22px;
+            font-size: 18px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            background: #222;
+            color: white;
+            transition: 0.2s;
+        }
+        button:hover {
+            background: #444;
+        }
 
-/* Stick image */
-.stick-preview {
-    margin-top: 25px;
-}
+        .section {
+            padding: 25px;
+            text-align: center;
+        }
 
-.stick-preview img {
-    width: 380px;
-    transition: 0.3s;
-}
+        .customizer {
+            display: flex;
+            justify-content: center;
+            gap: 35px;
+            margin-top: 30px;
+        }
 
-/* Right Side – Cart */
-.cart {
-    width: 40%;
-    background: #f2f2f2;
-    padding: 20px;
-    border-left: 3px solid black;
-}
+        select {
+            font-size: 18px;
+            padding: 10px;
+        }
 
-.cart h2 {
-    margin-top: 0;
-}
+        .stick-preview {
+            width: 350px;
+            border-radius: 12px;
+            border: 3px solid black;
+            background: white;
+            padding: 10px;
+        }
 
-/* Buttons */
-button {
-    padding: 10px 20px;
-    margin-top: 12px;
-    background: #005aff;
-    border: none;
-    color: white;
-    border-radius: 6px;
-    cursor: pointer;
-}
-button:hover {
-    background: #0040c7;
-}
+        #cart-box {
+            position: fixed;
+            right: 15px;
+            top: 120px;
+            width: 220px;
+            background: white;
+            border: 2px solid black;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 10px;
+        }
 
-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: white;
-    text-align: center;
-    padding: 5px;
-    border-top: 1px solid black;
-}
-
-</style>
+    </style>
 </head>
 <body>
 
-<!-- LEFT SECTION -->
-<div class="customizer">
-    <h1>ESW</h1>
+<header>ESW</header>
 
-    <h3>Mini Stick Customization</h3>
+<div class="buttons">
+    <button onclick="openAbout()">About Us</button>
+    <button onclick="openTestimonials()">Testimonials</button>
+    <button onclick="openContact()">Contact Us</button>
+</div>
 
-    <label>Choose Color:</label><br>
-    <select id="colorSelect" onchange="updateStickColor()">
-        <option value="purple">Purple</option>
-        <option value="green">Green</option>
-        <option value="blue">Blue</option>
-        <option value="orange">Orange</option>
-        <option value="red">Red</option>
-        <option value="yellow">Yellow</option>
-        <option value="black">Black</option>
-        <option value="white">White</option>
-    </select>
+<!-- CART -->
+<div id="cart-box">
+    <b>Your Cart</b><br><br>
+    <div id="cart-items">No items yet</div>
+</div>
 
-    <div class="stick-preview">
-        <h3>Preview:</h3>
-        <img id="stickImage" src="stick.png">
+<!-- MAIN CUSTOMIZER -->
+<div class="section">
+    <h1>Stick Customization</h1>
+
+    <div class="customizer">
+
+        <!-- LEFT SIDE CONTROLS -->
+        <div>
+            <h3>Brand</h3>
+            <select id="brandSelect">
+                <option value="ESW">ESW</option>
+            </select>
+
+            <h3>Color</h3>
+            <select id="colorSelect" onchange="updateStick()">
+                <option value="purple">Purple</option>
+                <option value="green">Green</option>
+                <option value="orange">Orange</option>
+                <option value="blue">Blue</option>
+                <option value="red">Red</option>
+                <option value="yellow">Yellow</option>
+            </select>
+
+            <br><br>
+            <button onclick="addToCart()">Add to Cart</button>
+        </div>
+
+        <!-- RIGHT SIDE PREVIEW IMAGE -->
+        <img id="stickImage"
+             class="stick-preview"
+             src="/mnt/data/9019e4e9-531f-4941-9d60-c99e153d3570.png"
+             alt="Stick Preview">
+
     </div>
 </div>
 
-<!-- RIGHT SIDE CART -->
-<div class="cart">
-    <h2>Cart</h2>
-    <p id="cartColor">Color: Purple</p>
-    <button onclick="addToCart()">Add to Cart</button>
-</div>
-
-<footer>
-<p>© 2025 ESW</p>
-<p>All rights reserved by Steven Vazny, Eli Hannifin and William Thorley</p>
-</footer>
-
 <script>
+    function updateStick() {
+        const color = document.getElementById("colorSelect").value;
+        const img = document.getElementById("stickImage");
 
-/* COLOR FILTERS TO RECOLOR YOUR PURPLE STICK IMAGE */
-const colorFilters = {
-    purple: "hue-rotate(0deg)",
-    green: "hue-rotate(110deg)",
-    blue: "hue-rotate(220deg)",
-    orange: "hue-rotate(310deg)",
-    red: "hue-rotate(345deg)",
-    yellow: "hue-rotate(60deg)",
-    black: "brightness(0%)",
-    white: "brightness(300%)"
-};
+        if (color === "purple") {
+            img.src = "/mnt/data/9019e4e9-531f-4941-9d60-c99e153d3570.png";
+        } else {
+            img.src =
+              "https://via.placeholder.com/350x120?text=" + color + "+stick";
+        }
+    }
 
-function updateStickColor() {
-    let color = document.getElementById("colorSelect").value;
-    let stick = document.getElementById("stickImage");
+    function addToCart() {
+        const color = document.getElementById("colorSelect").value;
+        const cart = document.getElementById("cart-items");
 
-    stick.style.filter = colorFilters[color];
+        if (cart.innerHTML === "No items yet") {
+            cart.innerHTML = "";
+        }
 
-    document.getElementById("cartColor").textContent = "Color: " + color;
-}
+        cart.innerHTML += "- ESW Stick (" + color + ")<br>";
+    }
 
-function addToCart() {
-    alert("Added to cart!");
-}
+    function openAbout() {
+        alert("ESW is a Hockey Shop where you can buy custom Mini Sticks and Knee Hockey Balls. Created for a school project.");
+    }
 
+    function openTestimonials() {
+        alert("Testimonials:\n1. 'Amazing products!'\n2. 'Best custom sticks ever!'");
+    }
+
+    function openContact() {
+        alert("Contact us at: 31stvazn@dextersouthfield.org");
+    }
 </script>
 
 </body>

@@ -25,11 +25,7 @@
   }
   .btn.secondary{background:#444}
   main{display:flex;gap:20px;padding:20px;box-sizing:border-box}
-  /* Left area: customization */
-  .left{
-    flex:1 1 620px;
-    max-width:900px;
-  }
+  .left{flex:1 1 620px;max-width:900px;}
   .card{
     background:var(--card);
     padding:18px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.06);
@@ -43,13 +39,11 @@
   .flex-row{display:flex;gap:12px;align-items:center}
   .small{width:120px}
   .add-btn{margin-top:12px;background:#0b8f3b}
-  /* Preview area (right of customization rows but inside left column) */
   .custom-row{display:flex;gap:18px;align-items:flex-start}
   .preview{
     width:260px;min-height:220px;background:#fafafa;border:1px dashed #e0e0e0;border-radius:8px;
     display:flex;align-items:center;justify-content:center;
   }
-  /* Cart sidebar */
   .cart{
     width:360px;flex:0 0 360px;position:sticky;top:20px;height:calc(100vh - 40px);overflow:auto;
   }
@@ -63,11 +57,9 @@
   .cart-item .remove{background:transparent;border:none;color:#c00;cursor:pointer;font-weight:700}
   .totals{padding:10px;border-top:1px solid #eee;margin-top:8px}
   .checkout-btn{width:100%;padding:12px;border-radius:8px;border:none;background:var(--accent);color:#fff;cursor:pointer;font-size:16px}
-  /* Contact box (three boxes + send) */
   .contact-row{display:flex;gap:12px;align-items:flex-end}
   .contact-row .col{flex:1}
   .contact-row .send{width:140px}
-  /* responsive */
   @media(max-width:1000px){
     main{flex-direction:column}
     .cart{width:100%;height:auto;position:static}
@@ -87,21 +79,16 @@
 </header>
 
 <main>
-  <!-- LEFT: customization + contact -->
   <section class="left">
-    <!-- Customization card -->
+
     <div class="card" id="customCard">
       <h2>Mini Stick Customization</h2>
 
-      <!-- Brand changed to ESW (single brand) -->
       <label for="brand">Brand</label>
       <select id="brand">
         <option value="ESW">ESW</option>
       </select>
 
-      <!-- TYPE removed as requested -->
-
-      <!-- Color (Regular removed) -->
       <label for="color">Color</label>
       <select id="color" onchange="updatePreview()">
         <option value="">-- Choose Color --</option>
@@ -115,7 +102,6 @@
         <option value="Yellow">Yellow</option>
       </select>
 
-      <!-- Quantity and Add to cart -->
       <div style="display:flex;gap:12px;align-items:center;margin-top:10px">
         <div style="flex:1">
           <label for="stickQty">Quantity</label>
@@ -127,26 +113,24 @@
         </div>
       </div>
 
-      <!-- custom-row: preview on the right -->
       <div class="custom-row" style="margin-top:16px">
         <div style="flex:1">
           <p style="margin:0;color:var(--muted)">Preview updates as you choose color/brand.</p>
         </div>
-        <div class="preview" id="stickPreview" aria-hidden="true">
-          <!-- SVG preview inserted dynamically -->
+        <div class="preview" id="stickPreview">
           <div id="previewSVG">No color selected</div>
         </div>
       </div>
     </div>
 
-    <!-- Knee Hockey Balls card -->
+    <!-- UPDATED PRICES HERE -->
     <div class="card">
       <h2>Knee Hockey Balls</h2>
       <label for="ballType">Choose Ball Type</label>
       <select id="ballType">
         <option value="">-- Choose Ball Type --</option>
-        <option value="Regular" data-price="3">Regular — $3</option>
-        <option value="Airless" data-price="5">Airless — $5</option>
+        <option value="Regular" data-price="5">Regular — $5</option>
+        <option value="Airless" data-price="3">Airless — $3</option>
       </select>
 
       <label for="ballQty">Quantity</label>
@@ -157,7 +141,6 @@
       </div>
     </div>
 
-    <!-- Contact form (three boxes + send) -->
     <div class="card">
       <h2>Contact & Quick Order</h2>
       <div class="contact-row">
@@ -182,7 +165,7 @@
     </div>
   </section>
 
-  <!-- RIGHT: cart sidebar -->
+  <!-- CART SIDEBAR -->
   <aside class="cart">
     <div class="card">
       <h3>Your Cart</h3>
@@ -204,28 +187,22 @@
 </main>
 
 <script>
-/* ---------- Preview generation (SVG stick) ---------- */
+/* SVG preview (for now until you upload the real photos) */
 function svgStick(color){
-  // simple stylized stick SVG: a shaft rectangle + blade polygon; color applied to shaft and blade accent
   const shaft = color || '#cccccc';
   const blade = shadeColor(shaft, -20);
   return `
-  <svg width="220" height="160" viewBox="0 0 220 160" xmlns="http://www.w3.org/2000/svg" aria-labelledby="t">
-    <title>Stick preview</title>
+  <svg width="220" height="160" viewBox="0 0 220 160" xmlns="http://www.w3.org/2000/svg">
     <g transform="translate(10,10)">
-      <!-- shaft -->
       <rect x="0" y="40" width="140" height="18" rx="6" fill="${shaft}" stroke="#333" stroke-opacity="0.06"/>
-      <!-- grip -->
       <rect x="0" y="30" width="12" height="10" rx="3" fill="#222" />
-      <!-- blade -->
       <path d="M120 42 L170 58 L150 78 L108 62 Z" fill="${blade}" stroke="#333" stroke-opacity="0.06" />
-      <!-- brand text -->
       <text x="18" y="53" font-family="Arial" font-size="12" fill="#111" font-weight="700">ESW</text>
     </g>
   </svg>`;
 }
+
 function shadeColor(hex, percent) {
-  // convert hex to RGB and darken/lighten
   try{
     const h = hex.replace('#','');
     const bigint = parseInt(h,16);
@@ -241,6 +218,7 @@ function shadeColor(hex, percent) {
     return '#'+( (1<<24) + (r<<16) + (g<<8) + b ).toString(16).slice(1);
   }catch(e){return hex}
 }
+
 const colorMap = {
   "Red":"#e74c3c",
   "Blue":"#007bff",
@@ -251,6 +229,7 @@ const colorMap = {
   "Orange":"#ff8c00",
   "Yellow":"#f1c40f"
 };
+
 function updatePreview(){
   const color = document.getElementById('color').value;
   const container = document.getElementById('previewSVG');
@@ -259,8 +238,8 @@ function updatePreview(){
   container.innerHTML = svgStick(hex);
 }
 
-/* ---------- Cart logic ---------- */
-const cart = []; // items {id, name, qty, price, type}
+/* CART LOGIC */
+const cart = [];
 
 function currency(n){ return '$'+Number(n).toFixed(2); }
 
@@ -273,14 +252,14 @@ function refreshCart(){
     const li = document.createElement('li');
     li.className='cart-item';
     li.innerHTML = `
-      <div class="mini" aria-hidden="true">${it.kind}</div>
+      <div class="mini">${it.kind}</div>
       <div class="meta"><b>${it.name}</b><small>${it.qty} × ${currency(it.price)}</small></div>
       <div><button class="remove" onclick="removeItem(${idx})">✕</button></div>
     `;
     list.appendChild(li);
   });
   document.getElementById('subtotal').innerText = currency(subtotal);
-  document.getElementById('totalPay').innerText = currency(subtotal); // no taxes/shipping in demo
+  document.getElementById('totalPay').innerText = currency(subtotal);
 }
 
 function addStickToCart(){
@@ -288,8 +267,7 @@ function addStickToCart(){
   const color = document.getElementById('color').value;
   const qty = parseInt(document.getElementById('stickQty').value) || 1;
   if(!color){ alert('Please choose a color for the stick.'); return; }
-  // For demo: base price rules (simple)
-  const basePrice = 22; // default ESW stick base price
+  const basePrice = 22;
   const item = {
     id: 'stick-'+Date.now(),
     kind:'STK',
@@ -328,7 +306,6 @@ function removeItem(index){
 
 function checkout(){
   if(cart.length===0){ alert('Your cart is empty.'); return; }
-  // Build email body
   let body = 'Order from ESW%0D%0A%0D%0A';
   let total = 0;
   cart.forEach((it, i)=>{
@@ -341,7 +318,6 @@ function checkout(){
   window.location.href = `mailto:${mail}?subject=${subject}&body=${body}`;
 }
 
-/* ---------- Contact (mailto) ---------- */
 function sendContactEmail(){
   const name = encodeURIComponent(document.getElementById('contactName').value || '');
   const stick = encodeURIComponent(document.getElementById('contactStick').value || '');
@@ -352,7 +328,6 @@ function sendContactEmail(){
   window.location.href = `mailto:${mail}?subject=${subject}&body=${body}`;
 }
 
-/* Init */
 document.addEventListener('DOMContentLoaded',()=>{
   updatePreview();
   refreshCart();

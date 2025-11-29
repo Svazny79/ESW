@@ -56,7 +56,7 @@
   .cart h3{margin:0 0 8px 0}
   .cart-list{list-style:none;padding:0;margin:0}
   .cart-item{display:flex;gap:10px;padding:10px;border-radius:8px;border:1px solid #eee;margin-bottom:8px;align-items:center}
-  .cart-item .mini{width:54px;height:54px;border-radius:6px;background:#eee;display:flex;align-items:center;justify-content:center;font-size:12px;color:#333}
+  .cart-item .mini{width:54px;height:54px;border-radius:6px;background:#eee;display:flex;align-items:center;justify-content:center;font-size:12px;color:#333;overflow:hidden;}
   .cart-item .meta{flex:1}
   .cart-item .meta b{display:block}
   .cart-item .remove{background:transparent;border:none;color:#c00;cursor:pointer;font-weight:700}
@@ -241,7 +241,7 @@ function updatePreview(){
     return; 
   }
 
-  const fileName = `${color} stick.png`;  // automatically match filename like "Blue stick.png"
+  const fileName = `${color} stick.png`;
   const img = new Image();
   img.src = fileName;
   img.className = 'preview-img';
@@ -255,6 +255,7 @@ function updatePreview(){
 /* ---------- cart logic ---------- */
 const cart = [];
 function currency(n){ return '$'+Number(n).toFixed(2); }
+
 function refreshCart(){
   const list = document.getElementById('cartList');
   list.innerHTML = '';
@@ -264,7 +265,9 @@ function refreshCart(){
     const li = document.createElement('li');
     li.className='cart-item';
     li.innerHTML = `
-      <div class="mini">${it.kind}</div>
+      <div class="mini">
+        ${it.kind === 'STK' ? `<img src="${it.image}" style="width:100%;height:100%;object-fit:contain;">` : it.kind}
+      </div>
       <div class="meta"><b>${it.name}</b><small>${it.qty} × ${currency(it.price)}</small></div>
       <div><button class="remove" onclick="removeItem(${idx})">✕</button></div>
     `;
@@ -273,17 +276,26 @@ function refreshCart(){
   document.getElementById('subtotal').innerText = currency(subtotal);
   document.getElementById('totalPay').innerText = currency(subtotal);
 }
+
 function addStickToCart(){
   const brand = document.getElementById('brand').value || 'ESW';
   const color = document.getElementById('color').value;
   const qty = parseInt(document.getElementById('stickQty').value) || 1;
   if(!color){ alert('Please choose a color for the stick.'); return; }
   const basePrice = 22;
-  const item = { id: 'stick-'+Date.now(), kind:'STK', name:`${brand} Mini Stick (${color})`, qty, price:basePrice };
+  const item = { 
+    id: 'stick-'+Date.now(),
+    kind:'STK',
+    name: `${brand} Mini Stick (${color})`,
+    qty,
+    price: basePrice,
+    image: `${color} stick.png` // <-- image for cart
+  };
   cart.push(item);
   refreshCart();
   alert(`${qty} ${brand} mini stick(s) (${color}) added to cart.`);
 }
+
 function addBallsToCart(){
   const sel = document.getElementById('ballType');
   const type = sel.value;
@@ -296,7 +308,9 @@ function addBallsToCart(){
   refreshCart();
   alert(`${qty} ${type} ball(s) added to cart.`);
 }
+
 function removeItem(index){ if(index>=0 && index<cart.length) cart.splice(index,1); refreshCart(); }
+
 function checkout(){
   if(cart.length===0){ alert('Your cart is empty.'); return; }
   let body = 'Order from ESW%0D%0A%0D%0A';

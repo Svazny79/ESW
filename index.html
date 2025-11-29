@@ -201,10 +201,6 @@ const colorMap = {
   "Yellow":"#f1c40f"
 };
 
-const stickImages = {
-  Orange: "Orange stick.png"  // updated file name
-};
-
 function svgStick(color){
   const shaft = color || '#cccccc';
   const blade = shadeColor(shaft, -20);
@@ -236,6 +232,7 @@ function shadeColor(hex, percent) {
   }catch(e){return hex}
 }
 
+/* ---------- automatic stick image preview ---------- */
 function updatePreview(){
   const color = document.getElementById('color').value;
   const container = document.getElementById('previewSVG');
@@ -244,19 +241,20 @@ function updatePreview(){
     return; 
   }
 
-  if(stickImages[color]){
-    container.innerHTML = `<img src="${stickImages[color]}" class="preview-img">`;
-  } else {
+  const fileName = `${color} stick.png`;  // automatically match filename like "Blue stick.png"
+  const img = new Image();
+  img.src = fileName;
+  img.className = 'preview-img';
+  img.onload = () => { container.innerHTML=''; container.appendChild(img); };
+  img.onerror = () => { 
     const hex = colorMap[color] || '#cccccc';
     container.innerHTML = svgStick(hex);
-  }
+  };
 }
 
-/* CART LOGIC */
+/* ---------- cart logic ---------- */
 const cart = [];
-
 function currency(n){ return '$'+Number(n).toFixed(2); }
-
 function refreshCart(){
   const list = document.getElementById('cartList');
   list.innerHTML = '';
@@ -275,25 +273,17 @@ function refreshCart(){
   document.getElementById('subtotal').innerText = currency(subtotal);
   document.getElementById('totalPay').innerText = currency(subtotal);
 }
-
 function addStickToCart(){
   const brand = document.getElementById('brand').value || 'ESW';
   const color = document.getElementById('color').value;
   const qty = parseInt(document.getElementById('stickQty').value) || 1;
   if(!color){ alert('Please choose a color for the stick.'); return; }
   const basePrice = 22;
-  const item = {
-    id: 'stick-'+Date.now(),
-    kind:'STK',
-    name: `${brand} Mini Stick (${color})`,
-    qty: qty,
-    price: basePrice
-  };
+  const item = { id: 'stick-'+Date.now(), kind:'STK', name:`${brand} Mini Stick (${color})`, qty, price:basePrice };
   cart.push(item);
   refreshCart();
   alert(`${qty} ${brand} mini stick(s) (${color}) added to cart.`);
 }
-
 function addBallsToCart(){
   const sel = document.getElementById('ballType');
   const type = sel.value;
@@ -301,37 +291,24 @@ function addBallsToCart(){
   const price = type ? Number(opt.dataset.price) : 0;
   const qty = parseInt(document.getElementById('ballQty').value) || 1;
   if(!type){ alert('Please choose a ball type.'); return; }
-  const item = {
-    id: 'ball-'+Date.now(),
-    kind:'BALL',
-    name: `${type} Ball`,
-    qty: qty,
-    price: price
-  };
+  const item = { id: 'ball-'+Date.now(), kind:'BALL', name:`${type} Ball`, qty, price };
   cart.push(item);
   refreshCart();
   alert(`${qty} ${type} ball(s) added to cart.`);
 }
-
-function removeItem(index){
-  if(index>=0 && index < cart.length) cart.splice(index,1);
-  refreshCart();
-}
-
+function removeItem(index){ if(index>=0 && index<cart.length) cart.splice(index,1); refreshCart(); }
 function checkout(){
   if(cart.length===0){ alert('Your cart is empty.'); return; }
   let body = 'Order from ESW%0D%0A%0D%0A';
   let total = 0;
-  cart.forEach((it, i)=>{
-    body += `${i+1}. ${it.name} — Qty: ${it.qty} — Unit: ${currency(it.price)}%0D%0A`;
-    total += it.qty * it.price;
-  });
+  cart.forEach((it,i)=>{ body += `${i+1}. ${it.name} — Qty: ${it.qty} — Unit: ${currency(it.price)}%0D%0A`; total += it.qty*it.price; });
   body += `%0D%0ATotal: ${currency(total)}%0D%0A%0D%0APlease respond with confirmation.`;
   const mail = '31stvazn@dextersouthfield.org';
   const subject = encodeURIComponent('ESW Order');
   window.location.href = `mailto:${mail}?subject=${subject}&body=${body}`;
 }
 
+/* ---------- Contact ---------- */
 function sendContactEmail(){
   const name = encodeURIComponent(document.getElementById('contactName').value || '');
   const stick = encodeURIComponent(document.getElementById('contactStick').value || '');

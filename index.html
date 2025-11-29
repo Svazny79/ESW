@@ -44,6 +44,11 @@
     width:260px;min-height:220px;background:#fafafa;border:1px dashed #e0e0e0;border-radius:8px;
     display:flex;align-items:center;justify-content:center;
   }
+  .preview-img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
   .cart{
     width:360px;flex:0 0 360px;position:sticky;top:20px;height:calc(100vh - 40px);overflow:auto;
   }
@@ -123,7 +128,6 @@
       </div>
     </div>
 
-    <!-- UPDATED PRICES HERE -->
     <div class="card">
       <h2>Knee Hockey Balls</h2>
       <label for="ballType">Choose Ball Type</label>
@@ -165,7 +169,6 @@
     </div>
   </section>
 
-  <!-- CART SIDEBAR -->
   <aside class="cart">
     <div class="card">
       <h3>Your Cart</h3>
@@ -187,7 +190,21 @@
 </main>
 
 <script>
-/* SVG preview (for now until you upload the real photos) */
+const colorMap = {
+  "Red":"#e74c3c",
+  "Blue":"#007bff",
+  "Black":"#222222",
+  "White":"#f6f6f6",
+  "Green":"#28a745",
+  "Purple":"#7f3fbf",
+  "Orange":"#ff8c00",
+  "Yellow":"#f1c40f"
+};
+
+const stickImages = {
+  Orange: "stick-orange.png" // uploaded file
+};
+
 function svgStick(color){
   const shaft = color || '#cccccc';
   const blade = shadeColor(shaft, -20);
@@ -219,23 +236,20 @@ function shadeColor(hex, percent) {
   }catch(e){return hex}
 }
 
-const colorMap = {
-  "Red":"#e74c3c",
-  "Blue":"#007bff",
-  "Black":"#222222",
-  "White":"#f6f6f6",
-  "Green":"#28a745",
-  "Purple":"#7f3fbf",
-  "Orange":"#ff8c00",
-  "Yellow":"#f1c40f"
-};
-
 function updatePreview(){
   const color = document.getElementById('color').value;
   const container = document.getElementById('previewSVG');
-  if(!color){ container.innerHTML = 'No color selected'; return; }
-  const hex = colorMap[color] || '#cccccc';
-  container.innerHTML = svgStick(hex);
+  if(!color){ 
+    container.innerHTML = 'No color selected'; 
+    return; 
+  }
+
+  if(stickImages[color]){
+    container.innerHTML = `<img src="${stickImages[color]}" class="preview-img">`;
+  } else {
+    const hex = colorMap[color] || '#cccccc';
+    container.innerHTML = svgStick(hex);
+  }
 }
 
 /* CART LOGIC */

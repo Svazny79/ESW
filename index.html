@@ -31,7 +31,7 @@
     padding:18px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.06);
     margin-bottom:18px;
   }
-  .card h2{margin-top:0}
+  .card h2, .card h3{margin-top:0}
   label{display:block;margin:10px 0 6px;font-weight:600}
   select,input[type=number],input[type=text],textarea{
     width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:14px;box-sizing:border-box;
@@ -44,11 +44,7 @@
     width:260px;min-height:220px;background:#fafafa;border:1px dashed #e0e0e0;border-radius:8px;
     display:flex;align-items:center;justify-content:center;
   }
-  .preview-img {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-  }
+  .preview-img { width: 100%; height: auto; object-fit: contain; }
   .cart{
     width:360px;flex:0 0 360px;position:sticky;top:20px;height:calc(100vh - 40px);overflow:auto;
   }
@@ -90,9 +86,7 @@
       <h2>Mini Stick Customization</h2>
 
       <label for="brand">Brand</label>
-      <select id="brand">
-        <option value="ESW">ESW</option>
-      </select>
+      <select id="brand"><option value="ESW">ESW</option></select>
 
       <label for="color">Color</label>
       <select id="color" onchange="updatePreview()">
@@ -167,6 +161,7 @@
       </div>
       <p style="margin-top:10px;color:var(--muted);font-size:13px">Clicking Send will open your email client (mailto) addressed to <b>31stvazn@dextersouthfield.org</b> with the order details.</p>
     </div>
+
   </section>
 
   <aside class="cart">
@@ -186,19 +181,25 @@
       <h3>Cart notes</h3>
       <p style="margin:0;color:var(--muted);font-size:13px">You can add sticks and balls. Remove items with the red X. Checkout will open a mailto with the cart summary so you can place the order (static demo).</p>
     </div>
+
+    <!-- Limited Time Offer -->
+    <div class="card">
+      <h3>Limited Time Offer</h3>
+      <p style="margin:0;color:var(--muted);font-size:13px">
+        One Mini Stick (any color) + One Ball (Airless or Regular)
+      </p>
+      <div style="margin-top:12px">
+        <button class="btn add-btn" style="width:100%" onclick="addLimitedOffer()">Add Limited Offer to Cart</button>
+      </div>
+    </div>
+
   </aside>
 </main>
 
 <script>
 const colorMap = {
-  "Red":"#e74c3c",
-  "Blue":"#007bff",
-  "Black":"#222222",
-  "White":"#f6f6f6",
-  "Green":"#28a745",
-  "Purple":"#7f3fbf",
-  "Orange":"#ff8c00",
-  "Yellow":"#f1c40f"
+  "Red":"#e74c3c","Blue":"#007bff","Black":"#222222","White":"#f6f6f6",
+  "Green":"#28a745","Purple":"#7f3fbf","Orange":"#ff8c00","Yellow":"#f1c40f"
 };
 
 function svgStick(color){
@@ -232,27 +233,19 @@ function shadeColor(hex, percent) {
   }catch(e){return hex}
 }
 
-/* ---------- automatic stick image preview ---------- */
 function updatePreview(){
   const color = document.getElementById('color').value;
   const container = document.getElementById('previewSVG');
-  if(!color){ 
-    container.innerHTML = 'No color selected'; 
-    return; 
-  }
+  if(!color){ container.innerHTML = 'No color selected'; return; }
 
   const fileName = `${color} stick.png`;
   const img = new Image();
   img.src = fileName;
   img.className = 'preview-img';
   img.onload = () => { container.innerHTML=''; container.appendChild(img); };
-  img.onerror = () => { 
-    const hex = colorMap[color] || '#cccccc';
-    container.innerHTML = svgStick(hex);
-  };
+  img.onerror = () => { const hex = colorMap[color] || '#cccccc'; container.innerHTML = svgStick(hex); };
 }
 
-/* ---------- cart logic ---------- */
 const cart = [];
 function currency(n){ return '$'+Number(n).toFixed(2); }
 
@@ -283,15 +276,13 @@ function addStickToCart(){
   const qty = parseInt(document.getElementById('stickQty').value) || 1;
   if(!color){ alert('Please choose a color for the stick.'); return; }
   const basePrice = 22;
-  const item = { 
+  cart.push({
     id: 'stick-'+Date.now(),
     kind:'STK',
     name: `${brand} Mini Stick (${color})`,
-    qty,
-    price: basePrice,
-    image: `${color} stick.png` // <-- image for cart
-  };
-  cart.push(item);
+    qty, price: basePrice,
+    image: `${color} stick.png`
+  });
   refreshCart();
   alert(`${qty} ${brand} mini stick(s) (${color}) added to cart.`);
 }
@@ -303,8 +294,7 @@ function addBallsToCart(){
   const price = type ? Number(opt.dataset.price) : 0;
   const qty = parseInt(document.getElementById('ballQty').value) || 1;
   if(!type){ alert('Please choose a ball type.'); return; }
-  const item = { id: 'ball-'+Date.now(), kind:'BALL', name:`${type} Ball`, qty, price };
-  cart.push(item);
+  cart.push({ id:'ball-'+Date.now(), kind:'BALL', name:`${type} Ball`, qty, price });
   refreshCart();
   alert(`${qty} ${type} ball(s) added to cart.`);
 }
@@ -322,7 +312,6 @@ function checkout(){
   window.location.href = `mailto:${mail}?subject=${subject}&body=${body}`;
 }
 
-/* ---------- Contact ---------- */
 function sendContactEmail(){
   const name = encodeURIComponent(document.getElementById('contactName').value || '');
   const stick = encodeURIComponent(document.getElementById('contactStick').value || '');
@@ -333,11 +322,38 @@ function sendContactEmail(){
   window.location.href = `mailto:${mail}?subject=${subject}&body=${body}`;
 }
 
+/* Limited Time Offer */
+function addLimitedOffer() {
+  const color = prompt("Choose stick color for the Limited Time Offer:", "Red");
+  if(!color) return alert("No color selected. Offer not added.");
+
+  const ballType = prompt("Choose ball type (Regular or Airless):", "Regular");
+  if(!ballType || (ballType!=="Regular" && ballType!=="Airless")) return alert("Invalid ball type. Offer not added.");
+
+  // Add stick
+  cart.push({
+    id: 'stick-'+Date.now(),
+    kind:'STK',
+    name: `ESW Mini Stick (${color})`,
+    qty: 1,
+    price: 22,
+    image: `${color} stick.png`
+  });
+
+  // Add ball
+  const ballPrice = ballType === "Regular" ? 5 : 3;
+  cart.push({
+    id: 'ball-'+Date.now(),
+    kind:'BALL',
+    name: `${ballType} Ball`,
+    qty: 1,
+    price: ballPrice
+  });
+
+  refreshCart();
+  alert(`Limited Time Offer added: 1 ${color} Mini Stick + 1 ${ballType} Ball.`);
+}
+
 document.addEventListener('DOMContentLoaded',()=>{
   updatePreview();
-  refreshCart();
-});
-</script>
-
-</body>
-</html>
+  refresh

@@ -79,7 +79,7 @@
   }
   .fly { position: absolute; animation: flyToCart 0.9s cubic-bezier(.2,.8,.2,1) forwards; z-index:9999; pointer-events:none; font-size:28px; }
 
-  /* Testimonials */
+  /* Testimonials / Reviews */
   .testimonials { background: #fff; padding: 20px; margin-top: 12px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
   .testimonial { margin-bottom: 12px; }
   .testimonial b { font-size:15px; }
@@ -95,6 +95,10 @@
     .cart{width:100%;height:auto;position:static}
     .preview{width:180px}
   }
+
+  footer{
+    text-align:center; padding:12px 0; font-size:13px; color:var(--muted);
+  }
 </style>
 </head>
 <body>
@@ -103,7 +107,6 @@
   <h1>ESW</h1>
   <div class="header-buttons">
     <button class="btn" onclick="location.href='about.html'">About Us</button>
-    <button class="btn" onclick="location.href='testimonials.html'">Testimonials</button>
     <button class="btn" onclick="location.href='contact.html'">Contact Us</button>
   </div>
 </header>
@@ -153,7 +156,6 @@
           <p style="margin:0;color:var(--muted)">Preview updates as you choose color/brand.</p>
         </div>
         <div class="preview" id="stickPreview" aria-hidden="true">
-          <!-- SVG preview inserted dynamically -->
           <div id="previewSVG">No color selected</div>
         </div>
       </div>
@@ -203,11 +205,19 @@
       <p style="margin-top:10px;color:var(--muted);font-size:13px">Clicking Send will open your email client (mailto) addressed to <b>31stvazn@dextersouthfield.org</b> with the order details.</p>
     </div>
 
-    <!-- Testimonials -->
+    <!-- Reviews -->
     <div class="testimonials">
-      <h3>What customers say</h3>
+      <h3>Reviews</h3>
       <div class="testimonial"><b>★★★★★ — Jake M.</b><p>Great quality sticks! My kids love them.</p></div>
       <div class="testimonial"><b>★★★★★ — Ryan T.</b><p>Super realistic mini sticks. Fast delivery too!</p></div>
+      <div class="testimonial"><b>★★★★★ — Emily R.</b><p>Exactly what I needed for our game night.</p></div>
+      <div class="testimonial"><b>★★★★★ — Michael S.</b><p>Durable and lightweight. Highly recommend.</p></div>
+      <div class="testimonial"><b>★★★★★ — Sarah L.</b><p>Perfect mini sticks, fun for practice sessions.</p></div>
+      <div class="testimonial"><b>★★★★★ — Daniel K.</b><p>Great value for the price. Very happy.</p></div>
+      <div class="testimonial"><b>★★★★★ — Olivia P.</b><p>Fast shipping and excellent customer service.</p></div>
+      <div class="testimonial"><b>★★★★★ — Ethan W.</b><p>Kids loved them! Perfect size and quality.</p></div>
+      <div class="testimonial"><b>★★★★★ — Sophia N.</b><p>Exactly as described, great colors.</p></div>
+      <div class="testimonial"><b>★★★★★ — Liam J.</b><p>Would buy again for sure. Excellent product.</p></div>
     </div>
   </section>
 
@@ -231,13 +241,12 @@
         </div>
       </div>
     </div>
-
-    <div class="card">
-      <h3>Cart notes</h3>
-      <p style="margin:0;color:var(--muted);font-size:13px">You can add sticks and balls. Remove items with the red X. Checkout will open a mailto with the cart summary so you can place the order (static demo). Discount code <b>Vazny</b> gives 10% off.</p>
-    </div>
   </aside>
 </main>
+
+<footer>
+All Rights reserved © 2025 by Steven Vazny, Eli Hanafin and William Thorley
+</footer>
 
 <script>
 /* ---------- Preview generation (SVG stick) ---------- */
@@ -303,7 +312,7 @@ function updatePreview(){
   };
 }
 
-/* ---------- Stock display (display-only) ---------- */
+/* ---------- Stock display ---------- */
 const stickStockLevels = {
   "Red": "in-stock",
   "Blue": "low-stock",
@@ -347,10 +356,9 @@ function updateBallStock(){
   el.innerHTML = info.text;
 }
 
-/* ---------- Cart logic + images in mini box ---------- */
-const cart = []; // items {id, kind, name, qty, price, image}
+/* ---------- Cart logic ---------- */
+const cart = [];
 let discountApplied = false;
-
 function currency(n){ return '$'+Number(n).toFixed(2); }
 
 function refreshCart(){
@@ -373,8 +381,9 @@ function refreshCart(){
   const subtotalNode = document.getElementById('subtotal');
   const totalNode = document.getElementById('totalPay');
   subtotalNode.innerText = currency(subtotal);
+
   let total = subtotal;
-  if(discountApplied){ total = total * 0.9; } // 10% off
+  if(discountApplied){ total = Math.max(0, subtotal - 1); } // $1 off
   totalNode.innerText = currency(total);
 }
 
@@ -383,7 +392,7 @@ function applyDiscount(){
   const code = document.getElementById('discountInput').value.trim();
   if(code === 'Vazny'){
     discountApplied = true;
-    alert('Discount code applied — 10% off');
+    alert('Discount code applied — $1 off');
     refreshCart();
   } else {
     alert('Invalid discount code');
@@ -392,7 +401,6 @@ function applyDiscount(){
 
 /* ---------- add-to-cart animation ---------- */
 function animateAddAt(element) {
-  // create ghost near element and animate to cart area
   const rect = element.getBoundingClientRect();
   const ghost = document.createElement('div');
   ghost.className = 'fly';
@@ -409,9 +417,8 @@ function addStickToCart(){
   const color = document.getElementById('color').value;
   const qty = parseInt(document.getElementById('stickQty').value) || 1;
   if(!color){ alert('Please choose a color for the stick.'); return; }
-  // block adding if marked sold-out in display-only stock
   if((stickStockLevels[color] || 'in-stock') === 'sold-out'){ alert('This color is marked sold out.'); return; }
-  const basePrice = 7; // updated price
+  const basePrice = 7;
   const item = {
     id: 'stick-'+Date.now(),
     kind:'STK',
@@ -422,10 +429,8 @@ function addStickToCart(){
   };
   cart.push(item);
   refreshCart();
-  // animation (use the add button as source)
   const btn = document.querySelector('.add-btn[onclick*="addStickToCart"]') || document.querySelector('.add-btn');
   if(btn) animateAddAt(btn);
-  // simple toast-like alert
   alert(`${qty} ${brand} mini stick(s) (${color}) added to cart.`);
 }
 
@@ -456,7 +461,7 @@ function removeItem(index){
   refreshCart();
 }
 
-/* ---------- Checkout (mailto) ---------- */
+/* ---------- Checkout ---------- */
 function checkout(){
   if(cart.length===0){ alert('Your cart is empty.'); return; }
   let body = 'Order from ESW%0D%0A%0D%0A';
@@ -466,8 +471,8 @@ function checkout(){
     total += it.qty * it.price;
   });
   if(discountApplied){
-    const discounted = total * 0.9;
-    body += `%0D%0ADiscount (Vazny): 10% off%0D%0A`;
+    const discounted = Math.max(0, total-1);
+    body += `%0D%0ADiscount (Vazny): $1 off%0D%0A`;
     body += `%0D%0ATotal after discount: ${currency(discounted)}%0D%0A`;
   } else {
     body += `%0D%0ATotal: ${currency(total)}%0D%0A`;
@@ -478,7 +483,7 @@ function checkout(){
   window.location.href = `mailto:${mail}?subject=${subject}&body=${encodeURIComponent(body)}`;
 }
 
-/* ---------- Contact (mailto) ---------- */
+/* ---------- Contact ---------- */
 function sendContactEmail(){
   const name = encodeURIComponent(document.getElementById('contactName').value || '');
   const stick = encodeURIComponent(document.getElementById('contactStick').value || '');

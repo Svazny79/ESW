@@ -65,6 +65,31 @@
   .contact-row{display:flex;gap:12px;align-items:flex-end}
   .contact-row .col{flex:1}
   .contact-row .send{width:140px}
+
+  /* Stock labels */
+  .stock { font-size:13px; font-weight:700; margin-top:8px; }
+  .in-stock { color: #0a0; }
+  .low-stock { color: #c90; }
+  .sold-out { color: #c00; }
+
+  /* Add-to-cart animation */
+  @keyframes flyToCart {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translate(130px, -200px) scale(0.2); opacity: 0; }
+  }
+  .fly { position: absolute; animation: flyToCart 0.9s cubic-bezier(.2,.8,.2,1) forwards; z-index:9999; pointer-events:none; font-size:28px; }
+
+  /* Testimonials */
+  .testimonials { background: #fff; padding: 20px; margin-top: 12px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+  .testimonial { margin-bottom: 12px; }
+  .testimonial b { font-size:15px; }
+  .testimonial p { margin:4px 0 0 0; color:var(--muted); font-size:14px; }
+
+  /* Discount input */
+  .discount-row { display:flex; gap:8px; margin-top:12px; }
+  .discount-row input { padding:8px; border:1px solid #ddd; border-radius:6px; flex:1; }
+  .discount-row button { padding:8px 12px; }
+
   @media(max-width:1000px){
     main{flex-direction:column}
     .cart{width:100%;height:auto;position:static}
@@ -84,8 +109,9 @@
 </header>
 
 <main>
+  <!-- LEFT: customization + contact -->
   <section class="left">
-
+    <!-- Customization card -->
     <div class="card" id="customCard">
       <h2>Mini Stick Customization</h2>
 
@@ -95,7 +121,7 @@
       </select>
 
       <label for="color">Color</label>
-      <select id="color" onchange="updatePreview()">
+      <select id="color" onchange="updatePreview(); updateStickStock();">
         <option value="">-- Choose Color --</option>
         <option value="Red">Red</option>
         <option value="Blue">Blue</option>
@@ -107,6 +133,9 @@
         <option value="Yellow">Yellow</option>
       </select>
 
+      <p id="stickStock" class="stock">Select a color...</p>
+
+      <!-- Quantity and Add to cart -->
       <div style="display:flex;gap:12px;align-items:center;margin-top:10px">
         <div style="flex:1">
           <label for="stickQty">Quantity</label>
@@ -118,24 +147,29 @@
         </div>
       </div>
 
+      <!-- custom-row: preview on the right -->
       <div class="custom-row" style="margin-top:16px">
         <div style="flex:1">
           <p style="margin:0;color:var(--muted)">Preview updates as you choose color/brand.</p>
         </div>
-        <div class="preview" id="stickPreview">
+        <div class="preview" id="stickPreview" aria-hidden="true">
+          <!-- SVG preview inserted dynamically -->
           <div id="previewSVG">No color selected</div>
         </div>
       </div>
     </div>
 
+    <!-- Knee Hockey Balls card -->
     <div class="card">
       <h2>Knee Hockey Balls</h2>
       <label for="ballType">Choose Ball Type</label>
-      <select id="ballType">
+      <select id="ballType" onchange="updateBallStock()">
         <option value="">-- Choose Ball Type --</option>
         <option value="Regular" data-price="5">Regular — $5</option>
         <option value="Airless" data-price="3">Airless — $3</option>
       </select>
+
+      <p id="ballStock" class="stock">Select a type...</p>
 
       <label for="ballQty">Quantity</label>
       <input type="number" id="ballQty" min="1" value="1">
@@ -145,6 +179,7 @@
       </div>
     </div>
 
+    <!-- Contact form (three boxes + send) -->
     <div class="card">
       <h2>Contact & Quick Order</h2>
       <div class="contact-row">
@@ -167,8 +202,16 @@
       </div>
       <p style="margin-top:10px;color:var(--muted);font-size:13px">Clicking Send will open your email client (mailto) addressed to <b>31stvazn@dextersouthfield.org</b> with the order details.</p>
     </div>
+
+    <!-- Testimonials -->
+    <div class="testimonials">
+      <h3>What customers say</h3>
+      <div class="testimonial"><b>★★★★★ — Jake M.</b><p>Great quality sticks! My kids love them.</p></div>
+      <div class="testimonial"><b>★★★★★ — Ryan T.</b><p>Super realistic mini sticks. Fast delivery too!</p></div>
+    </div>
   </section>
 
+  <!-- RIGHT: cart sidebar -->
   <aside class="cart">
     <div class="card">
       <h3>Your Cart</h3>
@@ -176,6 +219,13 @@
       <div class="totals">
         <div style="display:flex;justify-content:space-between"><span>Subtotal</span><span id="subtotal">$0.00</span></div>
         <div style="display:flex;justify-content:space-between;margin-top:8px"><strong>Total</strong><strong id="totalPay">$0.00</strong></div>
+
+        <!-- Discount input -->
+        <div class="discount-row" style="margin-top:12px">
+          <input type="text" id="discountInput" placeholder="Discount code">
+          <button class="btn" onclick="applyDiscount()">Apply</button>
+        </div>
+
         <div style="margin-top:12px">
           <button class="checkout-btn" onclick="checkout()">Checkout</button>
         </div>
@@ -184,37 +234,31 @@
 
     <div class="card">
       <h3>Cart notes</h3>
-      <p style="margin:0;color:var(--muted);font-size:13px">You can add sticks and balls. Remove items with the red X. Checkout will open a mailto with the cart summary so you can place the order (static demo).</p>
+      <p style="margin:0;color:var(--muted);font-size:13px">You can add sticks and balls. Remove items with the red X. Checkout will open a mailto with the cart summary so you can place the order (static demo). Discount code <b>Vazny</b> gives 10% off.</p>
     </div>
   </aside>
 </main>
 
 <script>
-const colorMap = {
-  "Red":"#e74c3c",
-  "Blue":"#007bff",
-  "Black":"#222222",
-  "White":"#f6f6f6",
-  "Green":"#28a745",
-  "Purple":"#7f3fbf",
-  "Orange":"#ff8c00",
-  "Yellow":"#f1c40f"
-};
-
+/* ---------- Preview generation (SVG stick) ---------- */
 function svgStick(color){
   const shaft = color || '#cccccc';
   const blade = shadeColor(shaft, -20);
   return `
-  <svg width="220" height="160" viewBox="0 0 220 160" xmlns="http://www.w3.org/2000/svg">
+  <svg width="220" height="160" viewBox="0 0 220 160" xmlns="http://www.w3.org/2000/svg" aria-labelledby="t">
+    <title>Stick preview</title>
     <g transform="translate(10,10)">
+      <!-- shaft -->
       <rect x="0" y="40" width="140" height="18" rx="6" fill="${shaft}" stroke="#333" stroke-opacity="0.06"/>
+      <!-- grip -->
       <rect x="0" y="30" width="12" height="10" rx="3" fill="#222" />
+      <!-- blade -->
       <path d="M120 42 L170 58 L150 78 L108 62 Z" fill="${blade}" stroke="#333" stroke-opacity="0.06" />
+      <!-- brand text -->
       <text x="18" y="53" font-family="Arial" font-size="12" fill="#111" font-weight="700">ESW</text>
     </g>
   </svg>`;
 }
-
 function shadeColor(hex, percent) {
   try{
     const h = hex.replace('#','');
@@ -231,26 +275,82 @@ function shadeColor(hex, percent) {
     return '#'+( (1<<24) + (r<<16) + (g<<8) + b ).toString(16).slice(1);
   }catch(e){return hex}
 }
+const colorMap = {
+  "Red":"#e74c3c",
+  "Blue":"#007bff",
+  "Black":"#222222",
+  "White":"#f6f6f6",
+  "Green":"#28a745",
+  "Purple":"#7f3fbf",
+  "Orange":"#ff8c00",
+  "Yellow":"#f1c40f"
+};
 
+/* ---------- automatic stick image preview (filename pattern: "Color stick.png") ---------- */
 function updatePreview(){
   const color = document.getElementById('color').value;
   const container = document.getElementById('previewSVG');
-  if(!color){ 
-    container.innerHTML = 'No color selected'; 
-    return; 
-  }
+  if(!color){ container.innerHTML = 'No color selected'; return; }
+
   const fileName = `${color} stick.png`;
   const img = new Image();
   img.src = fileName;
   img.className = 'preview-img';
   img.onload = () => { container.innerHTML=''; container.appendChild(img); };
-  img.onerror = () => { 
+  img.onerror = () => {
     const hex = colorMap[color] || '#cccccc';
     container.innerHTML = svgStick(hex);
   };
 }
 
-const cart = [];
+/* ---------- Stock display (display-only) ---------- */
+const stickStockLevels = {
+  "Red": "in-stock",
+  "Blue": "low-stock",
+  "Black": "in-stock",
+  "White": "in-stock",
+  "Green": "in-stock",
+  "Purple": "low-stock",
+  "Orange": "in-stock",
+  "Yellow": "low-stock"
+};
+const ballStockLevels = {
+  "Regular":"in-stock",
+  "Airless":"low-stock"
+};
+function updateStickStock(){
+  const c = document.getElementById('color').value;
+  const el = document.getElementById('stickStock');
+  if(!c){ el.innerHTML = 'Select a color...'; el.className='stock'; return; }
+  const level = stickStockLevels[c] || 'in-stock';
+  const map = {
+    "in-stock": { text: "In Stock", cls: "in-stock" },
+    "low-stock": { text: "Low Stock", cls: "low-stock" },
+    "sold-out": { text: "Sold Out", cls: "sold-out" }
+  };
+  const info = map[level] || map['in-stock'];
+  el.className = `stock ${info.cls}`;
+  el.innerHTML = info.text;
+}
+function updateBallStock(){
+  const t = document.getElementById('ballType').value;
+  const el = document.getElementById('ballStock');
+  if(!t){ el.innerHTML = 'Select a type...'; el.className='stock'; return; }
+  const level = ballStockLevels[t] || 'in-stock';
+  const map = {
+    "in-stock": { text: "In Stock", cls: "in-stock" },
+    "low-stock": { text: "Low Stock", cls: "low-stock" },
+    "sold-out": { text: "Sold Out", cls: "sold-out" }
+  };
+  const info = map[level] || map['in-stock'];
+  el.className = `stock ${info.cls}`;
+  el.innerHTML = info.text;
+}
+
+/* ---------- Cart logic + images in mini box ---------- */
+const cart = []; // items {id, kind, name, qty, price, image}
+let discountApplied = false;
+
 function currency(n){ return '$'+Number(n).toFixed(2); }
 
 function refreshCart(){
@@ -262,7 +362,7 @@ function refreshCart(){
     const li = document.createElement('li');
     li.className='cart-item';
     li.innerHTML = `
-      <div class="mini">
+      <div class="mini" aria-hidden="true">
         ${it.kind === 'STK' ? `<img src="${it.image}" style="width:100%;height:100%;object-fit:contain;">` : it.kind}
       </div>
       <div class="meta"><b>${it.name}</b><small>${it.qty} × ${currency(it.price)}</small></div>
@@ -270,26 +370,62 @@ function refreshCart(){
     `;
     list.appendChild(li);
   });
-  document.getElementById('subtotal').innerText = currency(subtotal);
-  document.getElementById('totalPay').innerText = currency(subtotal);
+  const subtotalNode = document.getElementById('subtotal');
+  const totalNode = document.getElementById('totalPay');
+  subtotalNode.innerText = currency(subtotal);
+  let total = subtotal;
+  if(discountApplied){ total = total * 0.9; } // 10% off
+  totalNode.innerText = currency(total);
 }
 
+/* ---------- discount code ---------- */
+function applyDiscount(){
+  const code = document.getElementById('discountInput').value.trim();
+  if(code === 'Vazny'){
+    discountApplied = true;
+    alert('Discount code applied — 10% off');
+    refreshCart();
+  } else {
+    alert('Invalid discount code');
+  }
+}
+
+/* ---------- add-to-cart animation ---------- */
+function animateAddAt(element) {
+  // create ghost near element and animate to cart area
+  const rect = element.getBoundingClientRect();
+  const ghost = document.createElement('div');
+  ghost.className = 'fly';
+  ghost.style.left = (rect.left + rect.width/2) + 'px';
+  ghost.style.top = (rect.top + rect.height/2) + 'px';
+  ghost.innerHTML = '🏒';
+  document.body.appendChild(ghost);
+  setTimeout(()=>ghost.remove(),900);
+}
+
+/* ---------- add/remove items ---------- */
 function addStickToCart(){
   const brand = document.getElementById('brand').value || 'ESW';
   const color = document.getElementById('color').value;
   const qty = parseInt(document.getElementById('stickQty').value) || 1;
   if(!color){ alert('Please choose a color for the stick.'); return; }
-  const basePrice = 7; // <-- updated price
-  const item = { 
+  // block adding if marked sold-out in display-only stock
+  if((stickStockLevels[color] || 'in-stock') === 'sold-out'){ alert('This color is marked sold out.'); return; }
+  const basePrice = 7; // updated price
+  const item = {
     id: 'stick-'+Date.now(),
     kind:'STK',
     name: `${brand} Mini Stick (${color})`,
-    qty,
+    qty: qty,
     price: basePrice,
     image: `${color} stick.png`
   };
   cart.push(item);
   refreshCart();
+  // animation (use the add button as source)
+  const btn = document.querySelector('.add-btn[onclick*="addStickToCart"]') || document.querySelector('.add-btn');
+  if(btn) animateAddAt(btn);
+  // simple toast-like alert
   alert(`${qty} ${brand} mini stick(s) (${color}) added to cart.`);
 }
 
@@ -300,25 +436,49 @@ function addBallsToCart(){
   const price = type ? Number(opt.dataset.price) : 0;
   const qty = parseInt(document.getElementById('ballQty').value) || 1;
   if(!type){ alert('Please choose a ball type.'); return; }
-  const item = { id: 'ball-'+Date.now(), kind:'BALL', name:`${type} Ball`, qty, price };
+  if((ballStockLevels[type] || 'in-stock') === 'sold-out'){ alert('This ball type is marked sold out.'); return; }
+  const item = {
+    id: 'ball-'+Date.now(),
+    kind:'BALL',
+    name: `${type} Ball`,
+    qty: qty,
+    price: price
+  };
   cart.push(item);
   refreshCart();
+  const btn = document.querySelector('.card button[onclick*="addBallsToCart"]') || document.querySelector('.add-btn');
+  if(btn) animateAddAt(btn);
   alert(`${qty} ${type} ball(s) added to cart.`);
 }
 
-function removeItem(index){ if(index>=0 && index<cart.length) cart.splice(index,1); refreshCart(); }
+function removeItem(index){
+  if(index>=0 && index < cart.length) cart.splice(index,1);
+  refreshCart();
+}
 
+/* ---------- Checkout (mailto) ---------- */
 function checkout(){
   if(cart.length===0){ alert('Your cart is empty.'); return; }
   let body = 'Order from ESW%0D%0A%0D%0A';
   let total = 0;
-  cart.forEach((it,i)=>{ body += `${i+1}. ${it.name} — Qty: ${it.qty} — Unit: ${currency(it.price)}%0D%0A`; total += it.qty*it.price; });
-  body += `%0D%0ATotal: ${currency(total)}%0D%0A%0D%0APlease respond with confirmation.`;
+  cart.forEach((it, i)=>{
+    body += `${i+1}. ${it.name} — Qty: ${it.qty} — Unit: ${currency(it.price)}%0D%0A`;
+    total += it.qty * it.price;
+  });
+  if(discountApplied){
+    const discounted = total * 0.9;
+    body += `%0D%0ADiscount (Vazny): 10% off%0D%0A`;
+    body += `%0D%0ATotal after discount: ${currency(discounted)}%0D%0A`;
+  } else {
+    body += `%0D%0ATotal: ${currency(total)}%0D%0A`;
+  }
+  body += `%0D%0APlease respond with confirmation.`;
   const mail = '31stvazn@dextersouthfield.org';
   const subject = encodeURIComponent('ESW Order');
-  window.location.href = `mailto:${mail}?subject=${subject}&body=${body}`;
+  window.location.href = `mailto:${mail}?subject=${subject}&body=${encodeURIComponent(body)}`;
 }
 
+/* ---------- Contact (mailto) ---------- */
 function sendContactEmail(){
   const name = encodeURIComponent(document.getElementById('contactName').value || '');
   const stick = encodeURIComponent(document.getElementById('contactStick').value || '');
@@ -329,8 +489,11 @@ function sendContactEmail(){
   window.location.href = `mailto:${mail}?subject=${subject}&body=${body}`;
 }
 
+/* Init */
 document.addEventListener('DOMContentLoaded',()=>{
   updatePreview();
+  updateStickStock();
+  updateBallStock();
   refreshCart();
 });
 </script>

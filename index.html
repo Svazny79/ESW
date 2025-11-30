@@ -79,25 +79,51 @@
   }
   .fly { position: absolute; animation: flyToCart 0.9s cubic-bezier(.2,.8,.2,1) forwards; z-index:9999; pointer-events:none; font-size:28px; }
 
-  /* Testimonials / Reviews */
-  .testimonials { background: #fff; padding: 20px; margin-top: 12px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
-  .testimonial { margin-bottom: 12px; }
-  .testimonial b { font-size:15px; }
-  .testimonial p { margin:4px 0 0 0; color:var(--muted); font-size:14px; }
+  /* Reviews */
+  .reviews { background: #fff; padding: 20px; margin-top: 12px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+  .review { margin-bottom: 12px; }
+  .review b { font-size:15px; }
+  .review p { margin:4px 0 0 0; color:var(--muted); font-size:14px; }
 
   /* Discount input */
   .discount-row { display:flex; gap:8px; margin-top:12px; }
   .discount-row input { padding:8px; border:1px solid #ddd; border-radius:6px; flex:1; }
   .discount-row button { padding:8px 12px; }
 
+  /* Bundle card styles */
+  .bundle-card {
+    position: relative;
+    background: linear-gradient(135deg, #ffcc00, #ff6600);
+    color: #111;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .bundle-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.25);
+  }
+  .bundle-card .badge {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    background: #ff3b3b;
+    color: #fff;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+  .bundle-card select, .bundle-card button{
+    margin-top:6px;
+  }
+
   @media(max-width:1000px){
     main{flex-direction:column}
     .cart{width:100%;height:auto;position:static}
     .preview{width:180px}
-  }
-
-  footer{
-    text-align:center; padding:12px 0; font-size:13px; color:var(--muted);
   }
 </style>
 </head>
@@ -156,6 +182,7 @@
           <p style="margin:0;color:var(--muted)">Preview updates as you choose color/brand.</p>
         </div>
         <div class="preview" id="stickPreview" aria-hidden="true">
+          <!-- SVG preview inserted dynamically -->
           <div id="previewSVG">No color selected</div>
         </div>
       </div>
@@ -181,7 +208,36 @@
       </div>
     </div>
 
-    <!-- Contact form (three boxes + send) -->
+    <!-- Limited Time Offer Bundle -->
+    <div class="card bundle-card" id="limitedOfferCard">
+      <div class="badge">🔥 Hot Deal</div>
+      <h2>Limited Time Offer!</h2>
+      <p>Get <b>1 Mini Stick</b> (any color) + <b>1 Ball</b> (Regular or Airless) for just <b>$10</b>!</p>
+
+      <label for="offerColor">Choose Stick Color</label>
+      <select id="offerColor">
+        <option value="">-- Choose Color --</option>
+        <option value="Red">Red</option>
+        <option value="Blue">Blue</option>
+        <option value="Black">Black</option>
+        <option value="White">White</option>
+        <option value="Green">Green</option>
+        <option value="Purple">Purple</option>
+        <option value="Orange">Orange</option>
+        <option value="Yellow">Yellow</option>
+      </select>
+
+      <label for="offerBallType">Choose Ball Type</label>
+      <select id="offerBallType">
+        <option value="">-- Choose Ball Type --</option>
+        <option value="Regular">Regular</option>
+        <option value="Airless">Airless</option>
+      </select>
+
+      <button class="btn add-btn" style="margin-top:12px;" onclick="addBundleToCart()">Add Bundle to Cart</button>
+    </div>
+
+    <!-- Contact form -->
     <div class="card">
       <h2>Contact & Quick Order</h2>
       <div class="contact-row">
@@ -206,18 +262,18 @@
     </div>
 
     <!-- Reviews -->
-    <div class="testimonials">
+    <div class="reviews">
       <h3>Reviews</h3>
-      <div class="testimonial"><b>★★★★★ — Jake M.</b><p>Great quality sticks! My kids love them.</p></div>
-      <div class="testimonial"><b>★★★★★ — Ryan T.</b><p>Super realistic mini sticks. Fast delivery too!</p></div>
-      <div class="testimonial"><b>★★★★★ — Emily R.</b><p>Exactly what I needed for our game night.</p></div>
-      <div class="testimonial"><b>★★★★★ — Michael S.</b><p>Durable and lightweight. Highly recommend.</p></div>
-      <div class="testimonial"><b>★★★★★ — Sarah L.</b><p>Perfect mini sticks, fun for practice sessions.</p></div>
-      <div class="testimonial"><b>★★★★★ — Daniel K.</b><p>Great value for the price. Very happy.</p></div>
-      <div class="testimonial"><b>★★★★★ — Olivia P.</b><p>Fast shipping and excellent customer service.</p></div>
-      <div class="testimonial"><b>★★★★★ — Ethan W.</b><p>Kids loved them! Perfect size and quality.</p></div>
-      <div class="testimonial"><b>★★★★★ — Sophia N.</b><p>Exactly as described, great colors.</p></div>
-      <div class="testimonial"><b>★★★★★ — Liam J.</b><p>Would buy again for sure. Excellent product.</p></div>
+      <div class="review"><b>★★★★★ — Jake M.</b><p>Great quality sticks! My kids love them.</p></div>
+      <div class="review"><b>★★★★★ — Ryan T.</b><p>Super realistic mini sticks. Fast delivery too!</p></div>
+      <div class="review"><b>★★★★★ — Sarah L.</b><p>Excellent bundle deal — worth every penny!</p></div>
+      <div class="review"><b>★★★★★ — Mark D.</b><p>The sticks are very durable. Highly recommend!</p></div>
+      <div class="review"><b>★★★★★ — Emily W.</b><p>Customer service was friendly and responsive.</p></div>
+      <div class="review"><b>★★★★★ — Tom S.</b><p>Love the colors available. Looks amazing!</p></div>
+      <div class="review"><b>★★★★★ — Olivia K.</b><p>Perfect gift for my nephew. He is thrilled!</p></div>
+      <div class="review"><b>★★★★★ — Daniel B.</b><p>Fast shipping and product exactly as described.</p></div>
+      <div class="review"><b>★★★★★ — Mia P.</b><p>High-quality materials, worth buying again.</p></div>
+      <div class="review"><b>★★★★★ — Ethan H.</b><p>Bundle deals are awesome! Saves money and looks great.</p></div>
     </div>
   </section>
 
@@ -244,10 +300,6 @@
   </aside>
 </main>
 
-<footer>
-All Rights reserved © 2025 by Steven Vazny, Eli Hanafin and William Thorley
-</footer>
-
 <script>
 /* ---------- Preview generation (SVG stick) ---------- */
 function svgStick(color){
@@ -257,13 +309,9 @@ function svgStick(color){
   <svg width="220" height="160" viewBox="0 0 220 160" xmlns="http://www.w3.org/2000/svg" aria-labelledby="t">
     <title>Stick preview</title>
     <g transform="translate(10,10)">
-      <!-- shaft -->
       <rect x="0" y="40" width="140" height="18" rx="6" fill="${shaft}" stroke="#333" stroke-opacity="0.06"/>
-      <!-- grip -->
       <rect x="0" y="30" width="12" height="10" rx="3" fill="#222" />
-      <!-- blade -->
       <path d="M120 42 L170 58 L150 78 L108 62 Z" fill="${blade}" stroke="#333" stroke-opacity="0.06" />
-      <!-- brand text -->
       <text x="18" y="53" font-family="Arial" font-size="12" fill="#111" font-weight="700">ESW</text>
     </g>
   </svg>`;
@@ -285,22 +333,15 @@ function shadeColor(hex, percent) {
   }catch(e){return hex}
 }
 const colorMap = {
-  "Red":"#e74c3c",
-  "Blue":"#007bff",
-  "Black":"#222222",
-  "White":"#f6f6f6",
-  "Green":"#28a745",
-  "Purple":"#7f3fbf",
-  "Orange":"#ff8c00",
-  "Yellow":"#f1c40f"
+  "Red":"#e74c3c","Blue":"#007bff","Black":"#222222","White":"#f6f6f6","Green":"#28a745",
+  "Purple":"#7f3fbf","Orange":"#ff8c00","Yellow":"#f1c40f"
 };
 
-/* ---------- automatic stick image preview (filename pattern: "Color stick.png") ---------- */
+/* ---------- automatic stick image preview ---------- */
 function updatePreview(){
   const color = document.getElementById('color').value;
   const container = document.getElementById('previewSVG');
   if(!color){ container.innerHTML = 'No color selected'; return; }
-
   const fileName = `${color} stick.png`;
   const img = new Image();
   img.src = fileName;
@@ -314,29 +355,18 @@ function updatePreview(){
 
 /* ---------- Stock display ---------- */
 const stickStockLevels = {
-  "Red": "in-stock",
-  "Blue": "low-stock",
-  "Black": "in-stock",
-  "White": "in-stock",
-  "Green": "in-stock",
-  "Purple": "low-stock",
-  "Orange": "in-stock",
-  "Yellow": "low-stock"
+  "Red": "in-stock","Blue": "low-stock","Black": "in-stock","White": "in-stock",
+  "Green": "in-stock","Purple": "low-stock","Orange": "in-stock","Yellow": "low-stock"
 };
 const ballStockLevels = {
-  "Regular":"in-stock",
-  "Airless":"low-stock"
+  "Regular":"in-stock","Airless":"low-stock"
 };
 function updateStickStock(){
   const c = document.getElementById('color').value;
   const el = document.getElementById('stickStock');
   if(!c){ el.innerHTML = 'Select a color...'; el.className='stock'; return; }
   const level = stickStockLevels[c] || 'in-stock';
-  const map = {
-    "in-stock": { text: "In Stock", cls: "in-stock" },
-    "low-stock": { text: "Low Stock", cls: "low-stock" },
-    "sold-out": { text: "Sold Out", cls: "sold-out" }
-  };
+  const map = {"in-stock": { text: "In Stock", cls: "in-stock" },"low-stock": { text: "Low Stock", cls: "low-stock" },"sold-out": { text: "Sold Out", cls: "sold-out" }};
   const info = map[level] || map['in-stock'];
   el.className = `stock ${info.cls}`;
   el.innerHTML = info.text;
@@ -346,11 +376,7 @@ function updateBallStock(){
   const el = document.getElementById('ballStock');
   if(!t){ el.innerHTML = 'Select a type...'; el.className='stock'; return; }
   const level = ballStockLevels[t] || 'in-stock';
-  const map = {
-    "in-stock": { text: "In Stock", cls: "in-stock" },
-    "low-stock": { text: "Low Stock", cls: "low-stock" },
-    "sold-out": { text: "Sold Out", cls: "sold-out" }
-  };
+  const map = {"in-stock": { text: "In Stock", cls: "in-stock" },"low-stock": { text: "Low Stock", cls: "low-stock" },"sold-out": { text: "Sold Out", cls: "sold-out" }};
   const info = map[level] || map['in-stock'];
   el.className = `stock ${info.cls}`;
   el.innerHTML = info.text;
@@ -360,7 +386,6 @@ function updateBallStock(){
 const cart = [];
 let discountApplied = false;
 function currency(n){ return '$'+Number(n).toFixed(2); }
-
 function refreshCart(){
   const list = document.getElementById('cartList');
   list.innerHTML = '';
@@ -381,13 +406,12 @@ function refreshCart(){
   const subtotalNode = document.getElementById('subtotal');
   const totalNode = document.getElementById('totalPay');
   subtotalNode.innerText = currency(subtotal);
-
   let total = subtotal;
-  if(discountApplied){ total = Math.max(0, subtotal - 1); } // $1 off
+  if(discountApplied){ total = total - 1; } // $1 off
   totalNode.innerText = currency(total);
 }
 
-/* ---------- discount code ---------- */
+/* ---------- Discount ---------- */
 function applyDiscount(){
   const code = document.getElementById('discountInput').value.trim();
   if(code === 'Vazny'){
@@ -399,7 +423,7 @@ function applyDiscount(){
   }
 }
 
-/* ---------- add-to-cart animation ---------- */
+/* ---------- Add-to-cart animation ---------- */
 function animateAddAt(element) {
   const rect = element.getBoundingClientRect();
   const ghost = document.createElement('div');
@@ -411,29 +435,20 @@ function animateAddAt(element) {
   setTimeout(()=>ghost.remove(),900);
 }
 
-/* ---------- add/remove items ---------- */
+/* ---------- Add/remove items ---------- */
 function addStickToCart(){
   const brand = document.getElementById('brand').value || 'ESW';
   const color = document.getElementById('color').value;
   const qty = parseInt(document.getElementById('stickQty').value) || 1;
   if(!color){ alert('Please choose a color for the stick.'); return; }
-  if((stickStockLevels[color] || 'in-stock') === 'sold-out'){ alert('This color is marked sold out.'); return; }
+  if((stickStockLevels[color] || 'in-stock') === 'sold-out'){ alert('This color is sold out.'); return; }
   const basePrice = 7;
-  const item = {
-    id: 'stick-'+Date.now(),
-    kind:'STK',
-    name: `${brand} Mini Stick (${color})`,
-    qty: qty,
-    price: basePrice,
-    image: `${color} stick.png`
-  };
-  cart.push(item);
-  refreshCart();
+  const item = { id: 'stick-'+Date.now(), kind:'STK', name: `${brand} Mini Stick (${color})`, qty: qty, price: basePrice, image: `${color} stick.png` };
+  cart.push(item); refreshCart();
   const btn = document.querySelector('.add-btn[onclick*="addStickToCart"]') || document.querySelector('.add-btn');
   if(btn) animateAddAt(btn);
   alert(`${qty} ${brand} mini stick(s) (${color}) added to cart.`);
 }
-
 function addBallsToCart(){
   const sel = document.getElementById('ballType');
   const type = sel.value;
@@ -441,27 +456,25 @@ function addBallsToCart(){
   const price = type ? Number(opt.dataset.price) : 0;
   const qty = parseInt(document.getElementById('ballQty').value) || 1;
   if(!type){ alert('Please choose a ball type.'); return; }
-  if((ballStockLevels[type] || 'in-stock') === 'sold-out'){ alert('This ball type is marked sold out.'); return; }
-  const item = {
-    id: 'ball-'+Date.now(),
-    kind:'BALL',
-    name: `${type} Ball`,
-    qty: qty,
-    price: price
-  };
-  cart.push(item);
-  refreshCart();
+  if((ballStockLevels[type] || 'in-stock') === 'sold-out'){ alert('This ball type is sold out.'); return; }
+  const item = { id: 'ball-'+Date.now(), kind:'BALL', name: `${type} Ball`, qty: qty, price: price };
+  cart.push(item); refreshCart();
   const btn = document.querySelector('.card button[onclick*="addBallsToCart"]') || document.querySelector('.add-btn');
   if(btn) animateAddAt(btn);
   alert(`${qty} ${type} ball(s) added to cart.`);
 }
-
-function removeItem(index){
-  if(index>=0 && index < cart.length) cart.splice(index,1);
-  refreshCart();
+function addBundleToCart(){
+  const color = document.getElementById('offerColor').value;
+  const ball = document.getElementById('offerBallType').value;
+  if(!color || !ball){ alert('Please choose both stick color and ball type.'); return; }
+  const item = { id: 'bundle-'+Date.now(), kind:'BUNDLE', name: `Limited Time Bundle (${color} Stick + ${ball} Ball)`, qty: 1, price: 10, image: `${color} stick.png` };
+  cart.push(item); refreshCart();
+  animateAddAt(document.getElementById('limitedOfferCard'));
+  alert('Bundle added to cart!');
 }
+function removeItem(index){ if(index>=0 && index < cart.length) cart.splice(index,1); refreshCart(); }
 
-/* ---------- Checkout ---------- */
+/* ---------- Checkout (mailto) ---------- */
 function checkout(){
   if(cart.length===0){ alert('Your cart is empty.'); return; }
   let body = 'Order from ESW%0D%0A%0D%0A';
@@ -470,20 +483,15 @@ function checkout(){
     body += `${i+1}. ${it.name} — Qty: ${it.qty} — Unit: ${currency(it.price)}%0D%0A`;
     total += it.qty * it.price;
   });
-  if(discountApplied){
-    const discounted = Math.max(0, total-1);
-    body += `%0D%0ADiscount (Vazny): $1 off%0D%0A`;
-    body += `%0D%0ATotal after discount: ${currency(discounted)}%0D%0A`;
-  } else {
-    body += `%0D%0ATotal: ${currency(total)}%0D%0A`;
-  }
+  if(discountApplied){ const discounted = total - 1; body += `%0D%0ADiscount: $1 off%0D%0A`; body += `%0D%0ATotal after discount: ${currency(discounted)}%0D%0A`; }
+  else { body += `%0D%0ATotal: ${currency(total)}%0D%0A`; }
   body += `%0D%0APlease respond with confirmation.`;
   const mail = '31stvazn@dextersouthfield.org';
   const subject = encodeURIComponent('ESW Order');
   window.location.href = `mailto:${mail}?subject=${subject}&body=${encodeURIComponent(body)}`;
 }
 
-/* ---------- Contact ---------- */
+/* ---------- Contact (mailto) ---------- */
 function sendContactEmail(){
   const name = encodeURIComponent(document.getElementById('contactName').value || '');
   const stick = encodeURIComponent(document.getElementById('contactStick').value || '');

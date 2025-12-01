@@ -134,6 +134,7 @@
   <div class="header-buttons">
     <button class="btn" onclick="location.href='about.html'">About Us</button>
     <button class="btn" onclick="location.href='contact.html'">Contact Us</button>
+    <button class="btn" onclick="location.href='reviews.html'">Reviews</button>
   </div>
 </header>
 
@@ -164,7 +165,6 @@
 
       <p id="stickStock" class="stock">Select a color...</p>
 
-      <!-- Quantity and Add to cart -->
       <div style="display:flex;gap:12px;align-items:center;margin-top:10px">
         <div style="flex:1">
           <label for="stickQty">Quantity</label>
@@ -176,13 +176,11 @@
         </div>
       </div>
 
-      <!-- custom-row: preview on the right -->
       <div class="custom-row" style="margin-top:16px">
         <div style="flex:1">
           <p style="margin:0;color:var(--muted)">Preview updates as you choose color/brand.</p>
         </div>
         <div class="preview" id="stickPreview" aria-hidden="true">
-          <!-- SVG preview inserted dynamically -->
           <div id="previewSVG">No color selected</div>
         </div>
       </div>
@@ -260,21 +258,6 @@
       </div>
       <p style="margin-top:10px;color:var(--muted);font-size:13px">Clicking Send will open your email client (mailto) addressed to <b>31stvazn@dextersouthfield.org</b> with the order details.</p>
     </div>
-
-    <!-- Reviews -->
-    <div class="reviews">
-      <h3>Reviews</h3>
-      <div class="review"><b>★★★★★ — Jake M.</b><p>Great quality sticks! My kids love them.</p></div>
-      <div class="review"><b>★★★★★ — Ryan T.</b><p>Super realistic mini sticks. Fast delivery too!</p></div>
-      <div class="review"><b>★★★★★ — Sarah L.</b><p>Excellent bundle deal — worth every penny!</p></div>
-      <div class="review"><b>★★★★★ — Mark D.</b><p>The sticks are very durable. Highly recommend!</p></div>
-      <div class="review"><b>★★★★★ — Emily W.</b><p>Customer service was friendly and responsive.</p></div>
-      <div class="review"><b>★★★★★ — Tom S.</b><p>Love the colors available. Looks amazing!</p></div>
-      <div class="review"><b>★★★★★ — Olivia K.</b><p>Perfect gift for my nephew. He is thrilled!</p></div>
-      <div class="review"><b>★★★★★ — Daniel B.</b><p>Fast shipping and product exactly as described.</p></div>
-      <div class="review"><b>★★★★★ — Mia P.</b><p>High-quality materials, worth buying again.</p></div>
-      <div class="review"><b>★★★★★ — Ethan H.</b><p>Bundle deals are awesome! Saves money and looks great.</p></div>
-    </div>
   </section>
 
   <!-- RIGHT: cart sidebar -->
@@ -286,7 +269,6 @@
         <div style="display:flex;justify-content:space-between"><span>Subtotal</span><span id="subtotal">$0.00</span></div>
         <div style="display:flex;justify-content:space-between;margin-top:8px"><strong>Total</strong><strong id="totalPay">$0.00</strong></div>
 
-        <!-- Discount input -->
         <div class="discount-row" style="margin-top:12px">
           <input type="text" id="discountInput" placeholder="Discount code">
           <button class="btn" onclick="applyDiscount()">Apply</button>
@@ -342,7 +324,7 @@ function updatePreview(){
   const color = document.getElementById('color').value;
   const container = document.getElementById('previewSVG');
   if(!color){ container.innerHTML = 'No color selected'; return; }
-  const fileName = `${color} stick.png`;
+  const fileName = `images/${color} stick.png`;
   const img = new Image();
   img.src = fileName;
   img.className = 'preview-img';
@@ -354,13 +336,8 @@ function updatePreview(){
 }
 
 /* ---------- Stock display ---------- */
-const stickStockLevels = {
-  "Red": "in-stock","Blue": "low-stock","Black": "in-stock","White": "in-stock",
-  "Green": "in-stock","Purple": "low-stock","Orange": "in-stock","Yellow": "low-stock"
-};
-const ballStockLevels = {
-  "Regular":"in-stock","Airless":"low-stock"
-};
+const stickStockLevels = {"Red": "in-stock","Blue": "low-stock","Black": "in-stock","White": "in-stock","Green": "in-stock","Purple": "low-stock","Orange": "in-stock","Yellow": "low-stock"};
+const ballStockLevels = {"Regular":"in-stock","Airless":"low-stock"};
 function updateStickStock(){
   const c = document.getElementById('color').value;
   const el = document.getElementById('stickStock');
@@ -396,7 +373,7 @@ function refreshCart(){
     li.className='cart-item';
     li.innerHTML = `
       <div class="mini" aria-hidden="true">
-        ${it.kind === 'STK' ? `<img src="${it.image}" style="width:100%;height:100%;object-fit:contain;">` : it.kind}
+        ${it.kind === 'STK' || it.kind==='BUNDLE' ? `<img src="${it.image}" style="width:100%;height:100%;object-fit:contain;">` : it.kind}
       </div>
       <div class="meta"><b>${it.name}</b><small>${it.qty} × ${currency(it.price)}</small></div>
       <div><button class="remove" onclick="removeItem(${idx})">✕</button></div>
@@ -443,7 +420,7 @@ function addStickToCart(){
   if(!color){ alert('Please choose a color for the stick.'); return; }
   if((stickStockLevels[color] || 'in-stock') === 'sold-out'){ alert('This color is sold out.'); return; }
   const basePrice = 7;
-  const item = { id: 'stick-'+Date.now(), kind:'STK', name: `${brand} Mini Stick (${color})`, qty: qty, price: basePrice, image: `${color} stick.png` };
+  const item = { id: 'stick-'+Date.now(), kind:'STK', name: `${brand} Mini Stick (${color})`, qty: qty, price: basePrice, image: `images/${color} stick.png` };
   cart.push(item); refreshCart();
   const btn = document.querySelector('.add-btn[onclick*="addStickToCart"]') || document.querySelector('.add-btn');
   if(btn) animateAddAt(btn);
@@ -467,7 +444,7 @@ function addBundleToCart(){
   const color = document.getElementById('offerColor').value;
   const ball = document.getElementById('offerBallType').value;
   if(!color || !ball){ alert('Please choose both stick color and ball type.'); return; }
-  const item = { id: 'bundle-'+Date.now(), kind:'BUNDLE', name: `Limited Time Bundle (${color} Stick + ${ball} Ball)`, qty: 1, price: 10, image: `${color} stick.png` };
+  const item = { id: 'bundle-'+Date.now(), kind:'BUNDLE', name: `Limited Time Bundle (${color} Stick + ${ball} Ball)`, qty: 1, price: 10, image: `images/${color} stick.png` };
   cart.push(item); refreshCart();
   animateAddAt(document.getElementById('limitedOfferCard'));
   alert('Bundle added to cart!');

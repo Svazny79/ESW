@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>ESW Reviews</title>
+<title>ESW</title>
 <style>
   :root{
     --accent:#005aff;
@@ -11,114 +11,519 @@
     --card:#fff;
     --muted:#666;
   }
-  body{margin:0;font-family:Arial, Helvetica, sans-serif;background:var(--bg);color:#111;}
+  html,body{height:100%;margin:0;font-family:Arial, Helvetica, sans-serif;background:var(--bg);color:#111}
   header{
     padding:18px 20px 6px 20px;
     text-align:center;
     background:transparent;
   }
   header h1{margin:0;font-size:36px;letter-spacing:1px}
-  header .btn{padding:10px 18px;border-radius:8px;border:none;background:var(--accent);color:#fff;cursor:pointer;font-size:15px;margin-top:10px;}
-  main{padding:20px;max-width:800px;margin:auto}
-  .review-card{
+  .header-buttons{display:flex;gap:12px;justify-content:center;margin-top:12px}
+  .btn{
+    padding:10px 18px;border-radius:8px;border:none;background:var(--accent);color:#fff;
+    cursor:pointer;font-size:15px;
+  }
+  .btn.secondary{background:#444}
+  main{display:flex;gap:20px;padding:20px;box-sizing:border-box}
+  .left{flex:1 1 620px;max-width:900px;}
+  .card{
     background:var(--card);
-    padding:18px;
-    border-radius:10px;
-    box-shadow:0 2px 6px rgba(0,0,0,0.06);
+    padding:18px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.06);
     margin-bottom:18px;
   }
-  .review-card b{display:block;font-size:16px;margin-bottom:6px;}
-  .review-card p{margin:0;color:var(--muted);font-size:14px;}
-  /* Submit form */
-  #reviewForm{
-    display:none;
-    background:var(--card);
-    padding:20px;
-    border-radius:12px;
-    box-shadow:0 2px 12px rgba(0,0,0,0.15);
-    position:fixed;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    z-index:9999;
-    width:90%;
-    max-width:400px;
+  .card h2{margin-top:0}
+  label{display:block;margin:10px 0 6px;font-weight:600}
+  select,input[type=number],input[type=text],textarea{
+    width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:14px;box-sizing:border-box;
   }
-  #reviewForm label{display:block;margin:10px 0 6px;font-weight:600;}
-  #reviewForm input, #reviewForm textarea{width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;box-sizing:border-box;margin-bottom:12px;}
-  #reviewForm button{padding:10px 18px;border:none;border-radius:8px;background:var(--accent);color:#fff;cursor:pointer;font-size:15px;}
-  #overlay{
-    display:none;
-    position:fixed;
-    top:0; left:0; width:100%; height:100%;
-    background:rgba(0,0,0,0.4);
-    z-index:999;
+  .flex-row{display:flex;gap:12px;align-items:center}
+  .small{width:120px}
+  .add-btn{margin-top:12px;background:#0b8f3b}
+  .custom-row{display:flex;gap:18px;align-items:flex-start}
+  .preview{
+    width:260px;min-height:220px;background:#fafafa;border:1px dashed #e0e0e0;border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .preview-img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+  .cart{
+    width:360px;flex:0 0 360px;position:sticky;top:20px;height:calc(100vh - 40px);overflow:auto;
+  }
+  .cart .card{position:relative;margin-bottom:12px}
+  .cart h3{margin:0 0 8px 0}
+  .cart-list{list-style:none;padding:0;margin:0}
+  .cart-item{display:flex;gap:10px;padding:10px;border-radius:8px;border:1px solid #eee;margin-bottom:8px;align-items:center}
+  .cart-item .mini{width:54px;height:54px;border-radius:6px;background:#eee;display:flex;align-items:center;justify-content:center;font-size:12px;color:#333;overflow:hidden;}
+  .cart-item .meta{flex:1}
+  .cart-item .meta b{display:block}
+  .cart-item .remove{background:transparent;border:none;color:#c00;cursor:pointer;font-weight:700}
+  .totals{padding:10px;border-top:1px solid #eee;margin-top:8px}
+  .checkout-btn{width:100%;padding:12px;border-radius:8px;border:none;background:var(--accent);color:#fff;cursor:pointer;font-size:16px}
+  .contact-row{display:flex;gap:12px;align-items:flex-end}
+  .contact-row .col{flex:1}
+  .contact-row .send{width:140px}
+
+  /* Stock labels */
+  .stock { font-size:13px; font-weight:700; margin-top:8px; }
+  .in-stock { color: #0a0; }
+  .low-stock { color: #c90; }
+  .sold-out { color: #c00; }
+
+  /* Add-to-cart animation */
+  @keyframes flyToCart {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translate(130px, -200px) scale(0.2); opacity: 0; }
+  }
+  .fly { position: absolute; animation: flyToCart 0.9s cubic-bezier(.2,.8,.2,1) forwards; z-index:9999; pointer-events:none; font-size:28px; }
+
+  @media(max-width:1000px){
+    main{flex-direction:column}
+    .cart{width:100%;height:auto;position:static}
+    .preview{width:180px}
   }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>ESW Reviews</h1>
-  <button class="btn" onclick="location.href='index.html'">← Back to Shop</button>
-  <button class="btn" onclick="openReviewForm()">Submit Review</button>
+  <h1>ESW</h1>
+  <div class="header-buttons">
+    <button class="btn" onclick="location.href='about.html'">About Us</button>
+    <button class="btn" onclick="location.href='contact.html'">Contact Us</button>
+  </div>
 </header>
 
 <main>
-  <div class="review-card">
-    <b>Steven V.</b>
-    <p>Mini sticks arrived quickly and quality is excellent! Highly recommend ESW products.</p>
-  </div>
-  <div class="review-card">
-    <b>Eli H.</b>
-    <p>The bundle deal is a steal. Stick and ball look great. My kids loved them!</p>
-  </div>
-  <div class="review-card">
-    <b>William T.</b>
-    <p>Customer service was fast and friendly. Stick color options are awesome.</p>
-  </div>
-  <div class="review-card">
-    <b>Anna K.</b>
-    <p>My son loves the knee hockey balls. Durable and fun for practice sessions.</p>
-  </div>
-  <div class="review-card">
-    <b>James L.</b>
-    <p>Shipping was very quick. Stick feels solid and looks professional. 5/5 stars!</p>
-  </div>
+  <!-- LEFT: customization + contact -->
+  <section class="left">
+
+    <!-- Limited Time Offer Bundle -->
+    <div class="card" id="limitedOfferCard">
+      <h2>⚡ Limited Time Offer!</h2>
+      <p>Get <b>1 Mini Stick</b> (any color) + <b>1 Ball</b> (Regular or Airless) for just <b>$10</b>!</p>
+      
+      <label for="offerColor">Choose Stick Color</label>
+      <select id="offerColor">
+        <option value="">-- Choose Color --</option>
+        <option value="Red">Red</option>
+        <option value="Blue">Blue</option>
+        <option value="Black">Black</option>
+        <option value="White">White</option>
+        <option value="Green">Green</option>
+        <option value="Purple">Purple</option>
+        <option value="Orange">Orange</option>
+        <option value="Yellow">Yellow</option>
+      </select>
+
+      <label for="offerBallType">Choose Ball Type</label>
+      <select id="offerBallType">
+        <option value="">-- Choose Ball Type --</option>
+        <option value="Regular">Regular</option>
+        <option value="Airless">Airless</option>
+      </select>
+
+      <button class="btn add-btn" style="margin-top:12px;" onclick="addBundleToCart()">Add Bundle to Cart</button>
+    </div>
+
+    <!-- Customization card -->
+    <div class="card" id="customCard">
+      <h2>Mini Stick Customization</h2>
+
+      <label for="brand">Brand</label>
+      <select id="brand">
+        <option value="ESW">ESW</option>
+      </select>
+
+      <label for="color">Color</label>
+      <select id="color" onchange="updatePreview(); updateStickStock();">
+        <option value="">-- Choose Color --</option>
+        <option value="Red">Red</option>
+        <option value="Blue">Blue</option>
+        <option value="Black">Black</option>
+        <option value="White">White</option>
+        <option value="Green">Green</option>
+        <option value="Purple">Purple</option>
+        <option value="Orange">Orange</option>
+        <option value="Yellow">Yellow</option>
+      </select>
+
+      <p id="stickStock" class="stock">Select a color...</p>
+
+      <!-- Quantity and Add to cart -->
+      <div style="display:flex;gap:12px;align-items:center;margin-top:10px">
+        <div style="flex:1">
+          <label for="stickQty">Quantity</label>
+          <input type="number" id="stickQty" min="1" value="1">
+        </div>
+        <div style="width:160px">
+          <label style="visibility:hidden">add</label>
+          <button class="btn add-btn" style="width:100%" onclick="addStickToCart()">Add Stick to Cart</button>
+        </div>
+      </div>
+
+      <!-- custom-row: preview on the right -->
+      <div class="custom-row" style="margin-top:16px">
+        <div style="flex:1">
+          <p style="margin:0;color:var(--muted)">Preview updates as you choose color/brand.</p>
+        </div>
+        <div class="preview" id="stickPreview" aria-hidden="true">
+          <div id="previewSVG">No color selected</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Knee Hockey Balls card -->
+    <div class="card">
+      <h2>Knee Hockey Balls</h2>
+      <label for="ballType">Choose Ball Type</label>
+      <select id="ballType" onchange="updateBallStock()">
+        <option value="">-- Choose Ball Type --</option>
+        <option value="Regular" data-price="5">Regular — $5</option>
+        <option value="Airless" data-price="3">Airless — $3</option>
+      </select>
+
+      <p id="ballStock" class="stock">Select a type...</p>
+
+      <label for="ballQty">Quantity</label>
+      <input type="number" id="ballQty" min="1" value="1">
+
+      <div style="margin-top:12px">
+        <button class="btn add-btn" onclick="addBallsToCart()">Add Balls to Cart</button>
+      </div>
+    </div>
+
+    <!-- Contact form (three boxes + send) -->
+    <div class="card">
+      <h2>Contact & Quick Order</h2>
+      <div class="contact-row">
+        <div class="col">
+          <label for="contactName">Your Name</label>
+          <input type="text" id="contactName" placeholder="Name">
+        </div>
+        <div class="col">
+          <label for="contactStick">Stick</label>
+          <input type="text" id="contactStick" placeholder="e.g. ESW - Orange">
+        </div>
+        <div class="col">
+          <label for="contactBall">Knee Hockey Balls</label>
+          <input type="text" id="contactBall" placeholder="e.g. 2 Airless">
+        </div>
+        <div>
+          <label style="visibility:hidden">send</label>
+          <button class="btn" id="sendContact" style="height:40px;padding:9px 14px" onclick="sendContactEmail()">Send</button>
+        </div>
+      </div>
+      <p style="margin-top:10px;color:var(--muted);font-size:13px">Clicking Send will open your email client (mailto) addressed to <b>31stvazn@dextersouthfield.org</b> with the order details.</p>
+    </div>
+
+    <!-- Reviews -->
+    <div class="card testimonials">
+      <h3>Reviews</h3>
+      <div class="testimonial"><b>★★★★★ — Jake M.</b><p>Great quality sticks! My kids love them.</p></div>
+      <div class="testimonial"><b>★★★★★ — Ryan T.</b><p>Super realistic mini sticks. Fast delivery too!</p></div>
+      <div class="testimonial"><b>★★★★☆ — Emily R.</b><p>Good quality sticks, love the colors.</p></div>
+      <div class="testimonial"><b>★★★★★ — Alex P.</b><p>Best mini sticks on the market!</p></div>
+      <div class="testimonial"><b>★★★★☆ — Sam K.</b><p>Nice grips and durable blades.</p></div>
+      <div class="testimonial"><b>★★★★★ — Mia W.</b><p>Kids have a blast practicing with these.</p></div>
+      <div class="testimonial"><b>★★★★☆ — Noah L.</b><p>Colors are vibrant, shipping was quick.</p></div>
+      <div class="testimonial"><b>★★★★★ — Olivia S.</b><p>Perfect bundle deal for beginners.</p></div>
+      <div class="testimonial"><b>★★★★★ — Liam J.</b><p>High quality and excellent customer service.</p></div>
+      <div class="testimonial"><b>★★★★☆ — Sophia H.</b><p>Will buy again for tournaments.</p></div>
+    </div>
+
+  </section>
+
+  <!-- RIGHT: cart sidebar -->
+  <aside class="cart">
+    <div class="card">
+      <h3>Your Cart</h3>
+      <ul class="cart-list" id="cartList"></ul>
+      <div class="totals">
+        <div style="display:flex;justify-content:space-between"><span>Subtotal</span><span id="subtotal">$0.00</span></div>
+        <div style="display:flex;justify-content:space-between;margin-top:8px"><strong>Total</strong><strong id="totalPay">$0.00</strong></div>
+
+        <!-- Discount input -->
+        <div class="discount-row" style="margin-top:12px">
+          <input type="text" id="discountInput" placeholder="Discount code">
+          <button class="btn" onclick="applyDiscount()">Apply</button>
+        </div>
+
+        <div style="margin-top:12px">
+          <button class="checkout-btn" onclick="checkout()">Checkout</button>
+        </div>
+      </div>
+    </div>
+  </aside>
 </main>
 
-<!-- Overlay -->
-<div id="overlay" onclick="closeReviewForm()"></div>
-
-<!-- Review form popup -->
-<div id="reviewForm">
-  <h3>Submit Your Review</h3>
-  <label for="reviewName">Your Name</label>
-  <input type="text" id="reviewName" placeholder="Name">
-  <label for="reviewText">Your Review</label>
-  <textarea id="reviewText" rows="4" placeholder="Type your review here..."></textarea>
-  <button onclick="sendReview()">Send Review</button>
-</div>
-
 <script>
-function openReviewForm(){
-  document.getElementById('reviewForm').style.display='block';
-  document.getElementById('overlay').style.display='block';
+/* ---------- Preview generation (SVG stick) ---------- */
+function svgStick(color){
+  const shaft = color || '#cccccc';
+  const blade = shadeColor(shaft, -20);
+  return `
+  <svg width="220" height="160" viewBox="0 0 220 160" xmlns="http://www.w3.org/2000/svg" aria-labelledby="t">
+    <title>Stick preview</title>
+    <g transform="translate(10,10)">
+      <rect x="0" y="40" width="140" height="18" rx="6" fill="${shaft}" stroke="#333" stroke-opacity="0.06"/>
+      <rect x="0" y="30" width="12" height="10" rx="3" fill="#222" />
+      <path d="M120 42 L170 58 L150 78 L108 62 Z" fill="${blade}" stroke="#333" stroke-opacity="0.06" />
+      <text x="18" y="53" font-family="Arial" font-size="12" fill="#111" font-weight="700">ESW</text>
+    </g>
+  </svg>`;
 }
-function closeReviewForm(){
-  document.getElementById('reviewForm').style.display='none';
-  document.getElementById('overlay').style.display='none';
+function shadeColor(hex, percent) {
+  try{
+    const h = hex.replace('#','');
+    const bigint = parseInt(h,16);
+    let r = (bigint>>16)&255;
+    let g = (bigint>>8)&255;
+    let b = bigint&255;
+    r = parseInt(r*(100+percent)/100);
+    g = parseInt(g*(100+percent)/100);
+    b = parseInt(b*(100+percent)/100);
+    r = Math.min(255,Math.max(0,r));
+    g = Math.min(255,Math.max(0,g));
+    b = Math.min(255,Math.max(0,b));
+    return '#'+( (1<<24) + (r<<16) + (g<<8) + b ).toString(16).slice(1);
+  }catch(e){return hex}
 }
-function sendReview(){
-  const name = document.getElementById('reviewName').value.trim();
-  const text = document.getElementById('reviewText').value.trim();
-  if(!name || !text){ alert('Please enter your name and review.'); return; }
+const colorMap = {
+  "Red":"#e74c3c",
+  "Blue":"#007bff",
+  "Black":"#222222",
+  "White":"#f6f6f6",
+  "Green":"#28a745",
+  "Purple":"#7f3fbf",
+  "Orange":"#ff8c00",
+  "Yellow":"#f1c40f"
+};
+
+/* ---------- automatic stick image preview ---------- */
+function updatePreview(){
+  const color = document.getElementById('color').value;
+  const container = document.getElementById('previewSVG');
+  if(!color){ container.innerHTML = 'No color selected'; return; }
+
+  const fileName = `${color} stick.png`;
+  const img = new Image();
+  img.src = fileName;
+  img.className = 'preview-img';
+  img.onload = () => { container.innerHTML=''; container.appendChild(img); };
+  img.onerror = () => {
+    const hex = colorMap[color] || '#cccccc';
+    container.innerHTML = svgStick(hex);
+  };
+}
+
+/* ---------- Stock display ---------- */
+const stickStockLevels = {
+  "Red": "in-stock",
+  "Blue": "low-stock",
+  "Black": "in-stock",
+  "White": "in-stock",
+  "Green": "in-stock",
+  "Purple": "low-stock",
+  "Orange": "in-stock",
+  "Yellow": "low-stock"
+};
+const ballStockLevels = {
+  "Regular":"in-stock",
+  "Airless":"low-stock"
+};
+function updateStickStock(){
+  const c = document.getElementById('color').value;
+  const el = document.getElementById('stickStock');
+  if(!c){ el.innerHTML = 'Select a color...'; el.className='stock'; return; }
+  const level = stickStockLevels[c] || 'in-stock';
+  const map = { "in-stock": { text: "In Stock", cls: "in-stock" }, "low-stock": { text: "Low Stock", cls: "low-stock" }, "sold-out": { text: "Sold Out", cls: "sold-out" } };
+  const info = map[level] || map['in-stock'];
+  el.className = `stock ${info.cls}`;
+  el.innerHTML = info.text;
+}
+function updateBallStock(){
+  const t = document.getElementById('ballType').value;
+  const el = document.getElementById('ballStock');
+  if(!t){ el.innerHTML = 'Select a type...'; el.className='stock'; return; }
+  const level = ballStockLevels[t] || 'in-stock';
+  const map = { "in-stock": { text: "In Stock", cls: "in-stock" }, "low-stock": { text: "Low Stock", cls: "low-stock" }, "sold-out": { text: "Sold Out", cls: "sold-out" } };
+  const info = map[level] || map['in-stock'];
+  el.className = `stock ${info.cls}`;
+  el.innerHTML = info.text;
+}
+
+/* ---------- Cart logic ---------- */
+const cart = [];
+let discountApplied = false;
+function currency(n){ return '$'+Number(n).toFixed(2); }
+
+function refreshCart(){
+  const list = document.getElementById('cartList');
+  list.innerHTML = '';
+  let subtotal = 0;
+  cart.forEach((it, idx)=>{
+    subtotal += it.price * it.qty;
+    const li = document.createElement('li');
+    li.className='cart-item';
+
+    if(it.kind === 'BUNDLE'){
+      li.innerHTML = `
+        <div class="mini" aria-hidden="true">🎁</div>
+        <div class="meta">
+          <b>${it.name}</b>
+          <small>Includes: ${it.items.map(i=>i.name).join(', ')}</small>
+          <small>${it.qty} × ${currency(it.price)}</small>
+        </div>
+        <div><button class="remove" onclick="removeItem(${idx})">✕</button></div>
+      `;
+    } else {
+      li.innerHTML = `
+        <div class="mini" aria-hidden="true">
+          ${it.kind === 'STK' ? `<img src="${it.image}" style="width:100%;height:100%;object-fit:contain;">` : it.kind}
+        </div>
+        <div class="meta"><b>${it.name}</b><small>${it.qty} × ${currency(it.price)}</small></div>
+        <div><button class="remove" onclick="removeItem(${idx})">✕</button></div>
+      `;
+    }
+
+    list.appendChild(li);
+  });
+
+  const subtotalNode = document.getElementById('subtotal');
+  const totalNode = document.getElementById('totalPay');
+  subtotalNode.innerText = currency(subtotal);
+  let total = subtotal;
+  if(discountApplied){ total = total - 1; } // $1 off
+  totalNode.innerText = currency(total);
+}
+
+/* ---------- Discount code ---------- */
+function applyDiscount(){
+  const code = document.getElementById('discountInput').value.trim();
+  if(code === 'Vazny'){
+    discountApplied = true;
+    alert('Discount applied — $1 off');
+    refreshCart();
+  } else {
+    alert('Invalid discount code');
+  }
+}
+
+/* ---------- Add-to-cart animation ---------- */
+function animateAddAt(element) {
+  const rect = element.getBoundingClientRect();
+  const ghost = document.createElement('div');
+  ghost.className = 'fly';
+  ghost.style.left = (rect.left + rect.width/2) + 'px';
+  ghost.style.top = (rect.top + rect.height/2) + 'px';
+  ghost.innerHTML = '🏒';
+  document.body.appendChild(ghost);
+  setTimeout(()=>ghost.remove(),900);
+}
+
+/* ---------- Add/remove items ---------- */
+function addStickToCart(){
+  const brand = document.getElementById('brand').value || 'ESW';
+  const color = document.getElementById('color').value;
+  const qty = parseInt(document.getElementById('stickQty').value) || 1;
+  if(!color){ alert('Please choose a color for the stick.'); return; }
+  if((stickStockLevels[color] || 'in-stock') === 'sold-out'){ alert('This color is sold out.'); return; }
+  const basePrice = 7;
+  const item = {
+    id: 'stick-'+Date.now(),
+    kind:'STK',
+    name: `${brand} Mini Stick (${color})`,
+    qty: qty,
+    price: basePrice,
+    image: `${color} stick.png`
+  };
+  cart.push(item);
+  refreshCart();
+  const btn = document.querySelector('.add-btn[onclick*="addStickToCart"]') || document.querySelector('.add-btn');
+  if(btn) animateAddAt(btn);
+  alert(`${qty} ${brand} mini stick(s) (${color}) added to cart.`);
+}
+
+function addBallsToCart(){
+  const sel = document.getElementById('ballType');
+  const type = sel.value;
+  const opt = sel.options[sel.selectedIndex];
+  const price = type ? Number(opt.dataset.price) : 0;
+  const qty = parseInt(document.getElementById('ballQty').value) || 1;
+  if(!type){ alert('Please choose a ball type.'); return; }
+  if((ballStockLevels[type] || 'in-stock') === 'sold-out'){ alert('This ball type is sold out.'); return; }
+  const item = {
+    id: 'ball-'+Date.now(),
+    kind:'BALL',
+    name: `${type} Ball`,
+    qty: qty,
+    price: price
+  };
+  cart.push(item);
+  refreshCart();
+  const btn = document.querySelector('.card button[onclick*="addBallsToCart"]') || document.querySelector('.add-btn');
+  if(btn) animateAddAt(btn);
+  alert(`${qty} ${type} ball(s) added to cart.`);
+}
+
+function addBundleToCart() {
+  const color = document.getElementById('offerColor').value;
+  const ballType = document.getElementById('offerBallType').value;
+  if(!color){ alert('Please select a stick color for the bundle.'); return; }
+  if(!ballType){ alert('Please select a ball type for the bundle.'); return; }
+
+  const stickItem = { id:'stick-'+Date.now(), kind:'STK', name:`Mini Stick (${color}) [Bundle]`, qty:1, price:0, image:`${color} stick.png` };
+  const ballItem = { id:'ball-'+Date.now(), kind:'BALL', name:`${ballType} Ball [Bundle]`, qty:1, price:0 };
+  const bundleItem = { id:'bundle-'+Date.now(), kind:'BUNDLE', name:'Limited Time Bundle: 1 Stick + 1 Ball', qty:1, price:10, items:[stickItem, ballItem] };
+
+  cart.push(bundleItem);
+  refreshCart();
+  alert('Bundle added to cart for $10!');
+}
+
+function removeItem(index){
+  if(index>=0 && index < cart.length) cart.splice(index,1);
+  refreshCart();
+}
+
+/* ---------- Checkout ---------- */
+function checkout(){
+  if(cart.length===0){ alert('Your cart is empty.'); return; }
+  let body = 'Order from ESW%0D%0A%0D%0A';
+  let total = 0;
+  cart.forEach((it, i)=>{
+    body += `${i+1}. ${it.name} — Qty: ${it.qty} — Unit: ${currency(it.price)}%0D%0A`;
+    total += it.qty * it.price;
+  });
+  if(discountApplied){ total -= 1; body += `%0D%0ADiscount: $1 off%0D%0A`; }
+  body += `%0D%0ATotal: ${currency(total)}%0D%0A`;
+  body += `%0D%0APlease respond with confirmation.`;
   const mail = '31stvazn@dextersouthfield.org';
-  const subject = encodeURIComponent('New ESW Review');
-  const body = encodeURIComponent(`Name: ${name}\nReview: ${text}`);
-  window.location.href = `mailto:${mail}?subject=${subject}&body=${body}`;
-  closeReviewForm();
+  const subject = encodeURIComponent('ESW Order');
+  window.location.href = `mailto:${mail}?subject=${subject}&body=${encodeURIComponent(body)}`;
 }
+
+/* ---------- Contact ---------- */
+function sendContactEmail(){
+  const name = encodeURIComponent(document.getElementById('contactName').value || '');
+  const stick = encodeURIComponent(document.getElementById('contactStick').value || '');
+  const balls = encodeURIComponent(document.getElementById('contactBall').value || '');
+  const mail = '31stvazn@dextersouthfield.org';
+  const subject = encodeURIComponent('ESW Quick Contact / Order');
+  const body = encodeURIComponent(`Name: ${decodeURIComponent(name)}%0AStick: ${decodeURIComponent(stick)}%0ABalls: ${decodeURIComponent(balls)}%0A%0A(Please follow up)`);
+  window.location.href = `mailto:${mail}?subject=${subject}&body=${body}`;
+}
+
+/* Init */
+document.addEventListener('DOMContentLoaded',()=>{
+  updatePreview();
+  updateStickStock();
+  updateBallStock();
+  refreshCart();
+});
 </script>
 
 </body>

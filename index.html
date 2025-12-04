@@ -18,8 +18,7 @@
     background:transparent;
     position:relative;
   }
-  header h1{margin:0;font-size:36px;letter-spacing:1px;display:inline-block}
-  header img.logo{position:absolute;top:10px;right:20px;height:50px;}
+  header h1{margin:0;font-size:36px;letter-spacing:1px}
   .header-buttons{display:flex;gap:12px;justify-content:center;margin-top:12px}
   .btn{
     padding:10px 18px;border-radius:8px;border:none;background:var(--accent);color:#fff;
@@ -81,7 +80,7 @@
   }
   .fly { position: absolute; animation: flyToCart 0.9s cubic-bezier(.2,.8,.2,1) forwards; z-index:9999; pointer-events:none; font-size:28px; }
 
-  /* Testimonials / Reviews */
+  /* Testimonials/Reviews */
   .testimonials { background: #fff; padding: 20px; margin-top: 12px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
   .testimonial { margin-bottom: 12px; }
   .testimonial b { font-size:15px; }
@@ -92,33 +91,24 @@
   .discount-row input { padding:8px; border:1px solid #ddd; border-radius:6px; flex:1; }
   .discount-row button { padding:8px 12px; }
 
-  /* Hot Deal / Bundle */
-  .hot-deal-card {
-    position: relative;
-    background: linear-gradient(90deg, #f59f00, #f9b233);
-    color:#111;
-    border-radius:10px;
-    padding:20px;
-    margin-bottom:18px;
-    box-shadow:0 2px 6px rgba(0,0,0,0.06);
+  /* Limited Time Offer */
+  .offer-badge { 
+    display:inline-block; padding:6px 12px; border-radius:8px; background:#e74c3c; color:#fff; font-weight:700; font-size:14px; margin-bottom:12px;
+    animation: pulse 1.5s infinite;
   }
-  .hot-deal-badge {
-    position:absolute;
-    top:12px;
-    left:12px;
-    background:#e74c3c;
-    color:#fff;
-    font-weight:700;
-    padding:6px 12px;
-    border-radius:8px;
-    font-size:14px;
+  @keyframes pulse {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
   }
-  .hot-deal-card select, .hot-deal-card button{margin-top:10px;}
+
+  /* Logo top right */
+  header img.logo { position:absolute; top:12px; right:20px; height:50px; }
 
   @media(max-width:1000px){
     main{flex-direction:column}
     .cart{width:100%;height:auto;position:static}
     .preview{width:180px}
+    header img.logo{position:static;margin:10px auto; display:block;}
   }
 </style>
 </head>
@@ -129,64 +119,68 @@
   <img src="ESW.png" class="logo" alt="ESW Logo">
   <div class="header-buttons">
     <button class="btn" onclick="location.href='about.html'">About Us</button>
-    <button class="btn" id="reviewsBtn" onclick="document.getElementById('reviewsSection').scrollIntoView({behavior:'smooth'})">Reviews</button>
     <button class="btn" onclick="location.href='contact.html'">Contact Us</button>
   </div>
 </header>
 
 <main>
+  <!-- LEFT: customization + contact + offer -->
   <section class="left">
-    <!-- Hot Deal Bundle Card -->
-    <div class="hot-deal-card" id="bundleCard">
-      <div class="hot-deal-badge" id="hotDealCounter">🔥 Hot Deal 12 left</div>
-      <h2>Limited Time Offer!</h2>
-      <p>Get <b>1 Mini Stick</b> (any color) + <b>1 Ball</b> (Regular or Airless) for just <b>$10</b>!</p>
 
-      <label for="bundleColor">Choose Stick Color</label>
-      <select id="bundleColor">
-        <option value="">-- Choose Color --</option>
-        <option>Red</option>
-        <option>Blue</option>
-        <option>Black</option>
-        <option>White</option>
-        <option>Green</option>
-        <option>Purple</option>
-        <option>Orange</option>
-        <option>Yellow</option>
-      </select>
-
-      <label for="bundleBall">Choose Ball Type</label>
-      <select id="bundleBall">
-        <option value="">-- Choose Ball Type --</option>
-        <option value="Regular">Regular</option>
-        <option value="Airless">Airless</option>
-      </select>
-
-      <button class="btn add-btn" style="background:#0b8f3b" onclick="addBundleToCart()">Add Bundle to Cart</button>
+    <!-- Limited Time Offer -->
+    <div class="card">
+      <div class="offer-badge">🔥 Hot Deal!</div>
+      <h2>Limited Time Offer</h2>
+      <p>Get <b>1 Mini Stick</b> (any color) and <b>1 Ball</b> (Regular or Airless) all for just <b>$10</b>!</p>
+      <button class="btn add-btn" onclick="addOfferToCart()">Add Offer to Cart</button>
     </div>
 
-    <!-- Existing Mini Stick Card -->
+    <!-- Customization card -->
     <div class="card" id="customCard">
       <h2>Mini Stick Customization</h2>
+
       <label for="brand">Brand</label>
-      <select id="brand"><option value="ESW">ESW</option></select>
+      <select id="brand">
+        <option value="ESW">ESW</option>
+      </select>
+
       <label for="color">Color</label>
       <select id="color" onchange="updatePreview(); updateStickStock();">
         <option value="">-- Choose Color --</option>
-        <option>Red</option><option>Blue</option><option>Black</option>
-        <option>White</option><option>Green</option><option>Purple</option>
-        <option>Orange</option><option>Yellow</option>
+        <option value="Red">Red</option>
+        <option value="Blue">Blue</option>
+        <option value="Black">Black</option>
+        <option value="White">White</option>
+        <option value="Green">Green</option>
+        <option value="Purple">Purple</option>
+        <option value="Orange">Orange</option>
+        <option value="Yellow">Yellow</option>
       </select>
+
       <p id="stickStock" class="stock">Select a color...</p>
-      <label for="stickQty">Quantity</label>
-      <input type="number" id="stickQty" min="1" value="1">
-      <button class="btn add-btn" onclick="addStickToCart()">Add Stick to Cart</button>
+
+      <div style="display:flex;gap:12px;align-items:center;margin-top:10px">
+        <div style="flex:1">
+          <label for="stickQty">Quantity</label>
+          <input type="number" id="stickQty" min="1" value="1">
+        </div>
+        <div style="width:160px">
+          <label style="visibility:hidden">add</label>
+          <button class="btn add-btn" style="width:100%" onclick="addStickToCart()">Add Stick to Cart</button>
+        </div>
+      </div>
+
       <div class="custom-row" style="margin-top:16px">
-        <div class="preview" id="stickPreview">No color selected</div>
+        <div style="flex:1">
+          <p style="margin:0;color:var(--muted)">Preview updates as you choose color/brand.</p>
+        </div>
+        <div class="preview" id="stickPreview" aria-hidden="true">
+          <div id="previewSVG">No color selected</div>
+        </div>
       </div>
     </div>
 
-    <!-- Existing Knee Hockey Balls Card -->
+    <!-- Knee Hockey Balls card -->
     <div class="card">
       <h2>Knee Hockey Balls</h2>
       <label for="ballType">Choose Ball Type</label>
@@ -195,44 +189,62 @@
         <option value="Regular" data-price="5">Regular — $5</option>
         <option value="Airless" data-price="3">Airless — $3</option>
       </select>
+
       <p id="ballStock" class="stock">Select a type...</p>
+
       <label for="ballQty">Quantity</label>
       <input type="number" id="ballQty" min="1" value="1">
-      <button class="btn add-btn" onclick="addBallsToCart()">Add Balls to Cart</button>
+
+      <div style="margin-top:12px">
+        <button class="btn add-btn" onclick="addBallsToCart()">Add Balls to Cart</button>
+      </div>
     </div>
 
-    <!-- Reviews Section -->
-    <div class="testimonials" id="reviewsSection">
-      <h3>Reviews</h3>
-      <!-- Add Review Form -->
-      <div class="testimonial">
-        <label>Your Name</label>
-        <input type="text" id="reviewName" placeholder="Name">
-        <label>Rating (1-5)</label>
-        <select id="reviewRating">
-          <option value="5">5</option>
-          <option value="4">4</option>
-          <option value="3">3</option>
-          <option value="2">2</option>
-          <option value="1">1</option>
-        </select>
-        <label>Review</label>
-        <textarea id="reviewText" placeholder="Write your review"></textarea>
-        <button class="btn" onclick="submitReview()">Add Review</button>
+    <!-- Contact form -->
+    <div class="card">
+      <h2>Contact & Quick Order</h2>
+      <div class="contact-row">
+        <div class="col">
+          <label for="contactName">Your Name</label>
+          <input type="text" id="contactName" placeholder="Name">
+        </div>
+        <div class="col">
+          <label for="contactStick">Stick</label>
+          <input type="text" id="contactStick" placeholder="e.g. ESW - Orange">
+        </div>
+        <div class="col">
+          <label for="contactBall">Knee Hockey Balls</label>
+          <input type="text" id="contactBall" placeholder="e.g. 2 Airless">
+        </div>
+        <div>
+          <label style="visibility:hidden">send</label>
+          <button class="btn" id="sendContact" style="height:40px;padding:9px 14px" onclick="sendContactEmail()">Send</button>
+        </div>
       </div>
-      <!-- Existing Reviews -->
-      <div class="testimonial"><b>★★★★★ — Jake M.</b><p>Great quality sticks! My kids love them.</p></div>
-      <div class="testimonial"><b>★★★★☆ — Ryan T.</b><p>Super realistic mini sticks. Fast delivery too!</p></div>
-      <div class="testimonial"><b>★★★★★ — Sarah L.</b><p>Love the colors and the grip feels amazing.</p></div>
-      <div class="testimonial"><b>★★★★☆ — Mike P.</b><p>Good quality balls. The stick is perfect for beginners.</p></div>
-      <div class="testimonial"><b>★★★★★ — Emma W.</b><p>Fast shipping and the bundle deal is awesome!</p></div>
-      <div class="testimonial"><b>★★★★★ — Chris H.</b><p>My kids fight over which color they get. So fun!</p></div>
-      <div class="testimonial"><b>★★★★☆ — Olivia K.</b><p>The stick feels real and sturdy. Highly recommend.</p></div>
-      <div class="testimonial"><b>★★★★★ — Daniel R.</b><p>Everything arrived in perfect condition. Excellent customer service.</p></div>
-      <div class="testimonial"><b>★★★★★ — Lily B.</b><p>The bundle is a great deal. Happy with my purchase.</p></div>
+      <p style="margin-top:10px;color:var(--muted);font-size:13px">Clicking Send will open your email client (mailto) addressed to <b>31stvazn@dextersouthfield.org</b> with the order details.</p>
     </div>
+
+    <!-- Reviews -->
+    <div class="card testimonials">
+      <h3>Reviews</h3>
+      <button class="btn" style="margin-bottom:12px;" onclick="addReview()">Add Review</button>
+      <div id="reviewsList">
+        <div class="testimonial"><b>★★★★★ — Jake M.</b><p>Great quality sticks! My kids love them.</p></div>
+        <div class="testimonial"><b>★★★★★ — Ryan T.</b><p>Super realistic mini sticks. Fast delivery too!</p></div>
+        <div class="testimonial"><b>★★★★☆ — Emily R.</b><p>Good quality sticks, love the colors.</p></div>
+        <div class="testimonial"><b>★★★★★ — Alex P.</b><p>Best mini sticks on the market!</p></div>
+        <div class="testimonial"><b>★★★★☆ — Sam K.</b><p>Nice grips and durable blades.</p></div>
+        <div class="testimonial"><b>★★★★★ — Mia W.</b><p>Kids have a blast practicing with these.</p></div>
+        <div class="testimonial"><b>★★★★☆ — Noah L.</b><p>Colors are vibrant, shipping was quick.</p></div>
+        <div class="testimonial"><b>★★★★★ — Olivia S.</b><p>Perfect bundle deal for beginners.</p></div>
+        <div class="testimonial"><b>★★★★★ — Liam J.</b><p>High quality and excellent customer service.</p></div>
+        <div class="testimonial"><b>★★★★☆ — Sophia H.</b><p>Will buy again for tournaments.</p></div>
+      </div>
+    </div>
+
   </section>
 
+  <!-- RIGHT: cart sidebar -->
   <aside class="cart">
     <div class="card">
       <h3>Your Cart</h3>
@@ -240,6 +252,13 @@
       <div class="totals">
         <div style="display:flex;justify-content:space-between"><span>Subtotal</span><span id="subtotal">$0.00</span></div>
         <div style="display:flex;justify-content:space-between;margin-top:8px"><strong>Total</strong><strong id="totalPay">$0.00</strong></div>
+
+        <!-- Discount input -->
+        <div class="discount-row" style="margin-top:12px">
+          <input type="text" id="discountInput" placeholder="Discount code">
+          <button class="btn" onclick="applyDiscount()">Apply</button>
+        </div>
+
         <div style="margin-top:12px">
           <button class="checkout-btn" onclick="checkout()">Checkout</button>
         </div>
@@ -249,59 +268,256 @@
 </main>
 
 <script>
-let hotDealLeft = 12;
-
-// ---------- Bundle Add ----------
-function addBundleToCart(){
-  const color=document.getElementById('bundleColor').value;
-  const ball=document.getElementById('bundleBall').value;
-  if(!color||!ball){alert('Please select both stick color and ball type.'); return;}
-  if(hotDealLeft<=0){alert('Hot Deal sold out!'); return;}
-  hotDealLeft--;
-  document.getElementById('hotDealCounter').innerText = `🔥 Hot Deal ${hotDealLeft} left`;
-
-  const itemStick = {id:'stick-'+Date.now(),kind:'STK',name:`Mini Stick (${color})`,qty:1,price:0,image:`${color} stick.png`};
-  const itemBall = {id:'ball-'+Date.now(),kind:'BALL',name:`${ball} Ball`,qty:1,price:0};
-  // add both items but only charge $10 total
-  itemStick.price = 10; itemBall.price = 0;
-  cart.push(itemStick); cart.push(itemBall);
-  refreshCart();
-  alert(`Hot Deal Bundle added to cart!`);
+/* ---------- Preview generation (SVG stick) ---------- */
+function svgStick(color){
+  const shaft = color || '#cccccc';
+  const blade = shadeColor(shaft, -20);
+  return `
+  <svg width="220" height="160" viewBox="0 0 220 160" xmlns="http://www.w3.org/2000/svg" aria-labelledby="t">
+    <title>Stick preview</title>
+    <g transform="translate(10,10)">
+      <rect x="0" y="40" width="140" height="18" rx="6" fill="${shaft}" stroke="#333" stroke-opacity="0.06"/>
+      <rect x="0" y="30" width="12" height="10" rx="3" fill="#222" />
+      <path d="M120 42 L170 58 L150 78 L108 62 Z" fill="${blade}" stroke="#333" stroke-opacity="0.06" />
+      <text x="18" y="53" font-family="Arial" font-size="12" fill="#111" font-weight="700">ESW</text>
+    </g>
+  </svg>`;
+}
+function shadeColor(hex, percent) {
+  try{
+    const h = hex.replace('#','');
+    const bigint = parseInt(h,16);
+    let r = (bigint>>16)&255;
+    let g = (bigint>>8)&255;
+    let b = bigint&255;
+    r = parseInt(r*(100+percent)/100);
+    g = parseInt(g*(100+percent)/100);
+    b = parseInt(b*(100+percent)/100);
+    r = Math.min(255,Math.max(0,r));
+    g = Math.min(255,Math.max(0,g));
+    b = Math.min(255,Math.max(0,b));
+    return '#'+( (1<<24) + (r<<16) + (g<<8) + b ).toString(16).slice(1);
+  }catch(e){return hex}
+}
+const colorMap = {
+  "Red":"#e74c3c",
+  "Blue":"#007bff",
+  "Black":"#222222",
+  "White":"#f6f6f6",
+  "Green":"#28a745",
+  "Purple":"#7f3fbf",
+  "Orange":"#ff8c00",
+  "Yellow":"#f1c40f"
+};
+function updatePreview(){
+  const color = document.getElementById('color').value;
+  const container = document.getElementById('previewSVG');
+  if(!color){ container.innerHTML = 'No color selected'; return; }
+  const fileName = `${color} stick.png`;
+  const img = new Image();
+  img.src = fileName;
+  img.className = 'preview-img';
+  img.onload = () => { container.innerHTML=''; container.appendChild(img); };
+  img.onerror = () => {
+    const hex = colorMap[color] || '#cccccc';
+    container.innerHTML = svgStick(hex);
+  };
 }
 
-// ---------- Existing JS ----------
+/* ---------- Stock ---------- */
+const stickStockLevels = {
+  "Red": "in-stock",
+  "Blue": "low-stock",
+  "Black": "in-stock",
+  "White": "in-stock",
+  "Green": "in-stock",
+  "Purple": "low-stock",
+  "Orange": "in-stock",
+  "Yellow": "low-stock"
+};
+const ballStockLevels = {
+  "Regular":"in-stock",
+  "Airless":"low-stock"
+};
+function updateStickStock(){
+  const c = document.getElementById('color').value;
+  const el = document.getElementById('stickStock');
+  if(!c){ el.innerHTML = 'Select a color...'; el.className='stock'; return; }
+  const level = stickStockLevels[c] || 'in-stock';
+  const map = {
+    "in-stock": { text: "In Stock", cls: "in-stock" },
+    "low-stock": { text: "Low Stock", cls: "low-stock" },
+    "sold-out": { text: "Sold Out", cls: "sold-out" }
+  };
+  const info = map[level] || map['in-stock'];
+  el.className = `stock ${info.cls}`;
+  el.innerHTML = info.text;
+}
+function updateBallStock(){
+  const t = document.getElementById('ballType').value;
+  const el = document.getElementById('ballStock');
+  if(!t){ el.innerHTML = 'Select a type...'; el.className='stock'; return; }
+  const level = ballStockLevels[t] || 'in-stock';
+  const map = {
+    "in-stock": { text: "In Stock", cls: "in-stock" },
+    "low-stock": { text: "Low Stock", cls: "low-stock" },
+    "sold-out": { text: "Sold Out", cls: "sold-out" }
+  };
+  const info = map[level] || map['in-stock'];
+  el.className = `stock ${info.cls}`;
+  el.innerHTML = info.text;
+}
+
+/* ---------- Cart ---------- */
 const cart = [];
-function currency(n){return '$'+Number(n).toFixed(2);}
+let discountApplied = false;
+function currency(n){ return '$'+Number(n).toFixed(2); }
 function refreshCart(){
-  const list=document.getElementById('cartList'); list.innerHTML='';
-  let subtotal=0;
-  cart.forEach((it,idx)=>{subtotal+=it.price*it.qty;
-    const li=document.createElement('li');
+  const list = document.getElementById('cartList');
+  list.innerHTML = '';
+  let subtotal = 0;
+  cart.forEach((it, idx)=>{
+    subtotal += it.price * it.qty;
+    const li = document.createElement('li');
     li.className='cart-item';
-    li.innerHTML=`<div class="mini" aria-hidden="true">${it.kind==='STK'?`<img src="${it.image}" style="width:100%;height:100%;object-fit:contain;">`:it.kind}</div><div class="meta"><b>${it.name}</b><small>${it.qty} × ${currency(it.price)}</small></div><div><button class="remove" onclick="removeItem(${idx})">✕</button></div>`;
+    li.innerHTML = `
+      <div class="mini" aria-hidden="true">
+        ${it.kind === 'STK' ? `<img src="${it.image}" style="width:100%;height:100%;object-fit:contain;">` : it.kind}
+      </div>
+      <div class="meta"><b>${it.name}</b><small>${it.qty} × ${currency(it.price)}</small></div>
+      <div><button class="remove" onclick="removeItem(${idx})">✕</button></div>
+    `;
     list.appendChild(li);
   });
-  document.getElementById('subtotal').innerText = currency(subtotal);
-  document.getElementById('totalPay').innerText = currency(subtotal);
+  const subtotalNode = document.getElementById('subtotal');
+  const totalNode = document.getElementById('totalPay');
+  subtotalNode.innerText = currency(subtotal);
+  let total = subtotal;
+  if(discountApplied){ total = total - 1; } // $1 off
+  totalNode.innerText = currency(total);
 }
-function removeItem(index){if(index>=0&&index<cart.length) cart.splice(index,1); refreshCart();}
 
-/* Add Stick / Balls functions omitted for brevity; keep your existing ones from previous code */
-
-/* Preview, stock, contact, reviews logic kept from previous code */
-function submitReview(){
-  const name=document.getElementById('reviewName').value.trim();
-  const rating=document.getElementById('reviewRating').value;
-  const text=document.getElementById('reviewText').value.trim();
-  if(!name||!text){alert('Please enter your name and review.'); return;}
-  const reviewsContainer=document.getElementById('reviewsSection');
-  const reviewDiv=document.createElement('div');
-  reviewDiv.className='testimonial';
-  reviewDiv.innerHTML=`<b>${'★'.repeat(rating)} — ${name}</b><p>${text}</p>`;
-  reviewsContainer.insertBefore(reviewDiv,reviewsContainer.children[1]);
-  document.getElementById('reviewName').value=''; document.getElementById('reviewText').value=''; document.getElementById('reviewRating').value='5';
-  alert('Thank you for your review!');
+/* ---------- discount ---------- */
+function applyDiscount(){
+  const code = document.getElementById('discountInput').value.trim();
+  if(code === 'Vazny'){
+    discountApplied = true;
+    alert('Discount code applied — $1 off');
+    refreshCart();
+  } else {
+    alert('Invalid discount code');
+  }
 }
+
+/* ---------- add animation ---------- */
+function animateAddAt(element) {
+  const rect = element.getBoundingClientRect();
+  const ghost = document.createElement('div');
+  ghost.className = 'fly';
+  ghost.style.left = (rect.left + rect.width/2) + 'px';
+  ghost.style.top = (rect.top + rect.height/2) + 'px';
+  ghost.innerHTML = '🏒';
+  document.body.appendChild(ghost);
+  setTimeout(()=>ghost.remove(),900);
+}
+
+/* ---------- Add to cart ---------- */
+function addStickToCart(){
+  const brand = document.getElementById('brand').value || 'ESW';
+  const color = document.getElementById('color').value;
+  const qty = parseInt(document.getElementById('stickQty').value) || 1;
+  if(!color){ alert('Please choose a color for the stick.'); return; }
+  if((stickStockLevels[color] || 'in-stock') === 'sold-out'){ alert('This color is sold out.'); return; }
+  const basePrice = 7;
+  const item = { id: 'stick-'+Date.now(), kind:'STK', name: `${brand} Mini Stick (${color})`, qty: qty, price: basePrice, image: `${color} stick.png` };
+  cart.push(item);
+  refreshCart();
+  const btn = document.querySelector('.add-btn[onclick*="addStickToCart"]') || document.querySelector('.add-btn');
+  if(btn) animateAddAt(btn);
+  alert(`${qty} ${brand} mini stick(s) (${color}) added to cart.`);
+}
+
+function addBallsToCart(){
+  const sel = document.getElementById('ballType');
+  const type = sel.value;
+  const opt = sel.options[sel.selectedIndex];
+  const price = type ? Number(opt.dataset.price) : 0;
+  const qty = parseInt(document.getElementById('ballQty').value) || 1;
+  if(!type){ alert('Please choose a ball type.'); return; }
+  if((ballStockLevels[type] || 'in-stock') === 'sold-out'){ alert('This ball type is sold out.'); return; }
+  const item = { id: 'ball-'+Date.now(), kind:'BALL', name: `${type} Ball`, qty: qty, price: price };
+  cart.push(item);
+  refreshCart();
+  const btn = document.querySelector('.card button[onclick*="addBallsToCart"]') || document.querySelector('.add-btn');
+  if(btn) animateAddAt(btn);
+  alert(`${qty} ${type} ball(s) added to cart.`);
+}
+
+/* ---------- Limited Time Offer ---------- */
+function addOfferToCart(){
+  const stickColor = prompt("Choose a stick color (Red, Blue, Black, White, Green, Purple, Orange, Yellow):");
+  const ballType = prompt("Choose ball type (Regular or Airless):");
+  if(!stickColor || !ballType){ alert("Please select both stick color and ball type."); return; }
+  const item = { id:'offer-'+Date.now(), kind:'OFFER', name:`Offer: Mini Stick (${stickColor}) + ${ballType} Ball`, qty:1, price:10, image:`${stickColor} stick.png`};
+  cart.push(item);
+  refreshCart();
+  alert("Offer added to cart!");
+}
+
+/* ---------- Remove ---------- */
+function removeItem(index){ if(index>=0 && index<cart.length) cart.splice(index,1); refreshCart(); }
+
+/* ---------- Checkout ---------- */
+function checkout(){
+  if(cart.length===0){ alert('Your cart is empty.'); return; }
+  let body = 'Order from ESW%0D%0A%0D%0A';
+  let total = 0;
+  cart.forEach((it, i)=>{
+    body += `${i+1}. ${it.name} — Qty: ${it.qty} — Unit: ${currency(it.price)}%0D%0A`;
+    total += it.qty * it.price;
+  });
+  if(discountApplied){ total -= 1; body += `%0D%0ADiscount: $1 off%0D%0A`; }
+  body += `%0D%0ATotal: ${currency(total)}%0D%0A`;
+  body += `%0D%0APlease respond with confirmation.`;
+  const mail = '31stvazn@dextersouthfield.org';
+  const subject = encodeURIComponent('ESW Order');
+  window.location.href = `mailto:${mail}?subject=${subject}&body=${encodeURIComponent(body)}`;
+}
+
+/* ---------- Contact ---------- */
+function sendContactEmail(){
+  const name = encodeURIComponent(document.getElementById('contactName').value || '');
+  const stick = encodeURIComponent(document.getElementById('contactStick').value || '');
+  const balls = encodeURIComponent(document.getElementById('contactBall').value || '');
+  const mail = '31stvazn@dextersouthfield.org';
+  const subject = encodeURIComponent('ESW Quick Contact / Order');
+  const body = encodeURIComponent(`Name: ${decodeURIComponent(name)}%0AStick: ${decodeURIComponent(stick)}%0ABalls: ${decodeURIComponent(balls)}%0A%0A(Please follow up)`);
+  window.location.href = `mailto:${mail}?subject=${subject}&body=${body}`;
+}
+
+/* ---------- Add Review ---------- */
+function addReview(){
+  const name = prompt("Enter your name:");
+  if(!name) return;
+  const rating = prompt("Enter rating (1-5 stars):");
+  if(!rating) return;
+  const text = prompt("Enter your review:");
+  if(!text) return;
+  const reviewDiv = document.createElement('div');
+  reviewDiv.className = 'testimonial';
+  reviewDiv.innerHTML = `<b>${'★'.repeat(Math.min(5, parseInt(rating)||5))} — ${name}</b><p>${text}</p>`;
+  const list = document.getElementById('reviewsList');
+  list.insertBefore(reviewDiv, list.firstChild);
+  alert("Thank you! Your review has been added.");
+}
+
+/* ---------- Init ---------- */
+document.addEventListener('DOMContentLoaded',()=>{
+  updatePreview();
+  updateStickStock();
+  updateBallStock();
+  refreshCart();
+});
 </script>
 
 </body>

@@ -19,15 +19,13 @@
     position:relative;
   }
   header h1{margin:0;font-size:36px;letter-spacing:1px}
+  .logo{position:absolute;top:18px;right:20px;height:50px;}
   .header-buttons{display:flex;gap:12px;justify-content:center;margin-top:12px}
   .btn{
     padding:10px 18px;border-radius:8px;border:none;background:var(--accent);color:#fff;
     cursor:pointer;font-size:15px;
   }
   .btn.secondary{background:#444}
-  .logo-top-right{
-    position:absolute; top:10px; right:20px; width:120px; height:auto;
-  }
   main{display:flex;gap:20px;padding:20px;box-sizing:border-box}
   .left{flex:1 1 620px;max-width:900px;}
   .card{
@@ -83,15 +81,11 @@
   }
   .fly { position: absolute; animation: flyToCart 0.9s cubic-bezier(.2,.8,.2,1) forwards; z-index:9999; pointer-events:none; font-size:28px; }
 
-  /* Reviews */
-  .reviews { background:#fff; padding:20px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.06); margin-top:12px; }
-  .review { margin-bottom:12px; }
-  .review b { font-size:15px; }
-  .review p { margin:4px 0 0 0; color:var(--muted); font-size:14px; }
-
-  /* Bundle Fire Offer */
-  .bundle-card {background:linear-gradient(45deg,#ff3c3c,#ffac00); color:#fff; position:relative;}
-  .hot-badge{position:absolute;top:10px;left:10px;background:#ff0;color:#000;padding:6px 12px;border-radius:8px;font-weight:700;font-size:14px;}
+  /* Testimonials / Reviews */
+  .testimonials { background: #fff; padding: 20px; margin-top: 12px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+  .testimonial, .review { margin-bottom: 12px; }
+  .testimonial b, .review b { font-size:15px; }
+  .testimonial p, .review p { margin:4px 0 0 0; color:var(--muted); font-size:14px; }
 
   @media(max-width:1000px){
     main{flex-direction:column}
@@ -104,7 +98,7 @@
 
 <header>
   <h1>ESW</h1>
-  <img src="ESW.png" alt="ESW Logo" class="logo-top-right">
+  <img src="ESW.png" class="logo" alt="ESW Logo">
   <div class="header-buttons">
     <button class="btn" onclick="location.href='about.html'">About Us</button>
     <button class="btn" onclick="location.href='contact.html'">Contact Us</button>
@@ -112,12 +106,14 @@
 </header>
 
 <main>
+  <!-- LEFT: customization + contact -->
   <section class="left">
-    <!-- Limited Time Bundle Offer -->
-    <div class="card bundle-card">
-      <div class="hot-badge">HOT DEAL</div>
-      <h2>🔥 Limited Time Bundle 🔥</h2>
-      <p>1 Mini Stick (any color) + 1 Ball (Regular or Airless) — All for just $10!</p>
+
+    <!-- Limited Time Offer Bundle -->
+    <div class="card" style="position:relative;background:linear-gradient(45deg, #ff3b3b, #ff7f3b);color:#fff;">
+      <span style="position:absolute;top:12px;right:12px;background:#fff;color:#ff3b3b;padding:6px 10px;border-radius:8px;font-weight:700;">🔥 HOT DEAL 🔥</span>
+      <h2>Limited Time Bundle!</h2>
+      <p>1 Mini Stick (any color) + 1 Ball (Regular or Airless) <b>only $10</b></p>
 
       <label for="bundleColor">Stick Color</label>
       <select id="bundleColor">
@@ -134,7 +130,7 @@
 
       <label for="bundleBall">Ball Type</label>
       <select id="bundleBall">
-        <option value="">-- Choose Ball --</option>
+        <option value="">-- Choose Ball Type --</option>
         <option value="Regular">Regular</option>
         <option value="Airless">Airless</option>
       </select>
@@ -142,14 +138,13 @@
       <label for="bundleQty">Quantity</label>
       <input type="number" id="bundleQty" min="1" value="1">
 
-      <div style="margin-top:12px">
-        <button class="btn add-btn" onclick="addBundleToCart()">Add Bundle to Cart</button>
-      </div>
+      <button class="btn add-btn" style="margin-top:12px;width:100%" onclick="addBundleToCart()">Add Bundle to Cart</button>
     </div>
 
-    <!-- Mini Stick card -->
+    <!-- Mini Stick Customization card -->
     <div class="card" id="customCard">
       <h2>Mini Stick Customization</h2>
+
       <label for="brand">Brand</label>
       <select id="brand">
         <option value="ESW">ESW</option>
@@ -170,6 +165,7 @@
 
       <p id="stickStock" class="stock">Select a color...</p>
 
+      <!-- Quantity and Add to cart -->
       <div style="display:flex;gap:12px;align-items:center;margin-top:10px">
         <div style="flex:1">
           <label for="stickQty">Quantity</label>
@@ -181,6 +177,7 @@
         </div>
       </div>
 
+      <!-- custom-row: preview on the right -->
       <div class="custom-row" style="margin-top:16px">
         <div style="flex:1">
           <p style="margin:0;color:var(--muted)">Preview updates as you choose color/brand.</p>
@@ -232,18 +229,30 @@
           <button class="btn" id="sendContact" style="height:40px;padding:9px 14px" onclick="sendContactEmail()">Send</button>
         </div>
       </div>
-      <p style="margin-top:10px;color:var(--muted);font-size:13px">Clicking Send will open your email client (mailto) addressed to <b>31stvazn@dextersouthfield.org</b> with the order details.</p>
+      <p style="margin-top:10px;color:var(--muted);font-size:13px">Clicking Send will open your email client addressed to <b>31stvazn@dextersouthfield.org</b> with the order details.</p>
     </div>
 
     <!-- Reviews -->
-    <div class="reviews">
+    <div class="testimonials">
       <h3>Reviews</h3>
-      <button class="btn secondary" onclick="addReview()">Add Review</button>
-      <div id="reviewList"></div>
+      <button class="btn secondary" onclick="addReview()" style="margin-bottom:12px;">Add Review</button>
+      <div id="reviewList">
+        <div class="review"><b>★★★★★ — Jake M.</b><p>Great quality sticks! My kids love them.</p></div>
+        <div class="review"><b>★★★★★ — Ryan T.</b><p>Super realistic mini sticks. Fast delivery too!</p></div>
+        <div class="review"><b>★★★★☆ — Emily S.</b><p>Good product, fast shipping.</p></div>
+        <div class="review"><b>★★★★★ — Daniel W.</b><p>Perfect bundle for beginners.</p></div>
+        <div class="review"><b>★★★★☆ — Sophia L.</b><p>Color options are awesome.</p></div>
+        <div class="review"><b>★★★★★ — Michael B.</b><p>Kids love playing with these sticks!</p></div>
+        <div class="review"><b>★★★★★ — Olivia P.</b><p>Excellent quality, highly recommend.</p></div>
+        <div class="review"><b>★★★★☆ — Ethan K.</b><p>Bundle deal is a great value.</p></div>
+        <div class="review"><b>★★★★★ — Ava R.</b><p>Delivery was super fast!</p></div>
+        <div class="review"><b>★★★★★ — Liam J.</b><p>Will order again!</p></div>
+      </div>
     </div>
+
   </section>
 
-  <!-- Cart sidebar -->
+  <!-- RIGHT: cart sidebar -->
   <aside class="cart">
     <div class="card">
       <h3>Your Cart</h3>
@@ -260,63 +269,162 @@
 </main>
 
 <script>
-/* ---------- Stick Preview ---------- */
-const colorMap = {
-  "Red":"#e74c3c","Blue":"#007bff","Black":"#222222","White":"#f6f6f6",
-  "Green":"#28a745","Purple":"#7f3fbf","Orange":"#ff8c00","Yellow":"#f1c40f"
-};
+/* ---------- Preview generation (SVG stick) ---------- */
 function svgStick(color){
-  const shaft=color||'#cccccc';
-  const blade=shadeColor(shaft,-20);
-  return `<svg width="220" height="160" viewBox="0 0 220 160"><g transform="translate(10,10)">
-    <rect x="0" y="40" width="140" height="18" rx="6" fill="${shaft}" stroke="#333" stroke-opacity="0.06"/>
-    <rect x="0" y="30" width="12" height="10" rx="3" fill="#222" />
-    <path d="M120 42 L170 58 L150 78 L108 62 Z" fill="${blade}" stroke="#333" stroke-opacity="0.06"/>
-    <text x="18" y="53" font-family="Arial" font-size="12" fill="#111" font-weight="700">ESW</text>
-  </g></svg>`;
+  const shaft = color || '#cccccc';
+  const blade = shadeColor(shaft, -20);
+  return `
+  <svg width="220" height="160" viewBox="0 0 220 160" xmlns="http://www.w3.org/2000/svg" aria-labelledby="t">
+    <title>Stick preview</title>
+    <g transform="translate(10,10)">
+      <rect x="0" y="40" width="140" height="18" rx="6" fill="${shaft}" stroke="#333" stroke-opacity="0.06"/>
+      <rect x="0" y="30" width="12" height="10" rx="3" fill="#222" />
+      <path d="M120 42 L170 58 L150 78 L108 62 Z" fill="${blade}" stroke="#333" stroke-opacity="0.06" />
+      <text x="18" y="53" font-family="Arial" font-size="12" fill="#111" font-weight="700">ESW</text>
+    </g>
+  </svg>`;
 }
-function shadeColor(hex, percent){
-  const h=hex.replace('#','');const bigint=parseInt(h,16);
-  let r=(bigint>>16)&255,g=(bigint>>8)&255,b=bigint&255;
-  r=Math.min(255,Math.max(0,parseInt(r*(100+percent)/100)));
-  g=Math.min(255,Math.max(0,parseInt(g*(100+percent)/100)));
-  b=Math.min(255,Math.max(0,parseInt(b*(100+percent)/100)));
-  return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);
+function shadeColor(hex, percent) {
+  try{
+    const h = hex.replace('#','');
+    const bigint = parseInt(h,16);
+    let r = (bigint>>16)&255;
+    let g = (bigint>>8)&255;
+    let b = bigint&255;
+    r = parseInt(r*(100+percent)/100);
+    g = parseInt(g*(100+percent)/100);
+    b = parseInt(b*(100+percent)/100);
+    r = Math.min(255,Math.max(0,r));
+    g = Math.min(255,Math.max(0,g));
+    b = Math.min(255,Math.max(0,b));
+    return '#'+( (1<<24) + (r<<16) + (g<<8) + b ).toString(16).slice(1);
+  }catch(e){return hex}
 }
+const colorMap = {
+  "Red":"#e74c3c",
+  "Blue":"#007bff",
+  "Black":"#222222",
+  "White":"#f6f6f6",
+  "Green":"#28a745",
+  "Purple":"#7f3fbf",
+  "Orange":"#ff8c00",
+  "Yellow":"#f1c40f"
+};
+
 function updatePreview(){
-  const color=document.getElementById('color').value;
-  const container=document.getElementById('previewSVG');
-  if(!color){container.innerHTML='No color selected';return;}
-  const fileName=`${color} stick.png`;
-  const img=new Image();img.src=fileName;img.className='preview-img';
-  img.onload=()=>{container.innerHTML='';container.appendChild(img);};
-  img.onerror=()=>{container.innerHTML=svgStick(colorMap[color]||'#cccccc');};
+  const color = document.getElementById('color').value;
+  const container = document.getElementById('previewSVG');
+  if(!color){ container.innerHTML = 'No color selected'; return; }
+  const fileName = `${color} stick.png`;
+  const img = new Image();
+  img.src = fileName;
+  img.className = 'preview-img';
+  img.onload = () => { container.innerHTML=''; container.appendChild(img); };
+  img.onerror = () => { container.innerHTML = svgStick(colorMap[color]||'#cccccc'); };
 }
 
-/* ---------- Stock ---------- */
-const stickStockLevels={"Red":"in-stock","Blue":"low-stock","Black":"in-stock","White":"in-stock","Green":"in-stock","Purple":"low-stock","Orange":"in-stock","Yellow":"low-stock"};
-const ballStockLevels={"Regular":"in-stock","Airless":"low-stock"};
-function updateStickStock(){const c=document.getElementById('color').value;const el=document.getElementById('stickStock');if(!c){el.innerHTML='Select a color...';el.className='stock';return;}const s=stickStockLevels[c]||'in-stock';el.className=`stock ${s}`;el.innerHTML=s==='in-stock'?'In Stock':s==='low-stock'?'Low Stock':'Sold Out';}
-function updateBallStock(){const b=document.getElementById('ballType').value;const el=document.getElementById('ballStock');if(!b){el.innerHTML='Select a type...';el.className='stock';return;}const s=ballStockLevels[b]||'in-stock';el.className=`stock ${s}`;el.innerHTML=s==='in-stock'?'In Stock':s==='low-stock'?'Low Stock':'Sold Out';}
+/* ---------- Stock display ---------- */
+const stickStockLevels = {"Red":"in-stock","Blue":"low-stock","Black":"in-stock","White":"in-stock","Green":"in-stock","Purple":"low-stock","Orange":"in-stock","Yellow":"low-stock"};
+const ballStockLevels = {"Regular":"in-stock","Airless":"low-stock"};
+function updateStickStock(){
+  const c = document.getElementById('color').value;
+  const el = document.getElementById('stickStock');
+  if(!c){ el.innerHTML='Select a color...'; el.className='stock'; return; }
+  const s = stickStockLevels[c]||'in-stock';
+  el.className=`stock ${s}`;
+  el.innerHTML = s==='in-stock'?'In Stock': s==='low-stock'?'Low Stock':'Sold Out';
+}
+function updateBallStock(){
+  const b = document.getElementById('ballType').value;
+  const el = document.getElementById('ballStock');
+  if(!b){ el.innerHTML='Select a type...'; el.className='stock'; return; }
+  const s = ballStockLevels[b]||'in-stock';
+  el.className=`stock ${s}`;
+  el.innerHTML = s==='in-stock'?'In Stock': s==='low-stock'?'Low Stock':'Sold Out';
+}
 
-/* ---------- Cart ---------- */
-let cart=[];
+/* ---------- Cart functionality ---------- */
+let cart = [];
 function refreshCart(){
-  const list=document.getElementById('cartList');list.innerHTML='';let subtotal=0;
-  cart.forEach((it,i)=>{subtotal+=it.price*it.qty;const li=document.createElement('li');li.className='cart-item';
-    li.innerHTML=`<div class="mini">${it.image?`<img src="${it.image}" style="width:100%;height:100%;object-fit:contain"/>`:it.kind}</div>
-      <div class="meta"><b>${it.name}</b><br>Qty: ${it.qty}<br>Price: $${(it.price*it.qty).toFixed(2)}</div>
-      <button class="remove" onclick="cart.splice(${i},1);refreshCart()">✕</button>`;
+  const list = document.getElementById('cartList');
+  list.innerHTML='';
+  let subtotal = 0;
+  cart.forEach((item,i)=>{
+    const li = document.createElement('li'); li.className='cart-item';
+    li.innerHTML=`<div class="mini">${item.image?`<img src="${item.image}" style="width:100%;height:100%;object-fit:contain"/>`:item.kind}</div>
+      <div class="meta"><b>${item.name}</b>Qty: ${item.qty}<br>Price: $${(item.price*item.qty).toFixed(2)}</div>
+      <button class="remove" onclick="cart.splice(${i},1);refreshCart()">X</button>`;
     list.appendChild(li);
+    subtotal += item.price*item.qty;
   });
   document.getElementById('subtotal').innerText=`$${subtotal.toFixed(2)}`;
   document.getElementById('totalPay').innerText=`$${subtotal.toFixed(2)}`;
 }
 
-/* ---------- Add Items ---------- */
+/* ---------- Add stick ---------- */
 function addStickToCart(){
-  const brand=document.getElementById('brand').value||'ESW';
-  const color=document.getElementById('color').value;
-  const qty=parseInt(document.getElementById('stickQty').value)||1;
-  if(!color){alert('Please choose a color.');return;}
-  const item={id:'stick-'+Date.now(),kind:'STK',name:`
+  const color = document.getElementById('color').value;
+  const qty = parseInt(document.getElementById('stickQty').value) || 1;
+  if(!color){ alert('Please select a color'); return; }
+  const price = 7-1; // $1 off
+  cart.push({id:'stick-'+Date.now(),kind:'STK',name:`Mini Stick (${color})`,qty:qty,price:price,image:`${color} stick.png`});
+  refreshCart();
+}
+
+/* ---------- Add balls ---------- */
+function addBallsToCart(){
+  const type = document.getElementById('ballType').value;
+  const qty = parseInt(document.getElementById('ballQty').value) || 1;
+  if(!type){ alert('Select ball type'); return; }
+  const price = (type==='Regular'?5:3)-1; // $1 off
+  cart.push({id:'ball-'+Date.now(),kind:'BALL',name:`${type} Ball`,qty:qty,price:price});
+  refreshCart();
+}
+
+/* ---------- Bundle ---------- */
+function addBundleToCart() {
+  const color = document.getElementById('bundleColor').value;
+  const ball = document.getElementById('bundleBall').value;
+  const qty = parseInt(document.getElementById('bundleQty').value) || 1;
+
+  if(!color){ alert('Please select a stick color.'); return; }
+  if(!ball){ alert('Please select a ball type.'); return; }
+
+  const stickPrice = 7-1; // $1 off
+  const ballPrice = (ball==='Regular'?5:3)-1;
+
+  cart.push({id:'bundle-stick-'+Date.now(),kind:'STK',name:`Bundle Mini Stick (${color})`,qty:qty,price:stickPrice,image:`${color} stick.png`});
+  cart.push({id:'bundle-ball-'+Date.now(),kind:'BALL',name:`Bundle ${ball} Ball`,qty:qty,price:ballPrice});
+
+  refreshCart();
+  alert(`Added ${qty} bundle(s) to cart!`);
+}
+
+/* ---------- Reviews ---------- */
+function addReview(){
+  const name = prompt('Your Name:');
+  if(!name) return;
+  const text = prompt('Your Review:');
+  if(!text) return;
+  const div = document.createElement('div'); div.className='review';
+  div.innerHTML=`<b>★★★★★ — ${name}</b><p>${text}</p>`;
+  const list = document.getElementById('reviewList');
+  list.insertBefore(div,list.firstChild);
+}
+
+/* ---------- Contact ---------- */
+function sendContactEmail(){
+  const n = document.getElementById('contactName').value || '';
+  const s = document.getElementById('contactStick').value || '';
+  const b = document.getElementById('contactBall').value || '';
+  const subject = encodeURIComponent('ESW Order');
+  const body = encodeURIComponent(`Name: ${n}\nStick: ${s}\nBall: ${b}`);
+  window.location.href=`mailto:31stvazn@dextersouthfield.org?subject=${subject}&body=${body}`;
+}
+
+/* ---------- Checkout ---------- */
+function checkout(){ alert('Checkout not implemented in demo.'); }
+
+</script>
+</body>
+</html>
